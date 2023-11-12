@@ -1,0 +1,2284 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Analysis Report - Analysis Monitor</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./AnalysisReport.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="application/json" class="js-hypothesis-config">
+{
+  "theme": "clean",
+  "openSidebar": false
+}
+</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+
+
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./AnalysisMonitor.html">Analysis Monitor</a></li><li class="breadcrumb-item"><a href="./AnalysisMonitor.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Analysis Monitor</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Analysis Report</a> 
+        <div class="sidebar-tools-main">
+    <a href="./Analysis-Report.pdf" rel="" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">About This Documentation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Analysis Monitor</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./AnalysisMonitor.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Analysis Monitor</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Analysis Site Report</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./AnalysisReport.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Analysis Report</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#harmonization-monitors" id="toc-harmonization-monitors" class="nav-link active" data-scroll-target="#harmonization-monitors">Harmonization Monitors</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Analysis Monitor</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p><br>
+</p>
+<section id="harmonization-monitors" class="level3">
+<h3 class="anchored" data-anchor-id="harmonization-monitors">Harmonization Monitors</h3>
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="yqyokyhqbn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yqyokyhqbn table {
+  font-family: Karla, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#yqyokyhqbn thead, #yqyokyhqbn tbody, #yqyokyhqbn tfoot, #yqyokyhqbn tr, #yqyokyhqbn td, #yqyokyhqbn th {
+  border-style: none;
+}
+
+#yqyokyhqbn p {
+  margin: 0;
+  padding: 0;
+}
+
+#yqyokyhqbn .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: 0;
+  margin-right: auto;
+  color: #333333;
+  font-size: 80%;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 80%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#yqyokyhqbn .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#yqyokyhqbn .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#yqyokyhqbn .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: #054996;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_col_heading {
+  color: #FFFFFF;
+  background-color: rgba(5, 73, 150, 0.31);
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#yqyokyhqbn .gt_column_spanner_outer {
+  color: #FFFFFF;
+  background-color: rgba(5, 73, 150, 0.31);
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#yqyokyhqbn .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#yqyokyhqbn .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#yqyokyhqbn .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: #054996;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#yqyokyhqbn .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#yqyokyhqbn .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #E0E0E0;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#yqyokyhqbn .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #E0E0E0;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yqyokyhqbn .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#yqyokyhqbn .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#yqyokyhqbn .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#yqyokyhqbn .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqyokyhqbn .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#yqyokyhqbn .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#yqyokyhqbn .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#yqyokyhqbn .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqyokyhqbn .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#yqyokyhqbn .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqyokyhqbn .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#yqyokyhqbn .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqyokyhqbn .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yqyokyhqbn .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yqyokyhqbn .gt_left {
+  text-align: left;
+}
+
+#yqyokyhqbn .gt_center {
+  text-align: center;
+}
+
+#yqyokyhqbn .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#yqyokyhqbn .gt_font_normal {
+  font-weight: normal;
+}
+
+#yqyokyhqbn .gt_font_bold {
+  font-weight: bold;
+}
+
+#yqyokyhqbn .gt_font_italic {
+  font-style: italic;
+}
+
+#yqyokyhqbn .gt_super {
+  font-size: 65%;
+}
+
+#yqyokyhqbn .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#yqyokyhqbn .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#yqyokyhqbn .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#yqyokyhqbn .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#yqyokyhqbn .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#yqyokyhqbn .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#yqyokyhqbn .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Value">Value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="IsValueEligible">IsValueEligible</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Raw">Raw</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Transformed">Transformed</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Final">Final</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" style="font-weight: bold;                            color: #054996" scope="colgroup" id="AdmissionCause">AdmissionCause</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #00FF00;">D</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #00FF00;">0</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">29</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right" style="background-color: #00FF00;">29</td></tr>
+    <tr><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #00FF00;">E</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #00FF00;">137902</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">34596</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right" style="background-color: #00FF00;">34596</td></tr>
+    <tr><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #00FF00;">P</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #00FF00;">0</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">137902</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right" style="background-color: #00FF00;">137902</td></tr>
+    <tr><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #00FF00;">T-long</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #00FF00;">0</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">5269</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right" style="background-color: #00FF00;">5269</td></tr>
+    <tr><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #00FF00;">T-short</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #00FF00;">0</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1573</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right" style="background-color: #00FF00;">1573</td></tr>
+    <tr><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #FFA500;">A</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #FFA500;">FALSE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #FFA500;">1573</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #FFA500;">0</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right">0</td></tr>
+    <tr><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #FFA500;">N</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #FFA500;">FALSE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #FFA500;">34596</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #FFA500;">0</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right">0</td></tr>
+    <tr><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #FFA500;">V</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #FFA500;">FALSE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #FFA500;">5269</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #FFA500;">0</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right">0</td></tr>
+    <tr><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #FFA500;">Z</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #FFA500;">FALSE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #FFA500;">29</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #FFA500;">0</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right">0</td></tr>
+    <tr><td headers="AdmissionCause  Value" class="gt_row gt_left" style="background-color: #BEBEBE;">NA</td>
+<td headers="AdmissionCause  IsValueEligible" class="gt_row gt_center" style="background-color: #BEBEBE;">FALSE</td>
+<td headers="AdmissionCause  Raw" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="AdmissionCause  Transformed" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="AdmissionCause  Final" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" style="font-weight: bold;                            color: #054996" scope="colgroup" id="DischargeAbilityToWork">DischargeAbilityToWork</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="DischargeAbilityToWork  Value" class="gt_row gt_left" style="background-color: #00FF00;">1</td>
+<td headers="DischargeAbilityToWork  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeAbilityToWork  Raw" class="gt_row gt_right" style="background-color: #00FF00;">1987</td>
+<td headers="DischargeAbilityToWork  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1987</td>
+<td headers="DischargeAbilityToWork  Final" class="gt_row gt_right" style="background-color: #00FF00;">1987</td></tr>
+    <tr><td headers="DischargeAbilityToWork  Value" class="gt_row gt_left" style="background-color: #00FF00;">2</td>
+<td headers="DischargeAbilityToWork  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeAbilityToWork  Raw" class="gt_row gt_right" style="background-color: #00FF00;">94762</td>
+<td headers="DischargeAbilityToWork  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">94762</td>
+<td headers="DischargeAbilityToWork  Final" class="gt_row gt_right" style="background-color: #00FF00;">94762</td></tr>
+    <tr><td headers="DischargeAbilityToWork  Value" class="gt_row gt_left" style="background-color: #00FF00;">9</td>
+<td headers="DischargeAbilityToWork  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeAbilityToWork  Raw" class="gt_row gt_right" style="background-color: #00FF00;">82620</td>
+<td headers="DischargeAbilityToWork  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">82620</td>
+<td headers="DischargeAbilityToWork  Final" class="gt_row gt_right" style="background-color: #00FF00;">82620</td></tr>
+    <tr><td headers="DischargeAbilityToWork  Value" class="gt_row gt_left" style="background-color: #BEBEBE;">NA</td>
+<td headers="DischargeAbilityToWork  IsValueEligible" class="gt_row gt_center" style="background-color: #BEBEBE;">FALSE</td>
+<td headers="DischargeAbilityToWork  Raw" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="DischargeAbilityToWork  Transformed" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="DischargeAbilityToWork  Final" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" style="font-weight: bold;                            color: #054996" scope="colgroup" id="DischargeReason">DischargeReason</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">01</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">116016</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">116016</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">116016</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">02</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">45192</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">45192</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">45192</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">03</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">358</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">358</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">358</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">04</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">2190</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">2190</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">2190</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">06</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">3548</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">3548</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">3548</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">07</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">5857</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">5857</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">5857</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">08</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">556</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">556</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">556</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">09</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">2584</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">2584</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">2584</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">10</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">996</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">996</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">996</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">11</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">881</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">881</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">881</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">13</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">30</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">30</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">30</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">14</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">401</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">401</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">401</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">15</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">530</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">530</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">530</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">17</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">181</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">181</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">181</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">21</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">13</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">13</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">13</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #00FF00;">22</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #00FF00;">36</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">36</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #00FF00;">36</td></tr>
+    <tr><td headers="DischargeReason  Value" class="gt_row gt_left" style="background-color: #BEBEBE;">NA</td>
+<td headers="DischargeReason  IsValueEligible" class="gt_row gt_center" style="background-color: #BEBEBE;">FALSE</td>
+<td headers="DischargeReason  Raw" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="DischargeReason  Transformed" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="DischargeReason  Final" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" style="font-weight: bold;                            color: #054996" scope="colgroup" id="Sex">Sex</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="Sex  Value" class="gt_row gt_left" style="background-color: #00FF00;">F</td>
+<td headers="Sex  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="Sex  Raw" class="gt_row gt_right" style="background-color: #00FF00;">0</td>
+<td headers="Sex  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">74344</td>
+<td headers="Sex  Final" class="gt_row gt_right" style="background-color: #00FF00;">74344</td></tr>
+    <tr><td headers="Sex  Value" class="gt_row gt_left" style="background-color: #00FF00;">M</td>
+<td headers="Sex  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="Sex  Raw" class="gt_row gt_right" style="background-color: #00FF00;">0</td>
+<td headers="Sex  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">105021</td>
+<td headers="Sex  Final" class="gt_row gt_right" style="background-color: #00FF00;">105021</td></tr>
+    <tr><td headers="Sex  Value" class="gt_row gt_left" style="background-color: #00FF00;">U</td>
+<td headers="Sex  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="Sex  Raw" class="gt_row gt_right" style="background-color: #00FF00;">0</td>
+<td headers="Sex  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">4</td>
+<td headers="Sex  Final" class="gt_row gt_right" style="background-color: #00FF00;">4</td></tr>
+    <tr><td headers="Sex  Value" class="gt_row gt_left" style="background-color: #FFA500;">m</td>
+<td headers="Sex  IsValueEligible" class="gt_row gt_center" style="background-color: #FFA500;">FALSE</td>
+<td headers="Sex  Raw" class="gt_row gt_right" style="background-color: #FFA500;">105021</td>
+<td headers="Sex  Transformed" class="gt_row gt_right" style="background-color: #FFA500;">0</td>
+<td headers="Sex  Final" class="gt_row gt_right">0</td></tr>
+    <tr><td headers="Sex  Value" class="gt_row gt_left" style="background-color: #FFA500;">w</td>
+<td headers="Sex  IsValueEligible" class="gt_row gt_center" style="background-color: #FFA500;">FALSE</td>
+<td headers="Sex  Raw" class="gt_row gt_right" style="background-color: #FFA500;">74344</td>
+<td headers="Sex  Transformed" class="gt_row gt_right" style="background-color: #FFA500;">0</td>
+<td headers="Sex  Final" class="gt_row gt_right">0</td></tr>
+    <tr><td headers="Sex  Value" class="gt_row gt_left" style="background-color: #FFA500;">x</td>
+<td headers="Sex  IsValueEligible" class="gt_row gt_center" style="background-color: #FFA500;">FALSE</td>
+<td headers="Sex  Raw" class="gt_row gt_right" style="background-color: #FFA500;">4</td>
+<td headers="Sex  Transformed" class="gt_row gt_right" style="background-color: #FFA500;">0</td>
+<td headers="Sex  Final" class="gt_row gt_right">0</td></tr>
+    <tr><td headers="Sex  Value" class="gt_row gt_left" style="background-color: #BEBEBE;">NA</td>
+<td headers="Sex  IsValueEligible" class="gt_row gt_center" style="background-color: #BEBEBE;">FALSE</td>
+<td headers="Sex  Raw" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="Sex  Transformed" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="Sex  Final" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+<div class="cell-output-display">
+
+<div id="knoklqnlyp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#knoklqnlyp table {
+  font-family: Karla, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#knoklqnlyp thead, #knoklqnlyp tbody, #knoklqnlyp tfoot, #knoklqnlyp tr, #knoklqnlyp td, #knoklqnlyp th {
+  border-style: none;
+}
+
+#knoklqnlyp p {
+  margin: 0;
+  padding: 0;
+}
+
+#knoklqnlyp .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: 0;
+  margin-right: auto;
+  color: #333333;
+  font-size: 80%;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 80%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#knoklqnlyp .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#knoklqnlyp .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#knoklqnlyp .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: #054996;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_col_heading {
+  color: #FFFFFF;
+  background-color: rgba(5, 73, 150, 0.31);
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#knoklqnlyp .gt_column_spanner_outer {
+  color: #FFFFFF;
+  background-color: rgba(5, 73, 150, 0.31);
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#knoklqnlyp .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#knoklqnlyp .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#knoklqnlyp .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: #054996;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#knoklqnlyp .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#knoklqnlyp .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #E0E0E0;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#knoklqnlyp .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #E0E0E0;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#knoklqnlyp .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#knoklqnlyp .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#knoklqnlyp .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#knoklqnlyp .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#knoklqnlyp .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#knoklqnlyp .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#knoklqnlyp .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#knoklqnlyp .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#knoklqnlyp .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#knoklqnlyp .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#knoklqnlyp .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#knoklqnlyp .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#knoklqnlyp .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#knoklqnlyp .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#knoklqnlyp .gt_left {
+  text-align: left;
+}
+
+#knoklqnlyp .gt_center {
+  text-align: center;
+}
+
+#knoklqnlyp .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#knoklqnlyp .gt_font_normal {
+  font-weight: normal;
+}
+
+#knoklqnlyp .gt_font_bold {
+  font-weight: bold;
+}
+
+#knoklqnlyp .gt_font_italic {
+  font-style: italic;
+}
+
+#knoklqnlyp .gt_super {
+  font-size: 65%;
+}
+
+#knoklqnlyp .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#knoklqnlyp .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#knoklqnlyp .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#knoklqnlyp .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#knoklqnlyp .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#knoklqnlyp .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#knoklqnlyp .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Value">Value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="IsValueEligible">IsValueEligible</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Raw">Raw</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Transformed">Transformed</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Final">Final</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" style="font-weight: bold;                            color: #054996" scope="colgroup" id="DepartmentAdmissionToICU">DepartmentAdmissionToICU</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="DepartmentAdmissionToICU  Value" class="gt_row gt_left">J</td>
+<td headers="DepartmentAdmissionToICU  IsValueEligible" class="gt_row gt_center">NA</td>
+<td headers="DepartmentAdmissionToICU  Raw" class="gt_row gt_right">23371</td>
+<td headers="DepartmentAdmissionToICU  Transformed" class="gt_row gt_right">23371</td>
+<td headers="DepartmentAdmissionToICU  Final" class="gt_row gt_right">23371</td></tr>
+    <tr><td headers="DepartmentAdmissionToICU  Value" class="gt_row gt_left">N</td>
+<td headers="DepartmentAdmissionToICU  IsValueEligible" class="gt_row gt_center">NA</td>
+<td headers="DepartmentAdmissionToICU  Raw" class="gt_row gt_right">300091</td>
+<td headers="DepartmentAdmissionToICU  Transformed" class="gt_row gt_right">300091</td>
+<td headers="DepartmentAdmissionToICU  Final" class="gt_row gt_right">300091</td></tr>
+    <tr><td headers="DepartmentAdmissionToICU  Value" class="gt_row gt_left" style="background-color: #BEBEBE;">NA</td>
+<td headers="DepartmentAdmissionToICU  IsValueEligible" class="gt_row gt_center" style="background-color: #BEBEBE;">NA</td>
+<td headers="DepartmentAdmissionToICU  Raw" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="DepartmentAdmissionToICU  Transformed" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="DepartmentAdmissionToICU  Final" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td></tr>
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" style="font-weight: bold;                            color: #054996" scope="colgroup" id="DepartmentCode">DepartmentCode</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0001</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">442</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">442</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">442</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0002</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">4243</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">4243</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">4243</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0003</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">548</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">548</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">548</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0005</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">7</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">7</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">7</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0103</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">6489</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">6489</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">6489</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0104</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">2287</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">2287</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">2287</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0105</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">30986</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">30986</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">30986</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0106</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">1575</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1575</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">1575</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0107</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">26433</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">26433</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">26433</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0108</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">14493</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">14493</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">14493</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0109</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">1074</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1074</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">1074</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA0152</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">6582</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">6582</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">6582</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1000</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">400</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">400</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">400</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1005</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">10130</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">10130</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">10130</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1014</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">406</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">406</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">406</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1028</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">226</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">226</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">226</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1100</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">9</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">9</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">9</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1300</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">878</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">878</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">878</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1500</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">36160</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">36160</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">36160</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1520</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">1006</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1006</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">1006</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1523</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">673</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">673</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">673</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1600</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">7551</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">7551</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">7551</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1700</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">15263</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">15263</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">15263</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA1800</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">3116</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">3116</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">3116</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2100</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">11880</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">11880</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">11880</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2200</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">30810</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">30810</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">30810</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2400</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">7054</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">7054</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">7054</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2425</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">8671</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">8671</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">8671</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2500</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">1427</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1427</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">1427</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2600</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">18046</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">18046</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">18046</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2700</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">2540</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">2540</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">2540</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2800</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">12604</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">12604</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">12604</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2856</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">1620</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1620</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">1620</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA2900</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">1875</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1875</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">1875</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA3100</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">167</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">167</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">167</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA3200</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">5605</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">5605</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">5605</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA3300</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">15845</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">15845</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">15845</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA3400</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">17671</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">17671</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">17671</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA3500</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">12874</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">12874</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">12874</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA3600</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">329</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">329</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">329</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA3700</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">528</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">528</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">528</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA3750</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">1098</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1098</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">1098</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #00FF00;">HA3752</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #00FF00;">1816</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">1816</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #00FF00;">1816</td></tr>
+    <tr><td headers="DepartmentCode  Value" class="gt_row gt_left" style="background-color: #BEBEBE;">NA</td>
+<td headers="DepartmentCode  IsValueEligible" class="gt_row gt_center" style="background-color: #BEBEBE;">FALSE</td>
+<td headers="DepartmentCode  Raw" class="gt_row gt_right" style="background-color: #BEBEBE;">25</td>
+<td headers="DepartmentCode  Transformed" class="gt_row gt_right" style="background-color: #BEBEBE;">25</td>
+<td headers="DepartmentCode  Final" class="gt_row gt_right" style="background-color: #BEBEBE;">25</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+<div class="cell-output-display">
+
+<div id="nuvdlhkymx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nuvdlhkymx table {
+  font-family: Karla, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#nuvdlhkymx thead, #nuvdlhkymx tbody, #nuvdlhkymx tfoot, #nuvdlhkymx tr, #nuvdlhkymx td, #nuvdlhkymx th {
+  border-style: none;
+}
+
+#nuvdlhkymx p {
+  margin: 0;
+  padding: 0;
+}
+
+#nuvdlhkymx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: 0;
+  margin-right: auto;
+  color: #333333;
+  font-size: 80%;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 80%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#nuvdlhkymx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#nuvdlhkymx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#nuvdlhkymx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: #054996;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_col_heading {
+  color: #FFFFFF;
+  background-color: rgba(5, 73, 150, 0.31);
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#nuvdlhkymx .gt_column_spanner_outer {
+  color: #FFFFFF;
+  background-color: rgba(5, 73, 150, 0.31);
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#nuvdlhkymx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#nuvdlhkymx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#nuvdlhkymx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 3px;
+  border-bottom-color: #054996;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#nuvdlhkymx .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#nuvdlhkymx .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #E0E0E0;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#nuvdlhkymx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #E0E0E0;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#nuvdlhkymx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#nuvdlhkymx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#nuvdlhkymx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#nuvdlhkymx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nuvdlhkymx .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#nuvdlhkymx .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#nuvdlhkymx .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#nuvdlhkymx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nuvdlhkymx .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#nuvdlhkymx .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nuvdlhkymx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#nuvdlhkymx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nuvdlhkymx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#nuvdlhkymx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nuvdlhkymx .gt_left {
+  text-align: left;
+}
+
+#nuvdlhkymx .gt_center {
+  text-align: center;
+}
+
+#nuvdlhkymx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#nuvdlhkymx .gt_font_normal {
+  font-weight: normal;
+}
+
+#nuvdlhkymx .gt_font_bold {
+  font-weight: bold;
+}
+
+#nuvdlhkymx .gt_font_italic {
+  font-style: italic;
+}
+
+#nuvdlhkymx .gt_super {
+  font-size: 65%;
+}
+
+#nuvdlhkymx .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#nuvdlhkymx .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#nuvdlhkymx .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#nuvdlhkymx .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#nuvdlhkymx .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#nuvdlhkymx .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#nuvdlhkymx .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+  <thead>
+    
+    <tr class="gt_col_headings">
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Value">Value</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="IsValueEligible">IsValueEligible</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Raw">Raw</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Transformed">Transformed</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="vertical-align: middle;                            text-transform: uppercase;                            font-weight: bold;                            color: #054996" scope="col" id="Final">Final</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <th colspan="5" class="gt_group_heading" style="font-weight: bold;                            color: #054996" scope="colgroup" id="DiagnosisType">DiagnosisType</th>
+    </tr>
+    <tr class="gt_row_group_first"><td headers="DiagnosisType  Value" class="gt_row gt_left" style="background-color: #00FF00;">HD</td>
+<td headers="DiagnosisType  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DiagnosisType  Raw" class="gt_row gt_right" style="background-color: #00FF00;">179209</td>
+<td headers="DiagnosisType  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">179209</td>
+<td headers="DiagnosisType  Final" class="gt_row gt_right" style="background-color: #00FF00;">179209</td></tr>
+    <tr><td headers="DiagnosisType  Value" class="gt_row gt_left" style="background-color: #00FF00;">ND</td>
+<td headers="DiagnosisType  IsValueEligible" class="gt_row gt_center" style="background-color: #00FF00;">TRUE</td>
+<td headers="DiagnosisType  Raw" class="gt_row gt_right" style="background-color: #00FF00;">891689</td>
+<td headers="DiagnosisType  Transformed" class="gt_row gt_right" style="background-color: #00FF00;">891689</td>
+<td headers="DiagnosisType  Final" class="gt_row gt_right" style="background-color: #00FF00;">891689</td></tr>
+    <tr><td headers="DiagnosisType  Value" class="gt_row gt_left" style="background-color: #BEBEBE;">NA</td>
+<td headers="DiagnosisType  IsValueEligible" class="gt_row gt_center" style="background-color: #BEBEBE;">FALSE</td>
+<td headers="DiagnosisType  Raw" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="DiagnosisType  Transformed" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td>
+<td headers="DiagnosisType  Final" class="gt_row gt_right" style="background-color: #BEBEBE;">0</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">About This Documentation</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./AnalysisReport.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-title">Analysis Report</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

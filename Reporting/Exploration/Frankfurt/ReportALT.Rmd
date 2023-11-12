@@ -1,0 +1,270 @@
+---
+title: "HIVCAre"
+author: "Clinical Data Science Group der DKTK CCP"
+date: "`r Sys.Date()`"
+output:
+  pdf_document: default
+  html_document:
+    css: style.css
+subtitle: "Epidemiology and Inpatient Care Characteristics of HIV-positive Cancer
+  Patients: Exploration of Real World Data from Four German University Hospitals"
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup}
+
+knitr::opts_chunk$set(
+  fig.path = "images", # use only for single Rmd files
+  collapse = TRUE,
+)
+
+
+# (Re-)Run analysis if needed
+#source("./src/MAIN.R")
+
+# Get workspace objects from analysis scripts
+#load("./output/outputdata.RData")
+
+# Check and load packages needed for report
+pacman::p_load(DiagrammeR,
+               dplyr,
+               forcats,
+               ggplot2,
+               ggsankey,
+               ggstatsplot,
+               ggthemr,
+               gt,
+               lubridate,
+               purrr,
+               stringr,
+               tidyr,
+               readr)
+
+```
+
+
+### Objectives of descriptive analysis and data exploration
+
+* A)  Comparison of all subgroups
+      + A1) Sample sizes and Demography (Sex, Age)
+      + A2) Case count per patient
+      + A3) Mean length of stay per patient
+      + A4) Spatial distribution (Counts of patients from different postal code areas)
+
+* B)  HIVandCancer
+      + B1) Primary cancer diagnosis subgroups and occurrence per year
+      + B2) Age at admission separated for diagnosis subgroups and in 4-year time periods
+
+* C)  HIVandCancer vs. CancerOnly
+      + C1) Age at presumed cancer onset
+      + C2) Metastasis occurrence
+      + C3) Time-to-event: Cancer onset to metastasis onset
+      + C4) Count of distinct cancer entities
+      + C5) Therapy modalities
+      + C6) Count of chemotherapy sessions
+      + C6) Discharge reasons (Death, Home)
+      + C7) Occurrence of complications (ventilation, dialysis) after chemotherapy
+      + C8) AIDS after chemotherapy
+      + C9) Death after chemotherapy
+
+* D)  HIVandCancer vs. HIVOnly
+      + D1) Age at presumed HIV onset
+      + D2) AIDS occurrence
+      + D3) Time-to-event: HIV onset to AIDS onset
+      
+* E)  Sankey diagram: Sequence in presumed HIV / Cancer / Metastasis / AIDS onset
+
+* F)  Sankey diagram: Sequence of cancer therapy modalities
+
+
+### Objectives of inference analysis
+
+** No explicit inference analysis goals **
+
+
+
+
+
+### Analysis data: Sources, Requirements, Assumptions
+
+#### Analysis data sources
+
+* Datenintegrationszentrum (DIZ)
+
+
+#### Analysis data description
+
+```{r table_RequiredData}
+
+df_Report_RequiredData <- tibble(Description = character(),
+                                 DataFormat = character(),
+                                 Source = character(),
+                                 DataElements = character()) %>%
+                                 #----------------------------------------------
+                                 add_row(Description = "Case data",
+                                         DataFormat = ".csv-file",
+                                         Source = "DIZ",
+                                         DataElements = "CasePseudonym<br>
+                                                         PostalCodeShort<br>
+                                                         YearOfBirth<br>
+                                                         Sex<br>
+                                                         AdmissionDate<br>
+                                                         DischargeDate<br>
+                                                         DischargeReason<br>
+                                                         AdmissionAge") %>%
+                                 add_row(Description = "ICD codes per case",
+                                         DataFormat = ".csv-file",
+                                         Source = "DIZ",
+                                         DataElements = "CasePseudonym<br>
+                                                         DiagnosisType<br>
+                                                         ICDVersion<br>
+                                                         ICDCode<br>
+                                                         Localization<br>
+                                                         SecondaryICDCode<br>
+                                                         SecondaryLocalization") %>%
+                                 add_row(Description = "OPS codes per case",
+                                         DataFormat = ".csv-file",
+                                         Source = "DIZ",
+                                         DataElements = "CasePseudonym<br>
+                                                         OPSVersion<br>
+                                                         OPSCode<br>
+                                                         Localization<br>
+                                                         OPSDate") %>%
+                                 add_row(Description = "Case to patient mapping",
+                                         DataFormat = ".csv-file",
+                                         Source = "DIZ",
+                                         DataElements = "CasePseudonym<br>
+                                                         PatientPseudonym")
+
+(tbl_Report_RequiredData <- df_Report_RequiredData %>%
+                                gt(rowname_col = "Data Description") %>%
+                                tab_caption("Required analysis data") %>%
+                                tab_stubhead(label = "Data Description") %>%
+                                cols_label(DataFormat = "Data Format",
+                                           Source = "Source",
+                                           DataElements = "Data Elements")) %>%
+                                fmt_markdown(columns = everything())            # Enable markdown formatting in all columns
+
+```
+
+
+### Meta data description
+
+
+
+
+
+
+
+### Assumptions and definitions in analysis rational
+
+
+#### General ICD coding
+
+It is assumed that ICD Coding was performed abiding by established coding manuals (e.g. ZI HIV coding manual)
+
+#### ICD cancer coding
+
+The following ICD codes were used to identify patients presumed to have a cancerous disease in their history:
+
+```{r table_Definitions, echo = FALSE}
+
+df_Report_CancerCodes <- tibble(ICDCode = character(),
+                                Interpretation = character()) %>%
+                                #-----------------------------------------------
+                                add_row(ICDCode = "Starting with C", Interpretation = "All malignant neoplasms (primary and secondary)") %>%
+                                add_row(ICDCode = "Starting with D0", Interpretation = "In-situ neoplasms") %>%
+                                add_row(ICDCode = "D37 - D48", Interpretation = "Neoplasms of uncertain / unknown behaviour") %>%
+                                add_row(ICDCode = "Z08", Interpretation = "Follow-up examination after treatment for malignant neoplasms") %>%
+                                add_row(ICDCode = "Z85, Z92.6", Interpretation = "Personal history of cancer / cancer therapy")
+
+(tbl_Report_CancerCodes <- df_Report_CancerCodes %>%
+                              gt(rowname_col = "ICDCode") %>%
+                              tab_caption("ICD-10 cancer codes used in analysis") %>%
+                              tab_stubhead(label = "ICD-10 codes") %>%
+                              cols_label(Interpretation = "Interpretation"))
+                              
+```
+
+ICD codes for metastases (C77, C78, C79) are **not** considered cancer codes and are treated separately.
+
+
+#### Notes on inclusion of presumed cancer patients
+
+In order to get a sufficient degree of integrity within the explored data, we include only patients for whom a cancer code with diagnosis type *Hauptdiagnose* is present.
+We consider the first occurrence of such a code within a patient's documented history as the main cancer entity, that the respective patient is treated for.
+Furthermore, we refer to the admission date belonging to this code as the date of cancer onset.
+
+#### Notes on presumption of AIDS manifestation
+
+* HIV code before or at the same time as AIDS defining code
+* Certain AIDS-defining cancer codes may occur ahead in time of HIV code occurrence. Patients in question would not be presumed to have AIDS.
+
+
+### Attrition Plot
+
+```{r plot_Attrition, echo = FALSE}
+
+plot_Output_Attrition
+
+```
+
+
+
+### Notes on concerns, limitations and potential bias sources
+
+
+```{r table_Concerns, echo = FALSE}
+
+df_Report_Concerns <- tibble(Concern = character(),
+                             PotentialImpact = character(),
+                             Comment = character()) %>%
+                             #--------------------------------------------------
+                             add_row(Concern = "Disease onsets may be assumed wrongfully (as too late). Therefore, calculated onset intervals may be incorrect.",
+                                     PotentialImpact = "Major",
+                                     Comment = "") %>%
+                             add_row(Concern = "If a patient has more than one distinct cancer entity, therapy measures can not be linked to different entities.",
+                                     PotentialImpact = "Major",
+                                     Comment = "") %>%
+                             add_row(Concern = "Age at Admission not exact due to lack of exact birth date.",
+                                     PotentialImpact = "Minor",
+                                     Comment = "") %>%
+                             add_row(Concern = "Occurrence of implausible HIV coding.",
+                                     PotentialImpact = "Minor",
+                                     Comment = "") %>%
+                             add_row(Concern = "Postal code of patient taken from first admission, although moving between admissions is imaginable.",
+                                     PotentialImpact = "Minor",
+                                     Comment = "")
+  
+
+(tbl_Report_Concerns <- df_Report_Concerns %>%
+                              gt(rowname_col = "Concern") %>%
+                              tab_caption("Concerns") %>%
+                              tab_stubhead(label = "Concern") %>%
+                              cols_label(PotentialImpact = "Estimated potential impact",
+                                         Comment = "Comment"))
+```
+
+
+
+
+### Stratification
+
+```{r plot_Stratification, echo = FALSE}
+
+plot_Output_Stratification
+
+```
+
+
+
+
+
+```{r table_Demography, echo = FALSE}
+
+df_Output_Demography %>%
+    gt()
+
+```
+
