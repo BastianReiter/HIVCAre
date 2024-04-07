@@ -31,9 +31,9 @@
 #                     / df_ADM_CaseInfo \
 #                     \_________________/
 #     
-#                     _________________
-#                    / df_ADM_Patients \
-#                    \_________________/
+#                      _________________
+#                     / df_ADM_Patients \
+#                     \_________________/
 
 
 
@@ -182,6 +182,11 @@ df_ADM_Events <- df_ADM_Events %>%
 
 
 
+# ---------- Temporary
+AuxSize <- df_ADM_Events %>% ungroup() %>% summarize(Step = "After first event handling", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
+
+
 #===============================================================================
 # Initiate Data Frame of consolidated Case Data
 #===============================================================================
@@ -258,6 +263,11 @@ df_ADM_Events <- df_ADM_Events %>%
                       arrange(PatientPseudonym, CasePseudonym, EventDate)
                       #=== Update Progress Bar ===
                       try(ls_Progress_Processing$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Processing), silent = TRUE)
+
+
+# ---------- Temporary
+AuxSize <- df_ADM_Events %>% ungroup() %>% summarize(Step = "After discharge events", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
 
 
 
@@ -557,6 +567,10 @@ df_ADM_Events <- df_ADM_Events %>%
                       try(ls_Progress_Processing$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Processing), silent = TRUE)
 
 
+# ------------ Temporary
+AuxSize <- df_ADM_Events %>% ungroup() %>% summarize(Step = "After diagnosis events", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
+
 
 #===============================================================================
 # df_ADM_CaseInfo
@@ -813,7 +827,11 @@ df_ADM_Events <- df_ADM_Events %>%
                       arrange(PatientPseudonym, EventDate, EventClass)
                       #=== Update Progress Bar ===
                       try(ls_Progress_Processing$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Processing), silent = TRUE)
-                              
+
+
+# ------------ Temporary
+AuxSize <- df_ADM_Events %>% ungroup() %>% summarize(Step = "After prodedure events", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)            
 
 
 df_ADM_Events <- df_ADM_Events %>%
@@ -871,6 +889,10 @@ df_ADM_Events <- df_ADM_Events %>%
                       #=== Update Progress Bar ===
                       try(ls_Progress_Processing$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Processing), silent = TRUE)
 
+
+# ------------ Temporary
+AuxSize <- df_ADM_Events %>% ungroup() %>% summarize(Step = "After event processing", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
 
 
 #   - Presumed...DiagnosisDate
@@ -998,6 +1020,10 @@ df_ADM_Patients <- df_Aux_PatientSummaries_CaseInfo %>%
                         left_join(df_Aux_PatientSummaries_Events, by = join_by(PatientPseudonym))
 
 
+# ------------ Temporary
+AuxSize <- df_ADM_Patients %>% ungroup() %>% summarize(Step = "After creation of ADM_Patients", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
+
 
 #===============================================================================     
 # PATIENT SELECTION
@@ -1009,6 +1035,11 @@ df_ADM_Patients <- df_Aux_PatientSummaries_CaseInfo %>%
 df_ADM_Patients <- df_ADM_Patients %>%
                         filter(PatientHoldsCancerCodes == TRUE | PatientHoldsHIVCodes == TRUE) %>%
                         filter(FirstRelevantAdmissionAge >= 18)
+
+
+# ------------ Temporary
+AuxSize <- df_ADM_Patients %>% ungroup() %>% summarize(Step = "After fist selection", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
 
 
 # Update Attrition Tracker
@@ -1045,6 +1076,9 @@ df_ADM_Patients <- df_ADM_Patients %>%
                         #=== Update Progress Bar ===
                         try(ls_Progress_Processing$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Processing), silent = TRUE)
 
+# ------------ Temporary
+AuxSize <- df_ADM_Patients %>% ungroup() %>% summarize(Step = "After second filtering", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
 
 # Update Attrition Tracker
 # ------------------------------------------------------------------------------
@@ -1143,6 +1177,10 @@ df_Aux_CancerPatientSummaries_Progress <- df_ADM_Events %>%
                                               try(ls_Progress_Processing$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Processing), silent = TRUE)
 
 
+# ------------ Temporary
+AuxSize <- df_Aux_CancerPatientSummaries_Progress %>% ungroup() %>% summarize(Step = "After CancerPatientSummaries_Progress", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
+
 
 #===============================================================================
 # df_Aux_CancerPatientSummaries_TherapySequence
@@ -1198,6 +1236,10 @@ df_Aux_CancerPatientSummaries_TherapySequence <- df_Aux_CancerPatientSummaries_P
                                                       #=== Update Progress Bar ===
                                                       try(ls_Progress_Processing$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Processing), silent = TRUE)
 
+
+# ------------ Temporary
+AuxSize <- df_Aux_CancerPatientSummaries_TherapySequence %>% ungroup() %>% summarize(Step = "After CancerPatientSummaries_TherapySequence", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
 
 
 #===============================================================================

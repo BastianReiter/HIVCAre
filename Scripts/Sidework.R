@@ -1,4 +1,14 @@
 
+# df_Temp <- df_IDM_Cases %>%
+#               mutate(AdmissionYear = year(AdmissionDate)) %>%
+#               group_by(PatientPseudonym) %>%
+#               arrange(AdmissionYear) %>%
+#               slice_head() %>%
+#               group_by(AdmissionYear) %>%
+#               summarize(N = n())
+
+
+
 
 
 df_Aux_CancerSurgeryExport <- read_excel(path = here("Data/MetaData/MetaData_CancerCoding.xlsx"),
@@ -41,4 +51,9 @@ write_csv(df_Aux_MostCommonCancerSurgeries, file = "MostCommonCancerSurgeries.cs
 
 
 
+
+
+load("./Validation_df_Freiburg.RData")
+
+load("./MonitorData_Freiburg.RData")
 

@@ -750,7 +750,7 @@ ls_Output_TimeCancerToMetastasis_ECDF <- df_ADM_PatientsCancer %>%
                                                         inp_GroupingFeature = PatientSubgroup,
                                                         inp_na.rm = FALSE)
 
-plot_Output_TimeCancerToMetastasis <- ggsurvplot(fit = model_Output_TimeCancerToMetastasis,
+plot_Output_TimeCancerToMetastasis <- ggsurvplot(fit = model_Output_TimeCancerToMetastasis_Curve,
                                                  data = df_ADM_PatientsCancer,
                                                  fun = "cumhaz",
                                                  conf.int = TRUE,

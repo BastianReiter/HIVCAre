@@ -6,39 +6,100 @@
 #------------------------------------------------------------------------------#
 ################################################################################
 
-
-vc_SiteNames <- c("Frankfurt",
-                  "Freiburg")
+library(purrr)
 
 
-
-f_LoadSiteOutput <- function(inp_SiteName)
+f_LoadSiteOutput <- function(SiteName,
+                             AnalysisType,
+                             CommonDataDirectory)
 {
-    decrypt_file(.path = here("Data/SiteOutputData", inp_SiteName, paste0("SiteOutput_", inp_SiteName, ".RData.encryptr.bin")),
-                 private_key_path = here("id_rsa"))
+    # Set file name prefix depending on 'AnalysisType'
+    FileNamePrefix <- switch(EXPR = AnalysisType,
+                             Full = "SiteOutput_",
+                             Matched = "SiteOutput_MatchedDataset_")
+    
+    # Name of .RData-file containing site output data
+    FileName <- paste0(FileNamePrefix, SiteName, ".RData")
+    
+    # Path to directory containing .RData-file
+    SiteDataDirectory <- paste0(CommonDataDirectory, "/", SiteName)
+    
+    # Decrypt file if necessary
+    if (FileName %in% list.files(path = SiteDataDirectory))
+    {
+        cat("The file '", FileName, "' is already present in [", SiteDataDirectory, "]. Proceeding without decryption.\n", sep = "")
+    }
+    else
+    {
+        decrypt_file(.path = paste0(SiteDataDirectory, "/", FileName, ".encryptr.bin"),
+                     private_key_path = "./id_rsa")
+    }
+    
+    # Create environment to unload data
+    DataEnvironment <- new.env()
+    
+    # Load data into 'FullData'-environment
+    load(file = paste0(SiteDataDirectory, "/", FileName),
+         envir = DataEnvironment)
+    
+    # Turn environment into list and return it
+    return(as.list(DataEnvironment))
+}
 
-    decrypt_file(.path = here("Data/SiteOutputData", inp_SiteName, paste0("SiteOutput_MatchedDataset_", inp_SiteName, ".RData.encryptr.bin")),
-                 private_key_path = here("id_rsa"))
+
+SiteNames <- c("Cologne",
+               "Frankfurt",
+               "Freiburg",
+               "MunichLMU")
+
+SiteOutputData_Full <- SiteNames %>%
+                            map(\(sitename) f_LoadSiteOutput(SiteName = sitename,
+                                                             CommonDataDirectory = here("Data/SiteOutputData"),
+                                                             AnalysisType = "Full")) %>%
+                            set_names(SiteNames)
+
+SiteOutputData_Matched <- SiteNames %>%
+                              map(\(sitename) f_LoadSiteOutput(SiteName = sitename,
+                                                               CommonDataDirectory = here("Data/SiteOutputData"),
+                                                               AnalysisType = "Matched")) %>%
+                              set_names(SiteNames)
+
+
+
+
+f_MergeSiteData <- function(SiteOutputData_Full
+                            )
+{
+    
     
 }
 
 
 
-inp_SiteName <- "Frankfurt"
+SiteObjectAvailability <- SiteNames %>%
+                              map(function(sitename)
+                                  { 
+                                    tibble(Object = names(SiteOutputData_Full[[sitename]]),
+                                           Available = TRUE) %>%
+                                        set_names(c("Object", sitename))
+                                  }) %>%
+                              set_names(SiteNames)
 
-SiteEnvName <- paste0("env_", inp_SiteName)
-
-# Create environment for site-specific output data
-assign(SiteEnvName, new.env(parent = .GlobalEnv))
-
-decrypt_file(.path = here("Data/SiteOutputData", inp_SiteName, paste0("SiteOutput_", inp_SiteName, ".RData.encryptr.bin")),
-             private_key_path = "./id_rsa")
+UniqueOccurringObjectNames <- SiteObjectAvailability %>%
+                                  map(\(Site) Site$Object) %>%
+                                  unlist() %>%
+                                  unique()
 
 
-load(file = here("Data/SiteOutputData", inp_SiteName, paste0("SiteOutput_", inp_SiteName, ".RData")),
-     envir = get(SiteEnvName))
+ObjectAvailability <- tibble(Object = UniqueOccurringObjectNames) %>% 
+                          arrange(Object)
 
-#ls(envir = get(SiteEnvName))
+for (i in 1:length(SiteObjectAvailability))
+{
+    ObjectAvailability <- ObjectAvailability %>%
+                              left_join(SiteObjectAvailability[[i]], by = join_by(Object))
+}
+  
 
 
 

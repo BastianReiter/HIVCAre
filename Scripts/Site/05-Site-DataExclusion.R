@@ -72,6 +72,7 @@ vc_IneligiblePatients_3 <- df_IDM_Cases %>%
                                 left_join(df_IDM_CasesICD, by = "CasePseudonym") %>%      # Join with Diagnosis Data to broaden scope of incompletion search
                                 select(-PostalCode,      # Here, Features are listed that are allowed to have missing values
                                        -TimeInICU,
+                                       -DischargeReasonCode,
                                        -ICDVersion,
                                        -SecondaryICDCode) %>%
                                 filter(if_any(everything(), ~ is.na(.x))) %>%

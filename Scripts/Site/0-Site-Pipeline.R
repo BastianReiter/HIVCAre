@@ -42,7 +42,7 @@ try(ls_Progress_Total <- f_InitProgressBar(inp_Title = "Total",
     silent = TRUE)
 
 
-# Initialize Attrittion Trackers
+# Initialize Attrition Trackers
 #-------------------------------------------------------------------------------
 
 df_Mon_AttritionTracker_AllPatients <- f_InitAttritionTracker()
@@ -75,6 +75,11 @@ df_Mon_AttritionTracker_AllPatients <- df_Mon_AttritionTracker_AllPatients %>%
                                                                      inp_InclusionComment = "Initial Sample Size")
 
 
+# ---------- Temporary
+df_Aux_SampleSize <- df_IDM_Cases %>%
+                          ungroup() %>%
+                          summarize(Step = "Initial data",
+                                    SampleSize = n_distinct(PatientPseudonym))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Validation of Raw Input Data 
@@ -104,6 +109,10 @@ source(here("Scripts/Site/03-Site-HarmonizeData.R"))
 try(ls_Progress_Total$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Total, inp_StepDescription = "Data harmonization"), silent = TRUE)
 
 
+# ---------- Temporary
+AuxSize <- df_IDM_Cases %>% ungroup() %>% summarize(Step = "After harmonization", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Validation of Harmonized Input Data 
@@ -126,6 +135,10 @@ source(here("Scripts/Site/05-Site-DataExclusion.R"))
 try(ls_Progress_Total$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Total, inp_StepDescription = "Data exclusion"), silent = TRUE)
 
 
+# ---------- Temporary
+AuxSize <- df_IDM_Cases %>% ungroup() %>% summarize(Step = "After exclusion", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Major Data Processing / Data Wrangling
@@ -145,7 +158,9 @@ source(here("Scripts/Site/06-Site-Processing.R"))
 # Update Progress Bar
 try(ls_Progress_Total$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Total, inp_StepDescription = "Creation of Analysis Data Model"), silent = TRUE)
 
-
+# ---------- Temporary
+AuxSize <- df_ADM_Patients %>% ungroup() %>% summarize(Step = "After processing", SampleSize = n_distinct(PatientPseudonym))
+df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Processed Data Validation

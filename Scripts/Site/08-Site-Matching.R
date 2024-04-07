@@ -8,7 +8,7 @@
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Get matched data set
+# Get matched df_ADM_PatientsCancer data set
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Compute matchit object to assess initial covariate (im)balance
@@ -41,6 +41,7 @@ summary(match_Nearest, un = FALSE)
 
 # Get matched data set
 df_ADM_PatientsCancer_Matched <- match.data(match_Nearest)
+
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

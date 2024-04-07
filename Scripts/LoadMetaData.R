@@ -30,19 +30,24 @@ df_Meta_Departments <- read_excel(path = here("Data/MetaData/MetaData_Project.xl
                                   sheet = "Departments")
 
 
+
 #===============================================================================
 # OPS Code Lookup and Grouping
 #===============================================================================
+
 df_Meta_OPSCoding <- read_excel(path = here("Data/MetaData/MetaData_OPSCoding.xlsx"),
                                 sheet = "OPSCodes") %>%
                           mutate(OPSCode = str_replace_all(OPSCode, "[^[:alnum:]]", ""))      # Remove all special characters in OPS Codes
 
 
+
 #===============================================================================
 # Data on Cancer Grouping based on ICD-10 Codes
 #===============================================================================
+
 df_Meta_ICD10CancerGrouping <- read_excel(path = here("Data/MetaData/MetaData_CancerCoding.xlsx"),
                                           sheet = "CancerGrouping")
+
 
 
 #===============================================================================
@@ -81,6 +86,7 @@ df_Meta_CancerSurgery <- df_Meta_CancerSurgeryInFrankfurt %>%
 #===============================================================================
 # Data on how to interpret HIV Status and HIV Disease bases on ICD-10 Codes
 #===============================================================================
+
 df_Meta_ICD10HIVStatus <- read_excel(path = here("Data/MetaData/MetaData_HIVCoding.xlsx"),
                                      sheet = "HIVStatus") %>%
                               select(-HIVCondition, -HIVConditionGerman)      # Deselect unneeded variables
@@ -88,6 +94,7 @@ df_Meta_ICD10HIVStatus <- read_excel(path = here("Data/MetaData/MetaData_HIVCodi
 df_Meta_ICD10HIVDiseases <- read_excel(path = here("Data/MetaData/MetaData_HIVCoding.xlsx"),
                                        sheet = "HIVDiseases") %>%
                                 select(-HIVCode, -HIVDisease)      # Deselect unneeded variables
+
 
 
 #===============================================================================
