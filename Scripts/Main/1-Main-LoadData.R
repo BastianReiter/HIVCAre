@@ -79,7 +79,7 @@ f_MergeSiteData <- function(SiteOutputData_Full
 SiteObjectAvailability <- SiteNames %>%
                               map(function(sitename)
                                   { 
-                                    tibble(Object = names(SiteOutputData_Full[[sitename]]),
+                                    tibble(Object = names(SiteOutputData_Matched[[sitename]]),
                                            Available = TRUE) %>%
                                         set_names(c("Object", sitename))
                                   }) %>%
@@ -103,16 +103,16 @@ for (i in 1:length(SiteObjectAvailability))
 
 
 
-for (object in ls(envir = get(SiteEnvName)))
-{
-    if (str_detect(object, "df_Output_") == TRUE 
-          & str_detect(object, "_Quantiles") == FALSE)
-    {
-        Object_NewName <- str_replace_all(object, "_Output_", "_Main_")
-        assign(Object_NewName,
-               value = get(object, envir = get(SiteEnvName)))
-    }
-}
+#for (object in ls(envir = get(SiteEnvName)))
+#{
+ #   if (str_detect(object, "df_Output_") == TRUE 
+  #        & str_detect(object, "_Quantiles") == FALSE)
+   # {
+    #    Object_NewName <- str_replace_all(object, "_Output_", "_Main_")
+     #   assign(Object_NewName,
+      #         value = get(object, envir = get(SiteEnvName)))
+    #}
+#}
 
 
 

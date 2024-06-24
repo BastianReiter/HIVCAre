@@ -6,16 +6,109 @@
 #------------------------------------------------------------------------------#
 ################################################################################
 
+df_output_DemographocData_unmatched <- data.frame(
+  Demographic = c("Number of patients (N)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Female patients (%)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Age (mean)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Age (SD)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Age at cancer diagnosis (mean)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Age at cancer diagnosis(SD)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+"),
+  All = c(sum(df_Age[13,2],df_Age[1,2], df_Age[5,2], df_Age[9,2]), 
+          sum(df_Age[14,2], df_Age[2,2], df_Age[6,2], df_Age[10,2]),
+          sum(df_Age[15,2], df_Age[3,2], df_Age[7,2],  df_Age[11,2]),
+          sum(df_Age[16,2], df_Age[4,2], df_Age[8,2], df_Age[12,2]),
+          df_female_all_percent[1,2], df_female_all_percent[2,2], df_female_all_percent[3,2], df_female_all_percent[4,2],
+          df_Age_Subgruoup[1,2], df_Age_Subgruoup[2,2], df_Age_Subgruoup[3,2], df_Age_Subgruoup[4,2],
+          df_Age_Subgruoup[1,3], df_Age_Subgruoup[2,3], df_Age_Subgruoup[3,3], df_Age_Subgruoup[4,3],
+          df_AgeAtCancer_Subgruoup[1,2], df_AgeAtCancer_Subgruoup[2,2], df_AgeAtCancer_Subgruoup[3,2], "unmatched",
+          df_AgeAtCancer_Subgruoup[1,3], df_AgeAtCancer_Subgruoup[2,3], df_AgeAtCancer_Subgruoup[3,3], "unmatched"),
+  
+  SiteA = c(as.numeric(df_Age[13,2]), as.numeric(df_Age[14,2]), as.numeric(df_Age[15,2]), as.numeric(df_Age[16,2]),
+            df_female_site_percent[13,2], df_female_site_percent[14,2], df_female_site_percent[15,2], df_female_site_percent[16,2],
+            as.numeric(df_Age[13,9]), as.numeric(df_Age[14,9]), as.numeric(df_Age[15,9]), as.numeric(df_Age[16,9]),
+            as.numeric(df_Age[13,10]), as.numeric(df_Age[14,10]), as.numeric(df_Age[15,10]), as.numeric(df_Age[16,10]),
+            as.numeric(df_AgeAtCancerDiagnosis[10,9]), as.numeric(df_AgeAtCancerDiagnosis[11,9]), as.numeric(df_AgeAtCancerDiagnosis[12,9]), "unmatched",
+            as.numeric(df_AgeAtCancerDiagnosis[10,10]), as.numeric(df_AgeAtCancerDiagnosis[11,10]), as.numeric(df_AgeAtCancerDiagnosis[12,10]), "unmatched"),
+ 
+   SiteB = c(as.numeric(df_Age[1,2]), as.numeric(df_Age[2,2]), as.numeric(df_Age[3,2]), as.numeric(df_Age[4,2]),
+             df_female_site_percent[1,2], df_female_site_percent[2,2], df_female_site_percent[3,2], df_female_site_percent[4,2],
+             as.numeric(df_Age[1,9]), as.numeric(df_Age[2,9]), as.numeric(df_Age[3,9]), as.numeric(df_Age[4,9]),
+             as.numeric(df_Age[1,10]), as.numeric(df_Age[2,10]), as.numeric(df_Age[3,10]), as.numeric(df_Age[4,10]),
+             as.numeric(df_AgeAtCancerDiagnosis[1,9]), as.numeric(df_AgeAtCancerDiagnosis[2,9]), as.numeric(df_AgeAtCancerDiagnosis[3,9]), "unmatched",
+             as.numeric(df_AgeAtCancerDiagnosis[1,10]), as.numeric(df_AgeAtCancerDiagnosis[2,10]), as.numeric(df_AgeAtCancerDiagnosis[3,10]), "unmatched"),
+  
+  SiteC = c(as.numeric(df_Age[5,2]), as.numeric(df_Age[6,2]), as.numeric(df_Age[7,2]), as.numeric(df_Age[8,2]),
+            df_female_site_percent[5,2], df_female_site_percent[6,2], df_female_site_percent[7,2], df_female_site_percent[8,2],
+            as.numeric(df_Age[5,9]), as.numeric(df_Age[6,9]), as.numeric(df_Age[7,9]), as.numeric(df_Age[8,9]),
+            as.numeric(df_Age[5,10]), as.numeric(df_Age[6,10]), as.numeric(df_Age[7,10]), as.numeric(df_Age[8,10]),
+            as.numeric(df_AgeAtCancerDiagnosis[4,9]), as.numeric(df_AgeAtCancerDiagnosis[5,9]), as.numeric(df_AgeAtCancerDiagnosis[6,9]), "unmatched",
+            as.numeric(df_AgeAtCancerDiagnosis[4,10]), as.numeric(df_AgeAtCancerDiagnosis[5,10]), as.numeric(df_AgeAtCancerDiagnosis[6,10]), "unmatched"),
+  
+  SiteD = c(as.numeric(df_Age[9,2]), as.numeric(df_Age[10,2]), as.numeric(df_Age[11,2]), as.numeric(df_Age[12,2]),
+            df_female_site_percent[9,2], df_female_site_percent[10,2], df_female_site_percent[11,2], df_female_site_percent[12,2],
+            as.numeric(df_Age[9,9]), as.numeric(df_Age[10,9]), as.numeric(df_Age[11,9]), as.numeric(df_Age[12,9]),
+            as.numeric(df_Age[9,10]), as.numeric(df_Age[10,10]), as.numeric(df_Age[11,10]), as.numeric(df_Age[12,10]),
+            as.numeric(df_AgeAtCancerDiagnosis[7,9]), as.numeric(df_AgeAtCancerDiagnosis[8,9]), as.numeric(df_AgeAtCancerDiagnosis[9,9]), "unmatched",
+            as.numeric(df_AgeAtCancerDiagnosis[7,10]), as.numeric(df_AgeAtCancerDiagnosis[8,10]), as.numeric(df_AgeAtCancerDiagnosis[9,10]), "unmatched")
+)
+
+write.csv2(df_output_DemographocData_unmatched, "~/Projekte/HIVandCancer/Analyse/Demographics_unmatched.csv", row.names = FALSE)
+
+
+df_output_DemographocData_matched <- data.frame(
+  Demographic = c("Number of patients (N)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Female patients (%)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Age (mean)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Age (SD)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Age at cancer diagnosis (mean)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+",
+                  "Age at cancer diagnosis(SD)", "Cancer+/HIV-", "Cancer+/HIV+", "Cancer-/HIV+"),
+  All = c(sum(df_Age[13,2],df_Age[1,2], df_Age[5,2], df_Age[9,2]), 
+          sum(df_Age[14,2], df_Age[2,2], df_Age[6,2], df_Age[10,2]),
+          sum(df_Age[15,2], df_Age[3,2], df_Age[7,2],  df_Age[11,2]),
+          sum(df_Age[16,2], df_Age[4,2], df_Age[8,2], df_Age[12,2]),
+          df_female_all_percent[1,2], df_female_all_percent[2,2], df_female_all_percent[3,2], df_female_all_percent[4,2],
+          df_Age_Subgruoup[1,2], df_Age_Subgruoup[2,2], df_Age_Subgruoup[3,2], df_Age_Subgruoup[4,2],
+          df_Age_Subgruoup[1,3], df_Age_Subgruoup[2,3], df_Age_Subgruoup[3,3], df_Age_Subgruoup[4,3],
+          df_AgeAtCancer_SubgruoupM[1,2], df_AgeAtCancer_SubgruoupM[2,2], df_AgeAtCancer_SubgruoupM[3,2], "matched",
+          df_AgeAtCancer_SubgruoupM[1,3], df_AgeAtCancer_SubgruoupM[2,3], df_AgeAtCancer_SubgruoupM[3,3], "matched"),
+  
+  SiteA = c(as.numeric(df_Age[13,2]), as.numeric(df_Age[14,2]), as.numeric(df_Age[15,2]), as.numeric(df_Age[16,2]),
+            df_female_site_percent[13,2], df_female_site_percent[14,2], df_female_site_percent[15,2], df_female_site_percent[16,2],
+            as.numeric(df_Age[13,9]), as.numeric(df_Age[14,9]), as.numeric(df_Age[15,9]), as.numeric(df_Age[16,9]),
+            as.numeric(df_Age[13,10]), as.numeric(df_Age[14,10]), as.numeric(df_Age[15,10]), as.numeric(df_Age[16,10]),
+            as.numeric(df_AgeAtCancerDiagnosisM[10,9]), as.numeric(df_AgeAtCancerDiagnosisM[11,9]), as.numeric(df_AgeAtCancerDiagnosisM[12,9]), "matched",
+            as.numeric(df_AgeAtCancerDiagnosisM[10,10]), as.numeric(df_AgeAtCancerDiagnosisM[11,10]), as.numeric(df_AgeAtCancerDiagnosisM[12,10]), "matched"),
+  
+  SiteB = c(as.numeric(df_Age[1,2]), as.numeric(df_Age[2,2]), as.numeric(df_Age[3,2]), as.numeric(df_Age[4,2]),
+            df_female_site_percent[1,2], df_female_site_percent[2,2], df_female_site_percent[3,2], df_female_site_percent[4,2],
+            as.numeric(df_Age[1,9]), as.numeric(df_Age[2,9]), as.numeric(df_Age[3,9]), as.numeric(df_Age[4,9]),
+            as.numeric(df_Age[1,10]), as.numeric(df_Age[2,10]), as.numeric(df_Age[3,10]), as.numeric(df_Age[4,10]),
+            as.numeric(df_AgeAtCancerDiagnosisM[1,9]), as.numeric(df_AgeAtCancerDiagnosisM[2,9]), as.numeric(df_AgeAtCancerDiagnosisM[3,9]), "matched",
+            as.numeric(df_AgeAtCancerDiagnosisM[1,10]), as.numeric(df_AgeAtCancerDiagnosisM[2,10]), as.numeric(df_AgeAtCancerDiagnosisM[3,10]), "matched"),
+  
+  SiteC = c(as.numeric(df_Age[5,2]), as.numeric(df_Age[6,2]), as.numeric(df_Age[7,2]), as.numeric(df_Age[8,2]),
+            df_female_site_percent[5,2], df_female_site_percent[6,2], df_female_site_percent[7,2], df_female_site_percent[8,2],
+            as.numeric(df_Age[5,9]), as.numeric(df_Age[6,9]), as.numeric(df_Age[7,9]), as.numeric(df_Age[8,9]),
+            as.numeric(df_Age[5,10]), as.numeric(df_Age[6,10]), as.numeric(df_Age[7,10]), as.numeric(df_Age[8,10]),
+            as.numeric(df_AgeAtCancerDiagnosisM[4,9]), as.numeric(df_AgeAtCancerDiagnosisM[5,9]), as.numeric(df_AgeAtCancerDiagnosisM[6,9]), "matched",
+            as.numeric(df_AgeAtCancerDiagnosisM[4,10]), as.numeric(df_AgeAtCancerDiagnosisM[5,10]), as.numeric(df_AgeAtCancerDiagnosisM[6,10]), "matched"),
+  
+  SiteD = c(as.numeric(df_Age[9,2]), as.numeric(df_Age[10,2]), as.numeric(df_Age[11,2]), as.numeric(df_Age[12,2]),
+            df_female_site_percent[9,2], df_female_site_percent[10,2], df_female_site_percent[11,2], df_female_site_percent[12,2],
+            as.numeric(df_Age[9,9]), as.numeric(df_Age[10,9]), as.numeric(df_Age[11,9]), as.numeric(df_Age[12,9]),
+            as.numeric(df_Age[9,10]), as.numeric(df_Age[10,10]), as.numeric(df_Age[11,10]), as.numeric(df_Age[12,10]),
+            as.numeric(df_AgeAtCancerDiagnosisM[7,9]), as.numeric(df_AgeAtCancerDiagnosisM[8,9]), as.numeric(df_AgeAtCancerDiagnosisM[9,9]), "matched",
+            as.numeric(df_AgeAtCancerDiagnosisM[7,10]), as.numeric(df_AgeAtCancerDiagnosisM[8,10]), as.numeric(df_AgeAtCancerDiagnosisM[9,10]), "matched")
+)
 
 
 ########## Across all primary subgroups ########################################
 
 #--------- All subgroups: Sample size ------------------------------------------
 
-df_Output_SampleSize_OverTime <- df_Patients %>%
-  group_by(PatientSubgroup, FirstMainAdmissionYear) %>%
-  summarize(N = n()) %>%
-  rename(Year = FirstMainAdmissionYear)
+df_Output_SampleSize_OverTime <- df_SamplSizeOverTime_plot %>%
+  group_by(PatientSubgroup, FirstRelevantAdmissionYear) %>%
+  rename(Year = FirstRelevantAdmissionYear)
 
 plot_Output_SampleSize_OverTime <- df_Output_SampleSize_OverTime %>%
   f_MakeColumnPlot(inp_X = Year,
@@ -1179,7 +1272,7 @@ f_ExportPlot(inp_Plot = plot_Output_MetastasisOccurrence,
              inp_Height = 10)
 
 f_ExportPlot(inp_Plot = plot_Output_SampleSize_OverTime,
-             inp_Directory = "./output/PosterPlots",
+             inp_Directory = "~/Projekte/HIVandCancer/Plots",
              inp_Filename = "SampleSizeOverTime.svg",
              inp_Width = 16,
              inp_Height = 10)
@@ -1254,15 +1347,15 @@ f_ExportPlot(inp_Plot = plot_Output_AgeDistribution_OverTime_C,
 
 
 f_ExportPlot(inp_Plot = plot_Output_SampleSize_OverTime_A,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SampleSizeOverTime_A.svg",
+             inp_Directory = "~/Projekte/HIVandCancer/Plots",
+             inp_FileName = "SampleSizeOverTime_A",
              inp_Width = 20,
              inp_Height = 5,
              inp_LegendPosition = "none")
 
 f_ExportPlot(inp_Plot = plot_Output_SampleSize_OverTime_B,
              inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SampleSizeOverTime_B.svg",
+             inp_Filename = "SampleSizeOverTime_B_.svg",
              inp_Width = 20,
              inp_Height = 5,
              inp_LegendPosition = "none")
