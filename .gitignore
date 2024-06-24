@@ -1,6 +1,7 @@
 .Rproj.user
 .Rhistory
 .Ruserdata
+.RData
 
 /Data/SiteInputData/*
 /Data/SiteOutputData/*
