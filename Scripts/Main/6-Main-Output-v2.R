@@ -102,9 +102,28 @@ plot_Output_SampleSize_OverTime <- df_Plot_SampleSize_Main_Filtered %>%
                      inp_ls_ThemeArguments = list(inp_Theme_SizeFactorTickLabels_x = 1.3,
                                                   inp_Theme_SizeFactorLegendLabels = 1.3))
   
+   f_ExportPlot(inp_Plot = plot_Output_SexDistribution,
+                inp_Directory = path,
+                inp_FileName = "default",
+                inp_FileFormat = "svg",
+                inp_Width = 20,
+                inp_Height = 10)
+   
+   plot_Output_SexDistribution_OverTime <- df_Plot_Sex_Main_Filtered %>%
+     f_MakeColumnPlot(inp_X = Year,
+                      inp_Y = N,
+                      inp_GroupingFeature = Sex,
+                      inp_GroupingSpecs = c("Other" = "Unknown", "Male" = "M", "Female" = "F"),
+                      inp_GroupingPosition = position_fill(),
+                      inp_GroupingMapping = "alpha",
+                      inp_AlphaPalette = vc_AlphaPalette_3,
+                      inp_AxisType_y = "proportional",
+                      inp_FacetFeature = PatientSubgroup,
+                      inp_ls_FacetArguments = list(dir = "v"),
+                      inp_FacetMapping = "fill",
+                      inp_FillPalette = vc_FillPalette_Subgroup)
   
-  
-  f_ExportPlot(inp_Plot = plot_Output_SexDistribution,
+  f_ExportPlot(inp_Plot = plot_Output_SexDistribution_OverTime,
                inp_Directory = path,
                inp_FileName = "default",
                inp_FileFormat = "svg",
@@ -452,8 +471,58 @@ plot_Output_AgeDistribution_OverTime <- df_Plot_Age_Main_Filtered %>%
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Cancer grouping: AD, NAD and Non-HIV-associated cancer
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#df_proportion_HIVCancerCategories <- df_Plot_HIVCancerCategories_Main_Filtered %>%
+ #  filter(PatientSubgroup == "Cancer+/HIV+") %>% 
+  # group_by(Year) %>% mutate(Sum = sum(N)) %>% group_by(Year, PatientSubgroupHIVCancerCategory)%>%
+   #mutate(Rate = N/Sum) 
+  
+df_temp <- df_proportion_HIVCancerCategories %>% 
+   filter(PatientSubgroupHIVCancerCategory == "HIV-associated AD cancer")
+
+model <- lm(Rate~Year, df_temp)
+summary(model)
+  plot(df_temp$Year, df_temp$Rate)
+  abline(model, col = "red")
  
+df_Plot_HIVCancerCategories_Main_Filtered %>%
+  filter(PatientSubgroup == "Cancer+/HIV+") %>% 
+  group_by(Year) %>% mutate(Sum = sum(N)) %>% group_by(Year, PatientSubgroupHIVCancerCategory)%>%
+  mutate(Rate = N/Sum) %>%
+  ggplot() +
+  aes(x = Year, y= Rate) +
+  #scale_fill_brewer(palette="BuGn") +
+  geom_line()+ 
+  geom_smooth(method='lm', colour="#054996", size=0.5)+
+  facet_wrap(~PatientSubgroupHIVCancerCategory)
+  
   plot_Output_HIVCancerCategories_Main_Filtered <- df_Plot_HIVCancerCategories_Main_Filtered %>%
+    filter(PatientSubgroup == "Cancer+/HIV+") %>%
+      f_MakeColumnPlot(inp_X = Year,
+                     inp_Y = N,
+                     inp_GroupingFeature = PatientSubgroupHIVCancerCategory,
+                     inp_GroupingPosition = position_fill(),
+                     inp_AxisType_y = "proportional",
+                     inp_GroupingSpecs = c("Non-HIV-associated cancer",
+                                           "HIV-associated non-AD cancer",
+                                           "HIV-associated AD cancer"),
+                     inp_GroupingMapping = "alpha",
+                     inp_AlphaPalette = vc_AlphaPalette_4,
+                     inp_FacetFeature = PatientSubgroup,
+                     inp_ls_FacetArguments = list(dir = "v",
+                                                  scales = "free_y"),
+                     inp_FacetMapping = "fill",
+                     inp_FillPalette = vc_FillPalette_Subgroup, 
+                     insert_line = TRUE)
+  
+  
+  f_ExportPlot(inp_Plot = plot_Output_HIVCancerCategories_Main_Filtered,
+               inp_Directory = path,
+               inp_FileName = "default",
+               inp_FileFormat = "svg",
+               inp_Width = 20,
+               inp_Height = 10)
+  
+  plot_Output_HIVCancerCategories_Main_Filtered_HIV <- df_Plot_HIVCancerCategories_Main_Filtered_HIV %>%
     f_MakeColumnPlot(inp_X = Year,
                      inp_Y = N,
                      inp_GroupingFeature = PatientSubgroupHIVCancerCategory,
@@ -471,13 +540,18 @@ plot_Output_AgeDistribution_OverTime <- df_Plot_Age_Main_Filtered %>%
                      inp_FillPalette = vc_FillPalette_Subgroup)
   
   
-  f_ExportPlot(inp_Plot = plot_Output_HIVCancerCategories_Main_Filtered,
+  f_ExportPlot(inp_Plot = plot_Output_HIVCancerCategories_Main_Filtered_HIV,
                inp_Directory = path,
                inp_FileName = "default",
                inp_FileFormat = "svg",
                inp_Width = 20,
                inp_Height = 10)
   
+  ggplot(df_Plot_HIVCancerCategories_Main_Filtered_HIV, aes(x=Year, y=N, group=1)) + 
+           geom_line() +
+    facet_wrap(~PatientSubgroupHIVCancerCategory) +
+    
+    geom_smooth(method='glm', colour='#8e1e39',size=0.5)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Cancer grouping: Carcinoma in situ
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -576,8 +650,9 @@ plot_Output_AgeDistribution_OverTime <- df_Plot_Age_Main_Filtered %>%
     aes(x = MainCancerDiagnosisYear, y= N) +
     #scale_fill_brewer(palette="BuGn") +
     geom_line()+ 
-    geom_smooth(method='lm')+
+    geom_smooth(method='lm', colour='#8e1e39',size=0.5)+
      facet_wrap(~MainCancerTopographyGroup) +
+          # Margin around entire plot) +
     ggtitle("Cancer Topography")
   
   ggsave("plot_Output_MainCancerTopographyGroup_HIV.png", 
@@ -590,7 +665,7 @@ plot_Output_AgeDistribution_OverTime <- df_Plot_Age_Main_Filtered %>%
     aes(x = MainCancerDiagnosisYear, y= N) +
     #scale_fill_brewer(palette="BuGn") +
     geom_line()+ 
-    geom_smooth(method='lm')+
+    geom_smooth(method='lm', colour="#054996", size=0.5)+
     facet_wrap(~MainCancerTopographyGroup) +
     ggtitle("Cancer Topography")
   
@@ -599,7 +674,22 @@ plot_Output_AgeDistribution_OverTime <- df_Plot_Age_Main_Filtered %>%
          width = 20, 
          height = 15, 
          units = "cm")
-
+  
+ plot_CancerPerYear <-  df_Plot_MainCancerTopographyGroup_OverTime_Main_Filtered_HIV %>%
+   group_by(MainCancerDiagnosisYear) %>%
+   summarise(CancerSum = sum(N)) %>%
+   ggplot() + aes(x = MainCancerDiagnosisYear, y= CancerSum) +
+   geom_line()
+  
+  ggplot(df_Plot_MainCancerTopographyGroup_OverTime_Main_Filtered_HIV) +
+    aes(x = MainCancerDiagnosisYear, y= N, fill=MainCancerTopographyGroup) +
+    geom_bar(position="fill", stat="identity")
+  
+  ggplot(df_Plot_MainCancerTopographyGroup_OverTime_Main_Filtered_HIV) +
+    aes(x = MainCancerDiagnosisYear, y= N, fill=MainCancerTopographyGroup) +
+    geom_bar(position="dodge", stat="identity")
+  
+  #Proportion per Year per Group berechnen
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Cancer Grouping: By entity
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
@@ -696,6 +786,50 @@ plot_Output_AgeDistribution_OverTime <- df_Plot_Age_Main_Filtered %>%
                inp_Width = 20,
                inp_Height = 14
                )
+  
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Complications after (Chemo)therapy
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ggplot(data=df_Plot_TherapyComplications_Main_Filtered, aes(x=PatientSubgroup, y=(ProportionComplicationAfterChemotherapy*100), fill=PatientSubgroup)) +
+    geom_bar(stat="identity") +
+  #  ggtitle("Complications after Chemotherapy") +
+    ylab("Proportion [%]") +
+    theme(text = element_text(family = "Karla", size = 15), 
+          #plot.background = element_rect(fill = "transparent", color = NA),      # Transparent plot background, no border
+          plot.margin = margin(0.5, 1, 0.5, 1, unit = "cm"),      # Margin around entire plot
+          plot.title = element_text(face = "bold", size = rel(2.5), hjust = 0),
+          plot.subtitle = element_text(size = rel(1.5), margin = margin(0.2, 0, 1, 0, unit = "cm"), hjust = 0),
+          plot.caption = element_text(size = rel(1.5), margin = margin(1, 0, 0, 0, unit = "cm"), hjust = 1),
+          #--- Axis parameters -----------------------------------------------
+          axis.text = element_text(face = "bold", color = color_DarkGrey),      # Axis tick labels
+          axis.text.x = element_text(size = rel(1.5)),      # x Axis tick label size
+          axis.text.y = element_text(size = rel(1.5)),      # y Axis tick label size
+          axis.title = element_text(face = "bold", color = color_DarkGrey, size = rel(1.5)),      # Axis title labels
+          axis.title.x = element_blank(),
+          axis.title.y = element_blank(),
+          axis.ticks = element_blank(),      # No axis tick marks
+          axis.line = element_line(color = "black",
+                                                linewidth = 0.5,
+                                                linetype = 1),      # Arrow at top end of y-axis
+          legend.background = element_rect(fill = "transparent", color = NA), 
+          legend.title =  element_blank(),
+          legend.text = element_text(color = color_DarkGrey, size = rel(1.5), face = "bold"),
+          # Panel background
+          panel.background = element_rect(fill = "transparent", color = NA),      # Transparent panel background, no border
+          panel.border = element_blank(),      # No panel border
+          panel.grid.minor = element_blank(),      # Do not display minor grid lines
+          panel.grid.major.x = element_blank(),      # Do not display major grid lines of x axis
+          panel.grid.major.y =  element_line(color = color_MediumGrey)      # Color of y axis major grid lines
+          # Text
+          ) +
+    scale_fill_manual(values=c('#054996','#8e1e39'))
+  
+  ggsave("plot_Output_TherapyComplications.png", 
+         path = path,
+         width = 20, 
+         height = 15, 
+         units = "cm")
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Last recorded discharge reason
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -723,6 +857,31 @@ plot_Output_AgeDistribution_OverTime <- df_Plot_Age_Main_Filtered %>%
                inp_Width = 20,
                inp_Height = 14
   )
+  
+  
+ggplot(data=df_Plot_LastRecordedDischargeCategory_Main_Filtered, aes(x=LastRecordedDischargeCategory_sort, y=(Proportion*100), fill=PatientSubgroup)) +
+   geom_bar(stat="identity", position=position_dodge()) +
+  ggtitle("Last Recorded Discharge Category") +
+  ylab("Proportion [%]") +
+  theme(text = element_text(family = "Karla", size = 11), 
+        plot.margin = margin(0.5, 1, 0.5, 1, unit = "cm"),      # Margin around entire plot
+        plot.title = element_text(face = "bold", size = rel(2.5), hjust = 0),
+        axis.text = element_text(face = "bold", color = color_DarkGrey),      # Axis tick labels
+        axis.text.x = element_text(size = rel(2)),      # x Axis tick label size
+        axis.text.y = element_text(size = rel(1.5)), 
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(size = rel(2)), 
+        legend.background = element_rect(fill = "transparent", color = NA), 
+        legend.title = element_text(color = color_DarkGrey, size = rel(1.5), face = "bold"),
+        legend.text = element_text(color = color_DarkGrey, size = rel(1.5), face = "bold")) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) +
+  scale_fill_manual(values=c('#054996','#8e1e39'))
+
+ggsave("plot_Output_LastRecordedDischargeCategory.png", 
+       path = path,
+       width = 20, 
+       height = 15, 
+       units = "cm")
   
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # HIV and cancer presumed diagnosis order

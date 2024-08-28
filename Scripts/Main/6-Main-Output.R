@@ -691,25 +691,7 @@ plot_Output_AnyMajorTherapy <- df_Output_TherapyModalities %>%
                                                 inp_Theme_SizeFactorLegendLabels = 1.3))
 
 
-plot_Output_TherapyModalities <- df_Output_TherapyModalities %>%
-  pivot_longer(cols = starts_with("Proportion"),
-               names_to = "Group",
-               values_to = "Proportion") %>%
-  f_MakeColumnPlot(inp_X = Group,
-                   inp_XSpecs = c("Surgery" = "ProportionSurgery",
-                                  "Chemo- therapy" = "ProportionChemotherapy",
-                                  "Radio- therapy" = "ProportionRadiotherapy",
-                                  "Immuno- therapy" = "ProportionOtherImmunotherapy",
-                                  "Nuclear Medicine Therapy" = "ProportionNuclearMedicineTherapy"),
-                   inp_Y = Proportion,
-                   inp_GroupingFeature = PatientSubgroup,
-                   inp_GroupingPosition = position_dodge(),
-                   inp_FillPalette = vc_FillPalette_Subgroup,
-                   inp_AxisType_y = "proportional",
-                   inp_AxisTitle_y = "Prop. of pat. who received major therapy",
-                   inp_ls_ThemeArguments = list(inp_Theme_SizeFactorTickLabels_x = 1.3,
-                                                inp_Theme_SizeFactorLegendLabels = 1.3))
-
+plot_Output_TherapyModalities <-
 
 
 #--------- HIVandCancer vs. CancerOnly: Therapy complications ------------------

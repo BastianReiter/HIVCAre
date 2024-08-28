@@ -61,20 +61,24 @@ source("./Scripts/Main/3.2-Main-ProcessMatchedData.R")
 
 # Specify the time period for which the data should be analysed
 # Variation 1: time period (tp) from 2004 to 2023
-#tp_begin <- 2004 
-#tp_end <- 2023
+tp_begin <- 2005 
+tp_end <- 2022
 
 # Variation 2: time period (tp) from 2009 to 2021 (data avaible from all sites)
-tp_begin <- 2009 
-tp_end <- 2021
+#tp_begin <- 2009 
+#tp_end <- 2021
 
 # Variation 3: time period (tp) from 2015 to 2021 (complete data avaible from Freibrug)
 #tp_begin <- 2015 
+#tp_end <- 2021
+
+# Variation 4: time period (tp) from 2005 to 2021 (complete data avaible from Freibrug)
+#tp_begin <- 2005 
 #tp_end <- 2021
 
 source("./Scripts/Main/5-Main-Analysis-v2.R")
 
 
 ########## OUTPUT OBJECTS ######################################################
-path <- "~/Projekte/HIVandCancer/Analyse/Main/Plots"
+path <- "~/Projekte/HIVandCancer/Analyse/Main/Plots/2005-2021"
 source("./Scripts/Main/6-Main-Output-v2.R")

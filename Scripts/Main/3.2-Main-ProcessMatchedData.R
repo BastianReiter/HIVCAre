@@ -318,32 +318,32 @@
 # Documented time span of main cancer care
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Not avaible at Munich
-df_MainCancerDocumentedTimeSpan_Summary_Cologne <- SiteOutputData_Matched$Cologne$df_Output_MainRecordedTimeSpan_Summary
-df_MainCancerDocumentedTimeSpan_Summary_Cologne$Site <- "Cologne"
+#df_MainCancerDocumentedTimeSpan_Summary_Cologne <- SiteOutputData_Matched$Cologne$df_Output_MainRecordedTimeSpan_Summary
+#df_MainCancerDocumentedTimeSpan_Summary_Cologne$Site <- "Cologne"
 
-df_MainCancerDocumentedTimeSpan_Summary_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_MainCancerDocumentedTimeSpan_Summary
-df_MainCancerDocumentedTimeSpan_Summary_Frankfurt$Site <- "Frankfurt"
+#df_MainCancerDocumentedTimeSpan_Summary_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_MainCancerDocumentedTimeSpan_Summary
+#df_MainCancerDocumentedTimeSpan_Summary_Frankfurt$Site <- "Frankfurt"
 
-df_MainCancerDocumentedTimeSpan_Summary_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_MainCancerDocumentedTimeSpan_Summary
-df_MainCancerDocumentedTimeSpan_Summary_Freiburg$Site <- "Freiburg"
+#df_MainCancerDocumentedTimeSpan_Summary_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_MainCancerDocumentedTimeSpan_Summary
+#df_MainCancerDocumentedTimeSpan_Summary_Freiburg$Site <- "Freiburg"
 
-df_Output_MainCancerDocumentedTimeSpan_Summary_Matched_Main  <- rbind(df_MainCancerDocumentedTimeSpan_Summary_Cologne, 
-                                                              df_MainCancerDocumentedTimeSpan_Summary_Frankfurt, 
-                                                              df_MainCancerDocumentedTimeSpan_Summary_Freiburg)
+#df_Output_MainCancerDocumentedTimeSpan_Summary_Matched_Main  <- rbind(df_MainCancerDocumentedTimeSpan_Summary_Cologne, 
+#                                                              df_MainCancerDocumentedTimeSpan_Summary_Frankfurt, 
+ #                                                             df_MainCancerDocumentedTimeSpan_Summary_Freiburg)
 
 
-df_MainCancerDocumentedTimeSpan_Quantiles_Cologne <- SiteOutputData_Matched$Cologne$df_Output_MainRecordedTimeSpan_Quantiles
-df_MainCancerDocumentedTimeSpan_Quantiles_Cologne$Site <- "Cologne"
+#df_MainCancerDocumentedTimeSpan_Quantiles_Cologne <- SiteOutputData_Matched$Cologne$df_Output_MainRecordedTimeSpan_Quantiles
+#df_MainCancerDocumentedTimeSpan_Quantiles_Cologne$Site <- "Cologne"
 
-df_MainCancerDocumentedTimeSpan_Quantiles_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_MainCancerDocumentedTimeSpan_Quantiles
-df_MainCancerDocumentedTimeSpan_Quantiles_Frankfurt$Site <- "Frankfurt"
+#df_MainCancerDocumentedTimeSpan_Quantiles_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_MainCancerDocumentedTimeSpan_Quantiles
+#df_MainCancerDocumentedTimeSpan_Quantiles_Frankfurt$Site <- "Frankfurt"
 
-df_MainCancerDocumentedTimeSpan_Quantiles_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_MainCancerDocumentedTimeSpan_Quantiles
-df_MainCancerDocumentedTimeSpan_Quantiles_Freiburg$Site <- "Freiburg"
+#df_MainCancerDocumentedTimeSpan_Quantiles_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_MainCancerDocumentedTimeSpan_Quantiles
+#df_MainCancerDocumentedTimeSpan_Quantiles_Freiburg$Site <- "Freiburg"
 
-df_Output_MainCancerDocumentedTimeSpan_Quantiles_Matched_Main  <- rbind(df_MainCancerDocumentedTimeSpan_Quantiles_Cologne, 
-                                                                df_MainCancerDocumentedTimeSpan_Quantiles_Frankfurt, 
-                                                                df_MainCancerDocumentedTimeSpan_Quantiles_Freiburg)
+#df_Output_MainCancerDocumentedTimeSpan_Quantiles_Matched_Main  <- rbind(df_MainCancerDocumentedTimeSpan_Quantiles_Cologne, 
+#                                                                df_MainCancerDocumentedTimeSpan_Quantiles_Frankfurt, 
+ #                                                               df_MainCancerDocumentedTimeSpan_Quantiles_Freiburg)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -369,42 +369,49 @@ df_Output_AgeAtCancerDiagnosis_Matched_Main  <- rbind(df_AgeAtCancerDiagnosis_Co
                                               df_AgeAtCancerDiagnosis_Freiburg, 
                                               df_AgeAtCancerDiagnosis_MunichLMU)
 
+df_Output_AgeAtCancerDiagnosis_Matched_Main   <- df_Output_AgeAtCancerDiagnosis_Matched_Main   %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
 
 
-df_AgeAtCancerDiagnosis_Summary_Cologne <- SiteOutputData_Matched$Cologne$df_Output_AgeAtCancerDiagnosis_Summary
-df_AgeAtCancerDiagnosis_Summary_Cologne$Site <- "Cologne"
+#df_AgeAtCancerDiagnosis_Summary_Cologne <- SiteOutputData_Matched$Cologne$df_Output_AgeAtCancerDiagnosis_Summary
+#df_AgeAtCancerDiagnosis_Summary_Cologne$Site <- "Cologne"
 
-df_AgeAtCancerDiagnosis_Summary_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_AgeAtCancerDiagnosis_Summary
-df_AgeAtCancerDiagnosis_Summary_Frankfurt$Site <- "Frankfurt"
+#df_AgeAtCancerDiagnosis_Summary_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_AgeAtCancerDiagnosis_Summary
+#df_AgeAtCancerDiagnosis_Summary_Frankfurt$Site <- "Frankfurt"
 
-df_AgeAtCancerDiagnosis_Summary_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_AgeAtCancerDiagnosis_Summary
-df_AgeAtCancerDiagnosis_Summary_Freiburg$Site <- "Freiburg"
+#df_AgeAtCancerDiagnosis_Summary_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_AgeAtCancerDiagnosis_Summary
+#df_AgeAtCancerDiagnosis_Summary_Freiburg$Site <- "Freiburg"
 
-df_AgeAtCancerDiagnosis_Summary_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_AgeAtCancerDiagnosis_Summary
-df_AgeAtCancerDiagnosis_Summary_MunichLMU$Site <- "MunichLMU"
+#df_AgeAtCancerDiagnosis_Summary_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_AgeAtCancerDiagnosis_Summary
+#df_AgeAtCancerDiagnosis_Summary_MunichLMU$Site <- "MunichLMU"
 
-df_Output_AgeAtCancerDiagnosis_Summary_Matched_Main   <- rbind(df_AgeAtCancerDiagnosis_Summary_Cologne, 
-                                                       df_AgeAtCancerDiagnosis_Summary_Frankfurt, 
-                                                       df_AgeAtCancerDiagnosis_Summary_Freiburg, 
-                                                       df_AgeAtCancerDiagnosis_Summary_MunichLMU)
+#df_Output_AgeAtCancerDiagnosis_Summary_Matched_Main   <- rbind(df_AgeAtCancerDiagnosis_Summary_Cologne, 
+#                                                       df_AgeAtCancerDiagnosis_Summary_Frankfurt, 
+ #                                                      df_AgeAtCancerDiagnosis_Summary_Freiburg, 
+ #                                                      df_AgeAtCancerDiagnosis_Summary_MunichLMU)
 
 
-df_AgeAtCancerDiagnosis_Quantiles_Cologne <- SiteOutputData_Matched$Cologne$df_Output_AgeAtCancerDiagnosis_Quantiles
-df_AgeAtCancerDiagnosis_Quantiles_Cologne$Site <- "Cologne"
+#df_AgeAtCancerDiagnosis_Quantiles_Cologne <- SiteOutputData_Matched$Cologne$df_Output_AgeAtCancerDiagnosis_Quantiles
+#df_AgeAtCancerDiagnosis_Quantiles_Cologne$Site <- "Cologne"
 
-df_AgeAtCancerDiagnosis_Quantiles_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_AgeAtCancerDiagnosis_Quantiles
-df_AgeAtCancerDiagnosis_Quantiles_Frankfurt$Site <- "Frankfurt"
+#df_AgeAtCancerDiagnosis_Quantiles_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_AgeAtCancerDiagnosis_Quantiles
+#df_AgeAtCancerDiagnosis_Quantiles_Frankfurt$Site <- "Frankfurt"
 
-df_AgeAtCancerDiagnosis_Quantiles_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_AgeAtCancerDiagnosis_Quantiles
-df_AgeAtCancerDiagnosis_Quantiles_Freiburg$Site <- "Freiburg"
+#df_AgeAtCancerDiagnosis_Quantiles_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_AgeAtCancerDiagnosis_Quantiles
+#df_AgeAtCancerDiagnosis_Quantiles_Freiburg$Site <- "Freiburg"
 
-df_AgeAtCancerDiagnosis_Quantiles_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_AgeAtCancerDiagnosis_Quantiles
-df_AgeAtCancerDiagnosis_Quantiles_MunichLMU$Site <- "MunichLMU"
+#df_AgeAtCancerDiagnosis_Quantiles_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_AgeAtCancerDiagnosis_Quantiles
+#df_AgeAtCancerDiagnosis_Quantiles_MunichLMU$Site <- "MunichLMU"
 
-df_Output_AgeAtCancerDiagnosis_Quantiles_Matched_Main   <- rbind(df_AgeAtCancerDiagnosis_Quantiles_Cologne, 
-                                                         df_AgeAtCancerDiagnosis_Quantiles_Frankfurt, 
-                                                         df_AgeAtCancerDiagnosis_Quantiles_Freiburg, 
-                                                         df_AgeAtCancerDiagnosis_Quantiles_MunichLMU)
+#df_Output_AgeAtCancerDiagnosis_Quantiles_Matched_Main   <- rbind(df_AgeAtCancerDiagnosis_Quantiles_Cologne, 
+ #                                                        df_AgeAtCancerDiagnosis_Quantiles_Frankfurt, 
+ #                                                        df_AgeAtCancerDiagnosis_Quantiles_Freiburg, 
+ #                                                        df_AgeAtCancerDiagnosis_Quantiles_MunichLMU)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -425,19 +432,27 @@ df_Output_DistinctCodeCountCancer_Matched_Main <- rbind(df_Output_DistinctCodeCo
                                                 df_Output_DistinctCodeCountCancer_Freiburg, 
                                                 df_Output_DistinctCodeCountCancer_MunichLMU)
 
+df_Output_DistinctCodeCountCancer_Matched_Main   <- df_Output_DistinctCodeCountCancer_Matched_Main   %>% 
+  mutate(Strata = case_when(FirstRelevantAdmissionYear == 2004 ~ "2004",
+                            FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear <= 2008 ~ "2005-2008",
+                            FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009-2014",
+                            FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2021 ~ "2015-2021",
+                            FirstRelevantAdmissionYear == 2022 ~ "2022",
+                            FirstRelevantAdmissionYear == 2023 ~ "2023"))
 
-df_Output_DistinctCodeCountCancer_Summary_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_DistinctCodeCountCancer_Summary
-df_Output_DistinctCodeCountCancer_Summary_Frankfurt$Site <- "Frankfurt"
 
-df_Output_DistinctCodeCountCancer_Summary_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_DistinctCodeCountCancer_Summary
-df_Output_DistinctCodeCountCancer_Summary_Freiburg$Site <- "Freiburg"
+#df_Output_DistinctCodeCountCancer_Summary_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_DistinctCodeCountCancer_Summary
+#df_Output_DistinctCodeCountCancer_Summary_Frankfurt$Site <- "Frankfurt"
 
-df_Output_DistinctCodeCountCancer_Summary_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_DistinctCodeCountCancer_Summary
-df_Output_DistinctCodeCountCancer_Summary_MunichLMU$Site <- "MunichLMU"
+#df_Output_DistinctCodeCountCancer_Summary_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_DistinctCodeCountCancer_Summary
+#df_Output_DistinctCodeCountCancer_Summary_Freiburg$Site <- "Freiburg"
 
-df_Output_DistinctCodeCountCancer_Summary_Matched_Main <- rbind(df_Output_DistinctCodeCountCancer_Summary_Frankfurt, 
-                                                        df_Output_DistinctCodeCountCancer_Summary_Freiburg, 
-                                                        df_Output_DistinctCodeCountCancer_Summary_MunichLMU)
+#df_Output_DistinctCodeCountCancer_Summary_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_DistinctCodeCountCancer_Summary
+#df_Output_DistinctCodeCountCancer_Summary_MunichLMU$Site <- "MunichLMU"
+
+#df_Output_DistinctCodeCountCancer_Summary_Matched_Main <- rbind(df_Output_DistinctCodeCountCancer_Summary_Frankfurt, 
+#                                                        df_Output_DistinctCodeCountCancer_Summary_Freiburg, 
+ #                                                       df_Output_DistinctCodeCountCancer_Summary_MunichLMU)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -461,11 +476,21 @@ df_Output_HIVCancerCategories_Matched_Main <- rbind(df_Output_HIVCancerCategorie
                                             df_Output_HIVCancerCategories_Freiburg,
                                             df_Output_HIVCancerCategories_MunichLMU)
 
+df_Output_HIVCancerCategories_Matched_Main  <- df_Output_HIVCancerCategories_Matched_Main   %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Cancer grouping: Carcinoma in situ
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 df_Output_CIS_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CIS
 df_Output_CIS_Cologne$Site <- "Cologne"
+names(df_Output_CIS_Cologne)[2] <- "MainCancerIsCarcinomaInSitu"
+df_Output_CIS_Cologne$MainCancerIsCarcinomaInSitu <- as.character(df_Output_CIS_Cologne$MainCancerIsCarcinomaInSitu)
 names(df_Output_CIS_Cologne)[3] <- "MainCancerDiagnosisYear"
 
 df_Output_CIS_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_CIS
@@ -482,27 +507,34 @@ df_Output_CIS_Matched_Main <- rbind(df_Output_CIS_Cologne,
                             df_Output_CIS_Freiburg,
                             df_Output_CIS_MunichLMU)
 
+df_Output_CIS_Matched_Main   <- df_Output_CIS_Matched_Main %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Cancer Grouping: Topography by Organ
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-df_Output_MainCancerTopographyDetail_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CancerTopographyDetail
-df_Output_MainCancerTopographyDetail_Cologne$Site <- "Cologne"
-names(df_Output_MainCancerTopographyDetail_Cologne)[2] <- "MainCancerTopographyDetail"
+#df_Output_MainCancerTopographyDetail_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CancerTopographyDetail
+#df_Output_MainCancerTopographyDetail_Cologne$Site <- "Cologne"
+#names(df_Output_MainCancerTopographyDetail_Cologne)[2] <- "MainCancerTopographyDetail"
 
-df_Output_MainCancerTopographyDetail_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_MainCancerTopographyDetail
-df_Output_MainCancerTopographyDetail_Frankfurt$Site <- "Frankfurt"
+#df_Output_MainCancerTopographyDetail_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_MainCancerTopographyDetail
+#df_Output_MainCancerTopographyDetail_Frankfurt$Site <- "Frankfurt"
 
-df_Output_MainCancerTopographyDetail_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_MainCancerTopographyDetail
-df_Output_MainCancerTopographyDetail_Freiburg$Site <- "Freiburg"
+#df_Output_MainCancerTopographyDetail_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_MainCancerTopographyDetail
+#df_Output_MainCancerTopographyDetail_Freiburg$Site <- "Freiburg"
 
-df_Output_MainCancerTopographyDetail_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_MainCancerTopographyDetail
-df_Output_MainCancerTopographyDetail_MunichLMU$Site <- "MunichLMU"
+#df_Output_MainCancerTopographyDetail_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_MainCancerTopographyDetail
+#df_Output_MainCancerTopographyDetail_MunichLMU$Site <- "MunichLMU"
 
-df_Output_MainCancerTopographyDetail_Matched_Main <- rbind(df_Output_MainCancerTopographyDetail_Cologne,
-                                                   df_Output_MainCancerTopographyDetail_Frankfurt,
-                                                   df_Output_MainCancerTopographyDetail_Freiburg,
-                                                   df_Output_MainCancerTopographyDetail_MunichLMU)
+#df_Output_MainCancerTopographyDetail_Matched_Main <- rbind(df_Output_MainCancerTopographyDetail_Cologne,
+#                                                   df_Output_MainCancerTopographyDetail_Frankfurt,
+ #                                                  df_Output_MainCancerTopographyDetail_Freiburg,
+ #                                                  df_Output_MainCancerTopographyDetail_MunichLMU)
 
 
 # Data stratified by year of cancer diagnosis
@@ -529,23 +561,23 @@ df_Output_MainCancerTopographyDetail_OverTime_Matched_Main <- rbind(df_Output_Ma
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Cancer Grouping: Topography by ICD Grouping
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-df_Output_MainCancerTopographyGroup_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CancerTopographyGroup
-df_Output_MainCancerTopographyGroup_Cologne$Site <- "Cologne"
-names(df_Output_MainCancerTopographyGroup_Cologne)[2] <- "MainCancerTopographyGroup"
+#df_Output_MainCancerTopographyGroup_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CancerTopographyGroup
+#df_Output_MainCancerTopographyGroup_Cologne$Site <- "Cologne"
+#names(df_Output_MainCancerTopographyGroup_Cologne)[2] <- "MainCancerTopographyGroup"
 
-df_Output_MainCancerTopographyGroup_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_MainCancerTopographyGroup
-df_Output_MainCancerTopographyGroup_Frankfurt$Site <- "Frankfurt"
+#df_Output_MainCancerTopographyGroup_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_MainCancerTopographyGroup
+#df_Output_MainCancerTopographyGroup_Frankfurt$Site <- "Frankfurt"
 
-df_Output_MainCancerTopographyGroup_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_MainCancerTopographyGroup
-df_Output_MainCancerTopographyGroup_Freiburg$Site <- "Freiburg"
+#df_Output_MainCancerTopographyGroup_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_MainCancerTopographyGroup
+#df_Output_MainCancerTopographyGroup_Freiburg$Site <- "Freiburg"
 
-df_Output_MainCancerTopographyGroup_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_MainCancerTopographyGroup
-df_Output_MainCancerTopographyGroup_MunichLMU$Site <- "MunichLMU"
+#df_Output_MainCancerTopographyGroup_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_MainCancerTopographyGroup
+#df_Output_MainCancerTopographyGroup_MunichLMU$Site <- "MunichLMU"
 
-df_Output_MainCancerTopographyGroup_Matched_Main <- rbind(df_Output_MainCancerTopographyGroup_Cologne,
-                                                  df_Output_MainCancerTopographyGroup_Frankfurt,
-                                                  df_Output_MainCancerTopographyGroup_Freiburg,
-                                                  df_Output_MainCancerTopographyGroup_MunichLMU)
+#df_Output_MainCancerTopographyGroup_Matched_Main <- rbind(df_Output_MainCancerTopographyGroup_Cologne,
+#                                                  df_Output_MainCancerTopographyGroup_Frankfurt,
+ #                                                 df_Output_MainCancerTopographyGroup_Freiburg,
+ #                                                 df_Output_MainCancerTopographyGroup_MunichLMU)
 
 
 # Data stratified by year of cancer diagnosis
@@ -574,23 +606,23 @@ df_Output_MainCancerTopographyGroup_OverTime_Matched_Main <- rbind(df_Output_Mai
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Cancer occurrence grouped by coded entity
-df_Output_CancerEntities_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CancerEntities
-df_Output_CancerEntities_Cologne$Site <- "Cologne"
-names(df_Output_CancerEntities_Cologne)[2] <- "MainCancerCode"
+#df_Output_CancerEntities_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CancerEntities
+#df_Output_CancerEntities_Cologne$Site <- "Cologne"
+#names(df_Output_CancerEntities_Cologne)[2] <- "MainCancerCode"
 
-df_Output_CancerEntities_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_CancerEntities
-df_Output_CancerEntities_Frankfurt$Site <- "Frankfurt"
+#df_Output_CancerEntities_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_CancerEntities
+#df_Output_CancerEntities_Frankfurt$Site <- "Frankfurt"
 
-df_Output_CancerEntities_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_CancerEntities
-df_Output_CancerEntities_Freiburg$Site <- "Freiburg"
+#df_Output_CancerEntities_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_CancerEntities
+#df_Output_CancerEntities_Freiburg$Site <- "Freiburg"
 
-df_Output_CancerEntities_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_CancerEntities
-df_Output_CancerEntities_MunichLMU$Site <- "MunichLMU"
+#df_Output_CancerEntities_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_CancerEntities
+#df_Output_CancerEntities_MunichLMU$Site <- "MunichLMU"
 
-df_Output_CancerEntities_Matched_Main <- rbind(df_Output_CancerEntities_Cologne,
-                                       df_Output_CancerEntities_Frankfurt,
-                                       df_Output_CancerEntities_Freiburg,
-                                       df_Output_CancerEntities_MunichLMU)
+#df_Output_CancerEntities_Matched_Main <- rbind(df_Output_CancerEntities_Cologne,
+#                                       df_Output_CancerEntities_Frankfurt,
+#                                       df_Output_CancerEntities_Freiburg,
+ #                                      df_Output_CancerEntities_MunichLMU)
 
 # Data stratified by year of cancer diagnosis
 df_Output_CancerEntities_OverTime_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CancerEntities_OverTime
@@ -613,6 +645,14 @@ df_Output_CancerEntities_OverTime_Matched_Main <- rbind(df_Output_CancerEntities
                                                 df_Output_CancerEntities_OverTime_MunichLMU)
 
 
+df_Output_CancerEntities_OverTime_Matched_Main   <- df_Output_CancerEntities_OverTime_Matched_Main %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Metastasis occurrence
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -634,44 +674,52 @@ df_Output_MetastasisOccurrence_Matched_Main <- rbind(df_Output_MetastasisOccurre
                                              df_Output_MetastasisOccurrence_Freiburg,
                                              df_Output_MetastasisOccurrence_MunichLMU)
 
+df_Output_MetastasisOccurrence_Matched_Main  <- df_Output_MetastasisOccurrence_Matched_Main %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Time to Metastasis
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-df_Output_TimeCancerToMetastasis_Summary_Cologne <- SiteOutputData_Matched$Cologne$df_Output_TimeCancerToMetastasis_Summary
-df_Output_TimeCancerToMetastasis_Summary_Cologne$Site <- "Cologne"
+#df_Output_TimeCancerToMetastasis_Summary_Cologne <- SiteOutputData_Matched$Cologne$df_Output_TimeCancerToMetastasis_Summary
+#df_Output_TimeCancerToMetastasis_Summary_Cologne$Site <- "Cologne"
 
-df_Output_TimeCancerToMetastasis_Summary_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_TimeCancerToMetastasis_Summary
-df_Output_TimeCancerToMetastasis_Summary_Frankfurt$Site <- "Frankfurt"
+#df_Output_TimeCancerToMetastasis_Summary_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_TimeCancerToMetastasis_Summary
+#df_Output_TimeCancerToMetastasis_Summary_Frankfurt$Site <- "Frankfurt"
 
-df_Output_TimeCancerToMetastasis_Summary_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_TimeCancerToMetastasis_Summary
-df_Output_TimeCancerToMetastasis_Summary_Freiburg$Site <- "Freiburg"
+#df_Output_TimeCancerToMetastasis_Summary_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_TimeCancerToMetastasis_Summary
+#df_Output_TimeCancerToMetastasis_Summary_Freiburg$Site <- "Freiburg"
 
-df_Output_TimeCancerToMetastasis_Summary_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_TimeCancerToMetastasis_Summary
-df_Output_TimeCancerToMetastasis_Summary_MunichLMU$Site <- "MunichLMU"
+#df_Output_TimeCancerToMetastasis_Summary_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_TimeCancerToMetastasis_Summary
+#df_Output_TimeCancerToMetastasis_Summary_MunichLMU$Site <- "MunichLMU"
 
-df_Output_TimeCancerToMetastasis_Summary_Matched_Main <- rbind(df_Output_TimeCancerToMetastasis_Summary_Cologne,
-                                                       df_Output_TimeCancerToMetastasis_Summary_Frankfurt,
-                                                       df_Output_TimeCancerToMetastasis_Summary_Freiburg,
-                                                       df_Output_TimeCancerToMetastasis_Summary_MunichLMU)
+#df_Output_TimeCancerToMetastasis_Summary_Matched_Main <- rbind(df_Output_TimeCancerToMetastasis_Summary_Cologne,
+ #                                                      df_Output_TimeCancerToMetastasis_Summary_Frankfurt,
+  #                                                     df_Output_TimeCancerToMetastasis_Summary_Freiburg,
+   #                                                    df_Output_TimeCancerToMetastasis_Summary_MunichLMU)
 
 
-df_Output_TimeCancerToMetastasis_Quantiles_Cologne <- SiteOutputData_Matched$Cologne$df_Output_TimeCancerToMetastasis_Quantiles
-df_Output_TimeCancerToMetastasis_Quantiles_Cologne$Site <- "Cologne"
+#df_Output_TimeCancerToMetastasis_Quantiles_Cologne <- SiteOutputData_Matched$Cologne$df_Output_TimeCancerToMetastasis_Quantiles
+#df_Output_TimeCancerToMetastasis_Quantiles_Cologne$Site <- "Cologne"
 
-df_Output_TimeCancerToMetastasis_Quantiles_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_TimeCancerToMetastasis_Quantiles
-df_Output_TimeCancerToMetastasis_Quantiles_Frankfurt$Site <- "Frankfurt"
+#df_Output_TimeCancerToMetastasis_Quantiles_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_TimeCancerToMetastasis_Quantiles
+#df_Output_TimeCancerToMetastasis_Quantiles_Frankfurt$Site <- "Frankfurt"
 
-df_Output_TimeCancerToMetastasis_Quantiles_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_TimeCancerToMetastasis_Quantiles
-df_Output_TimeCancerToMetastasis_Quantiles_Freiburg$Site <- "Freiburg"
+#df_Output_TimeCancerToMetastasis_Quantiles_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_TimeCancerToMetastasis_Quantiles
+#df_Output_TimeCancerToMetastasis_Quantiles_Freiburg$Site <- "Freiburg"
 
-df_Output_TimeCancerToMetastasis_Quantiles_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_TimeCancerToMetastasis_Quantiles
-df_Output_TimeCancerToMetastasis_Quantiles_MunichLMU$Site <- "MunichLMU"
+#df_Output_TimeCancerToMetastasis_Quantiles_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_TimeCancerToMetastasis_Quantiles
+#df_Output_TimeCancerToMetastasis_Quantiles_MunichLMU$Site <- "MunichLMU"
 
-df_Output_TimeCancerToMetastasis_Quantiles_Matched_Main <- rbind(df_Output_TimeCancerToMetastasis_Quantiles_Cologne,
-                                                         df_Output_TimeCancerToMetastasis_Quantiles_Frankfurt,
-                                                         df_Output_TimeCancerToMetastasis_Quantiles_Freiburg,
-                                                         df_Output_TimeCancerToMetastasis_Quantiles_MunichLMU)
+#df_Output_TimeCancerToMetastasis_Quantiles_Matched_Main <- rbind(df_Output_TimeCancerToMetastasis_Quantiles_Cologne,
+#                                                         df_Output_TimeCancerToMetastasis_Quantiles_Frankfurt,
+#                                                         df_Output_TimeCancerToMetastasis_Quantiles_Freiburg,
+ #                                                        df_Output_TimeCancerToMetastasis_Quantiles_MunichLMU)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -697,6 +745,14 @@ df_Output_TherapyModalities_Matched_Main <- rbind(df_Output_TherapyModalities_Co
                                           df_Output_TherapyModalities_Freiburg,
                                           df_Output_TherapyModalities_MunichLMU)
 
+df_Output_TherapyModalities_Matched_Main <-df_Output_TherapyModalities_Matched_Main %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Therapy sequence
@@ -704,22 +760,22 @@ df_Output_TherapyModalities_Matched_Main <- rbind(df_Output_TherapyModalities_Co
 # Make use of make_long() to get compatible data frame for Sankey diagram
 # x: Stage
 # node: Node
-df_Output_CancerTherapySequence_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CancerTherapySequence
-df_Output_CancerTherapySequence_Cologne$Site <- "Cologne"
+#df_Output_CancerTherapySequence_Cologne <- SiteOutputData_Matched$Cologne$df_Output_CancerTherapySequence
+#df_Output_CancerTherapySequence_Cologne$Site <- "Cologne"
 
-df_Output_CancerTherapySequence_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_CancerTherapySequence
-df_Output_CancerTherapySequence_Frankfurt$Site <- "Frankfurt"
+#df_Output_CancerTherapySequence_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_CancerTherapySequence
+#df_Output_CancerTherapySequence_Frankfurt$Site <- "Frankfurt"
 
-df_Output_CancerTherapySequence_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_CancerTherapySequence
-df_Output_CancerTherapySequence_Freiburg$Site <- "Freiburg"
+#df_Output_CancerTherapySequence_Freiburg <- SiteOutputData_Matched$Freiburg$df_Output_CancerTherapySequence
+#df_Output_CancerTherapySequence_Freiburg$Site <- "Freiburg"
 
-df_Output_CancerTherapySequence_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_CancerTherapySequence
-df_Output_CancerTherapySequence_MunichLMU$Site <- "MunichLMU"
+#df_Output_CancerTherapySequence_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_CancerTherapySequence
+#df_Output_CancerTherapySequence_MunichLMU$Site <- "MunichLMU"
 
-df_Output_CancerTherapySequence_Matched_Main <- rbind(df_Output_CancerTherapySequence_Cologne,
-                                              df_Output_CancerTherapySequence_Frankfurt,
-                                              df_Output_CancerTherapySequence_Freiburg,
-                                              df_Output_CancerTherapySequence_MunichLMU)
+#df_Output_CancerTherapySequence_Matched_Main <- rbind(df_Output_CancerTherapySequence_Cologne,
+ #                                             df_Output_CancerTherapySequence_Frankfurt,
+  #                                            df_Output_CancerTherapySequence_Freiburg,
+   #                                           df_Output_CancerTherapySequence_MunichLMU)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -742,6 +798,14 @@ df_Output_TherapyComplications_Matched_Main <- rbind(df_Output_TherapyComplicati
                                              df_Output_TherapyComplications_Frankfurt,
                                              df_Output_TherapyComplications_Freiburg,
                                              df_Output_TherapyComplications_MunichLMU)
+
+df_Output_TherapyComplications_Matched_Main  <- df_Output_TherapyComplications_Matched_Main   %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -766,6 +830,13 @@ df_Output_LastRecordedDischargeCategory_Matched_Main <- rbind(df_Output_LastReco
                                                       df_Output_LastRecordedDischargeCategory_Freiburg,
                                                       df_Output_LastRecordedDischargeCategory_MunichLMU)
 
+df_Output_LastRecordedDischargeCategory_Matched_Main <- df_Output_LastRecordedDischargeCategory_Matched_Main   %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
 
 ################################################################################
 #
@@ -795,23 +866,30 @@ df_Output_HIVCancerDiagnosisOrder_Matched_Main <- rbind(df_Output_HIVCancerDiagn
                                                 df_Output_HIVCancerDiagnosisOrder_Freiburg,
                                                 df_Output_HIVCancerDiagnosisOrder_MunichLMU)
 
+df_Output_HIVCancerDiagnosisOrder_Matched_Main <- df_Output_HIVCancerDiagnosisOrder_Matched_Main   %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
 
 # Make use of make_long() to get compatible data frame for Sankey diagram
 # x: Stage
 # node: Node
 # Not avaible at Freiburg
-df_Output_HIVCancerSequence_Cologne <- SiteOutputData_Matched$Cologne$df_Output_HIVCancerSequence
-df_Output_HIVCancerSequence_Cologne$Site <- "Cologne"
+#df_Output_HIVCancerSequence_Cologne <- SiteOutputData_Matched$Cologne$df_Output_HIVCancerSequence
+#df_Output_HIVCancerSequence_Cologne$Site <- "Cologne"
 
-df_Output_HIVCancerSequence_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_HIVCancerSequence
-df_Output_HIVCancerSequence_Frankfurt$Site <- "Frankfurt"
+#df_Output_HIVCancerSequence_Frankfurt <- SiteOutputData_Matched$Frankfurt$df_Output_HIVCancerSequence
+#df_Output_HIVCancerSequence_Frankfurt$Site <- "Frankfurt"
 
-df_Output_HIVCancerSequence_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_HIVCancerSequence
-df_Output_HIVCancerSequence_MunichLMU$Site <- "MunichLMU"
+#df_Output_HIVCancerSequence_MunichLMU <- SiteOutputData_Matched$MunichLMU$df_Output_HIVCancerSequence
+#df_Output_HIVCancerSequence_MunichLMU$Site <- "MunichLMU"
 
-df_Output_HIVCancerSequence_Matched_Main <- rbind(df_Output_HIVCancerSequence_Cologne,
-                                          df_Output_HIVCancerSequence_Frankfurt,
-                                          df_Output_HIVCancerSequence_MunichLMU)
+#df_Output_HIVCancerSequence_Matched_Main <- rbind(df_Output_HIVCancerSequence_Cologne,
+ #                                         df_Output_HIVCancerSequence_Frankfurt,
+ #                                         df_Output_HIVCancerSequence_MunichLMU)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -835,6 +913,13 @@ df_Output_HIVCancerAIDS_Matched_Main <- rbind(df_Output_HIVCancerAIDS_Cologne,
                                       df_Output_HIVCancerAIDS_Freiburg,
                                       df_Output_HIVCancerAIDS_MunichLMU)
 
+df_Output_HIVCancerAIDS_Matched_Main <- df_Output_HIVCancerAIDS_Matched_Main %>% 
+  mutate(Strata = case_when(MainCancerDiagnosisYear == 2004 ~ "2004",
+                            MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005-2008",
+                            MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009-2014",
+                            MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2021 ~ "2015-2021",
+                            MainCancerDiagnosisYear == 2022 ~ "2022",
+                            MainCancerDiagnosisYear == 2023 ~ "2023"))
 
 ################################################################################
 #
@@ -866,6 +951,13 @@ df_Output_AIDSOccurrence_Matched_Main <- rbind(df_Output_AIDSOccurrence_Cologne,
                                        df_Output_AIDSOccurrence_Freiburg,
                                        df_Output_AIDSOccurrence_MunichLMU)
 
+df_Output_AIDSOccurrence_Matched_Main  <- df_Output_AIDSOccurrence_Matched_Main  %>% 
+  mutate(Strata = case_when(FirstRelevantAdmissionYear == 2004 ~ "2004",
+                            FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear<= 2008 ~ "2005-2008",
+                            FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009-2014",
+                            FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2021 ~ "2015-2021",
+                            FirstRelevantAdmissionYear == 2022 ~ "2022",
+                            FirstRelevantAdmissionYear == 2023 ~ "2023"))
 
 ###############################################################################
 contain <- c("df_Output_PostalCodeCounts_Main" , "df_Output_SampleSize_Main", "df_Output_Sex_Main",
@@ -907,5 +999,5 @@ contain <- c("df_Output_PostalCodeCounts_Main" , "df_Output_SampleSize_Main", "d
              
 )
 
-del <- ls()[-which(ls() %in% contain)]
-rm(list = del)
+#del <- ls()[-which(ls() %in% contain)]
+#rm(list = del)
