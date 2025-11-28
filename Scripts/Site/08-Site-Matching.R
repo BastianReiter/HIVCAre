@@ -23,7 +23,7 @@ match_InitialBalance <- matchit(PatientSubgroup ~ MainCancerDiagnosisAge +
                                 distance = "glm")
 
 # Look at statistics of covariate (im)balance
-summary(match_InitialBalance)
+df_MatchingSMD_Before <- summary(match_InitialBalance, standardize = TRUE)
 
 # Compute matchit object using matching method "nearest neighbor"
 match_Nearest <- matchit(PatientSubgroup ~ MainCancerDiagnosisAge +
@@ -37,7 +37,7 @@ match_Nearest <- matchit(PatientSubgroup ~ MainCancerDiagnosisAge +
                          distance = "glm")
 
 # Re-assess covariate (im)balance after matching
-summary(match_Nearest, un = FALSE)
+df_MatchingSMD_After <- summary(match_Nearest, un = FALSE)
 
 # Get matched data set
 df_ADM_PatientsCancer_Matched <- match.data(match_Nearest)

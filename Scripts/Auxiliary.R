@@ -335,12 +335,12 @@ f_TransformValues <- function(inp_Values,
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Colors taken from package colorspace
-#PaletteName_Categorical <- "Dark3"
-#PaletteName_Sequential <- "Blue-Yellow"
+PaletteName_Categorical <- "Dark3"
+PaletteName_Sequential <- "Blue-Yellow"
 
 # Custom color palette
-#palette_CCP_Categorical <- qualitative_hcl(8, PaletteName_Categorical)
-#palette_CCP_Sequential <- sequential_hcl(8, PaletteName_Sequential)
+palette_CCP_Categorical <- qualitative_hcl(8, PaletteName_Categorical)
+palette_CCP_Sequential <- sequential_hcl(8, PaletteName_Sequential)
 
 
 #color_Primary <- "#404DFF70"

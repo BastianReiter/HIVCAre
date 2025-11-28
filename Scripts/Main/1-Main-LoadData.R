@@ -9,6 +9,9 @@
 library(purrr)
 
 
+source("./Scripts/SETUP.R")
+
+
 f_LoadSiteOutput <- function(SiteName,
                              AnalysisType,
                              CommonDataDirectory)
@@ -46,9 +49,41 @@ f_LoadSiteOutput <- function(SiteName,
     return(as.list(DataEnvironment))
 }
 
+#-------------------------------------------------------------------------------
 
-SiteNames <- c("Cologne",
-               "Frankfurt",
+GetObjectAvailability <- function(Data,
+                                  SiteNames)
+{
+  SiteObjectAvailability <- SiteNames %>%
+                                map(function(sitename)
+                                    {
+                                      tibble(Object = names(Data[[sitename]]),
+                                             Available = TRUE) %>%
+                                          set_names(c("Object", sitename))
+                                    }) %>%
+                                set_names(SiteNames)
+  
+  UniqueOccurringObjectNames <- SiteObjectAvailability %>%
+                                    map(\(Site) Site$Object) %>%
+                                    unlist() %>%
+                                    unique()
+  
+  ObjectAvailability <- tibble(Object = UniqueOccurringObjectNames) %>%
+                            arrange(Object)
+  
+  
+  for (i in 1:length(SiteObjectAvailability))
+  {
+      ObjectAvailability <- ObjectAvailability %>%
+                                left_join(SiteObjectAvailability[[i]], by = join_by(Object))
+  }
+  
+  return(ObjectAvailability)
+}
+
+#-------------------------------------------------------------------------------
+
+SiteNames <- c("Frankfurt",
                "Freiburg",
                "MunichLMU")
 
@@ -65,55 +100,51 @@ SiteOutputData_Matched <- SiteNames %>%
                               set_names(SiteNames)
 
 
+ObjectAvailability_Full <- GetObjectAvailability(Data = SiteOutputData_Full,
+                                                 SiteNames = SiteNames)
+
+DataFrames_Full <- ObjectAvailability_Full %>%
+                          filter(str_starts(Object, "df_Output") & Frankfurt == TRUE & Freiburg == TRUE & MunichLMU == TRUE) %>%
+                          pull(Object)
+
+CumulatedData_Full <- SiteOutputData_Full %>%
+                            list_transpose() %>%
+                            `[`(DataFrames_Full) %>%
+                            imap(function(SiteData, dfname)
+                            {
+                                SiteData %>% list_rbind(names_to = "Site")
+                            })
 
 
-f_MergeSiteData <- function(SiteOutputData_Full
-                            )
-{
-    
-    
-}
+ObjectAvailability_Matched <- GetObjectAvailability(Data = SiteOutputData_Matched,
+                                                    SiteNames = SiteNames)
 
+DataFrames_Matched <- ObjectAvailability_Matched %>%
+                          filter(str_starts(Object, "df_Output") & Frankfurt == TRUE & Freiburg == TRUE & MunichLMU == TRUE) %>%
+                          pull(Object)
 
-
-SiteObjectAvailability <- SiteNames %>%
-                              map(function(sitename)
-                                  { 
-                                    tibble(Object = names(SiteOutputData_Full[[sitename]]),
-                                           Available = TRUE) %>%
-                                        set_names(c("Object", sitename))
-                                  }) %>%
-                              set_names(SiteNames)
-
-UniqueOccurringObjectNames <- SiteObjectAvailability %>%
-                                  map(\(Site) Site$Object) %>%
-                                  unlist() %>%
-                                  unique()
-
-
-ObjectAvailability <- tibble(Object = UniqueOccurringObjectNames) %>% 
-                          arrange(Object)
-
-for (i in 1:length(SiteObjectAvailability))
-{
-    ObjectAvailability <- ObjectAvailability %>%
-                              left_join(SiteObjectAvailability[[i]], by = join_by(Object))
-}
-  
+CumulatedData_Matched <- SiteOutputData_Matched %>%
+                            list_transpose() %>%
+                            `[`(DataFrames_Matched) %>%
+                            imap(function(SiteData, dfname)
+                            {
+                                SiteData %>% list_rbind(names_to = "Site")
+                            })
 
 
 
-for (object in ls(envir = get(SiteEnvName)))
-{
-    if (str_detect(object, "df_Output_") == TRUE 
-          & str_detect(object, "_Quantiles") == FALSE)
-    {
-        Object_NewName <- str_replace_all(object, "_Output_", "_Main_")
-        assign(Object_NewName,
-               value = get(object, envir = get(SiteEnvName)))
-    }
-}
 
+
+# for (object in ls(envir = get(SiteEnvName)))
+# {
+#     if (str_detect(object, "df_Output_") == TRUE 
+#           & str_detect(object, "_Quantiles") == FALSE)
+#     {
+#         Object_NewName <- str_replace_all(object, "_Output_", "_Main_")
+#         assign(Object_NewName,
+#                value = get(object, envir = get(SiteEnvName)))
+#     }
+# }
 
 
 

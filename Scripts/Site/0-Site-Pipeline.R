@@ -18,7 +18,7 @@ rm(list = ls())
 
 # Set Site Name
 # -------------
-SiteName <- "Frankfurt"
+SiteName <- "Freiburg"
 
 
 
@@ -214,7 +214,6 @@ source(here("Scripts/Site/10-Site-Output.R"))
 try(ls_Progress_Total$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Total, inp_StepDescription = "Generate output objects"), silent = TRUE)
 
 
-
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Save output objects in an encrypted .RData-file
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -264,9 +263,11 @@ try(ls_Progress_Total$ProgressStepInfo <- f_UpdateProgressBar(ls_Progress_Total,
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Temporarily save full data set
+df_ADM_Patients_Temp <- df_ADM_Patients
 df_ADM_PatientsCancer_Temp <- df_ADM_PatientsCancer
 
 # Assign matched data set
+df_ADM_Patients <- df_ADM_PatientsCancer_Matched
 df_ADM_PatientsCancer <- df_ADM_PatientsCancer_Matched
 
 # Run Analysis again
@@ -300,6 +301,7 @@ encrypt_file(.path = here(paste0("Data/SiteOutputData/", SiteName, "/SiteOutput_
              public_key_path = here("id_rsa.pub"))
 
 # Restore full data set
+df_ADM_Patients <- df_ADM_Patients_Temp
 df_ADM_PatientsCancer <- df_ADM_PatientsCancer_Temp
 
 # Update Progress Bar

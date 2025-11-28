@@ -947,14 +947,14 @@ plot_Output_CARTCellTherapy_OverTime <- df_Output_TherapyModalities %>%
 # Make use of make_long() to get compatible data frame for Sankey diagram
 # x: Stage
 # node: Node
-df_Output_CancerTherapySequence <- df_ADM_PatientsCancer %>%
-                                        ggsankey::make_long(TherapyOnset_1,
-                                                            TherapyOnset_2,
-                                                            TherapyOnset_3,
-                                                            TherapyOnset_4,
-                                                            TherapyOnset_5,
-                                                            TherapyOnset_6) %>%
-                                        filter(!is.na(node))
+# df_Output_CancerTherapySequence <- df_ADM_PatientsCancer %>%
+#                                         ggsankey::make_long(TherapyOnset_1,
+#                                                             TherapyOnset_2,
+#                                                             TherapyOnset_3,
+#                                                             TherapyOnset_4,
+#                                                             TherapyOnset_5,
+#                                                             TherapyOnset_6) %>%
+#                                         filter(!is.na(node))
 
 
 
@@ -1049,8 +1049,10 @@ plot_Output_TimeChemoToComplication <- ggsurvplot(fit = model_Output_TimeChemoTo
 # Last recorded discharge reason
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Note: Changed on 2025-11-15 to stratify by LastRecordedDischargeYear instead of MainCancerDiagnosisYear
+
 df_Output_LastRecordedDischargeCategory <- df_ADM_PatientsCancer %>%
-                                                group_by(PatientSubgroup, LastRecordedDischargeCategory, MainCancerDiagnosisYear) %>%
+                                                group_by(PatientSubgroup, LastRecordedDischargeCategory, LastRecordedDischargeYear) %>%
                                                     summarize(N = n()) %>%
                                                 group_by(PatientSubgroup) %>%
                                                     mutate(Proportion = N / sum(N)) %>%
@@ -1127,9 +1129,9 @@ df_Output_HIVCancerDiagnosisOrder <- df_ADM_PatientsHIVCancer %>%
 # Make use of make_long() to get compatible data frame for Sankey diagram
 # x: Stage
 # node: Node
-df_Output_HIVCancerSequence <- df_ADM_PatientsHIVCancer %>%
-                                    ggsankey::make_long(DiagnosisSequence_1, DiagnosisSequence_2, DiagnosisSequence_3, DiagnosisSequence_4) %>%
-                                    filter(!is.na(node))
+# df_Output_HIVCancerSequence <- df_ADM_PatientsHIVCancer %>%
+#                                     ggsankey::make_long(DiagnosisSequence_1, DiagnosisSequence_2, DiagnosisSequence_3, DiagnosisSequence_4) %>%
+#                                     filter(!is.na(node))
 
 
 

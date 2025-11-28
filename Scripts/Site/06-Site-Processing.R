@@ -899,6 +899,7 @@ df_Aux_SampleSize <- rbind(df_Aux_SampleSize, AuxSize)
 #   - FirstMainAdmissionDate: Date of main cancer diagnosis or HIV diagnosis, whichever is earlier. If there is no main cancer or HIV diagnosis, take earliest admission date.
 #   - FirstMainAdmissionAge: Age at first main admission
 #   - LastRecordedDischargeDate
+#   - LastRecordedDischargeYear
 #   - LastRecordedDischargeCategory: Taken as rough momentary "outcome" of medical care
 
 df_Aux_PatientSummaries_Events <- df_ADM_Events %>%
@@ -958,6 +959,7 @@ df_Aux_PatientSummaries_Events <- df_ADM_Events %>%
                                                 TimeCancerToMetastasis = replace(TimeCancerToMetastasis, which(TimeCancerToMetastasis < 0), NA),
                                                 #-------------------------------
                                                 LastRecordedDischargeDate = max(EventDate[EventSubclass == "Discharge"], na.rm = TRUE),
+                                                LastRecordedDischargeYear = year(LastRecordedDischargeDate),
                                                 LastRecordedDischargeCategory = EventSpecification_A[EventSubclass == "Discharge" & EventDate == LastRecordedDischargeDate]) %>%
                                       ungroup()
                                       #=== Update Progress Bar ===

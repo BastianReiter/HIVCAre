@@ -7,1292 +7,1683 @@
 ################################################################################
 
 
-
-########## Across all primary subgroups ########################################
-
-#--------- All subgroups: Sample size ------------------------------------------
-
-df_Output_SampleSize_OverTime <- df_Patients %>%
-  group_by(PatientSubgroup, FirstMainAdmissionYear) %>%
-  summarize(N = n()) %>%
-  rename(Year = FirstMainAdmissionYear)
-
-plot_Output_SampleSize_OverTime <- df_Output_SampleSize_OverTime %>%
-  f_MakeColumnPlot(inp_X = Year,
-                   inp_Y = N,
-                   inp_FacetFeature = PatientSubgroup,
-                   inp_ls_FacetArguments = list(dir = "v",
-                                                scales = "free_y"),
-                   inp_FacetMapping = "fill",
-                   inp_FillPalette = vc_FillPalette_Subgroup)      # Individual y-scales for different subgroups
-
-plot_Output_SampleSize_OverTime_A <- df_Output_SampleSize_OverTime %>%
-  filter(PatientSubgroup == "Cancer without HIV") %>%
-  f_MakeColumnPlot(inp_X = Year,
-                   inp_Y = N,
-                   inp_FillPalette = color_CancerOnly,
-                   inp_LegendPosition = "none")
-
-plot_Output_SampleSize_OverTime_B <- df_Output_SampleSize_OverTime %>%
-  filter(PatientSubgroup == "Cancer with HIV") %>%
-  f_MakeColumnPlot(inp_X = Year,
-                   inp_Y = N,
-                   inp_FillPalette = color_HIVCancer,
-                   inp_LegendPosition = "none")
-
-plot_Output_SampleSize_OverTime_C <- df_Output_SampleSize_OverTime %>%
-  filter(PatientSubgroup == "HIV without Cancer") %>%
-  f_MakeColumnPlot(inp_X = Year,
-                   inp_Y = N,
-                   inp_FillPalette = color_HIVOnly,
-                   inp_LegendPosition = "none")
-
-
-#--------- All subgroups: Sex distribution -------------------------------------
-
-# Sex distribution summary output
-df_Output_SexDistribution <- df_Patients %>%
-  group_by(PatientSubgroup) %>%
-  summarize(N = n(),
-            CountFemale = sum(Sex == "w", na.rm = TRUE),
-            CountMale = sum(Sex == "m", na.rm = TRUE),
-            CountOther = sum(Sex == "x", na.rm = TRUE),
-            RateFemale = sum(Sex == "w", na.rm = TRUE) / N,
-            RateMale = sum(Sex == "m", na.rm = TRUE) / N,
-            RateOther = sum(Sex == "x", na.rm = TRUE) / N)
-
-plot_Output_SexDistribution <- df_Patients %>%
-  group_by(PatientSubgroup, Sex) %>%
-  summarize(N = n()) %>%
-  f_MakeColumnPlot(inp_X = PatientSubgroup,
-                   inp_XSpecs = c("Cancer without HIV",
-                                  "Cancer with HIV",
-                                  "HIV without Cancer"),
-                   inp_XAdditionalMapping = "fill",
-                   inp_FillPalette = vc_FillPalette_Subgroup,
-                   inp_Y = N,
-                   inp_GroupingFeature = Sex,
-                   inp_GroupingSpecs = c("Other" = "x", "Male" = "m", "Female" = "w"),
-                   inp_GroupingPosition = position_fill(),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_3,
-                   inp_AxisType_y = "proportional",
-                   inp_ls_ThemeArguments = list(inp_Theme_SizeFactorTickLabels_x = 1.3,
-                                                inp_Theme_SizeFactorLegendLabels = 1.3))
-
-
-# Facet plot of subgroup-specific sex distribution over time
-plot_Output_SexDistribution_OverTime <- df_Patients %>%
-  group_by(PatientSubgroup, FirstMainAdmissionYear, Sex) %>%
-  summarize(N = n()) %>%
-  f_MakeColumnPlot(inp_X = FirstMainAdmissionYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = Sex,
-                   inp_GroupingSpecs = c("Other" = "x", "Male" = "m", "Female" = "w"),
-                   inp_GroupingPosition = position_fill(),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_3,
-                   inp_AxisType_y = "proportional",
-                   inp_FacetFeature = PatientSubgroup,
-                   inp_ls_FacetArguments = list(dir = "v"),
-                   inp_FacetMapping = "fill",
-                   inp_FillPalette = vc_FillPalette_Subgroup)
-
-plot_Output_SexDistribution_OverTime_A <- df_Patients %>%
-  filter(PatientSubgroup == "Cancer without HIV") %>%
-  group_by(FirstMainAdmissionYear, Sex) %>%
-  summarize(N = n()) %>%
-  f_MakeColumnPlot(inp_X = FirstMainAdmissionYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = Sex,
-                   inp_GroupingSpecs = c("Other" = "x", "Male" = "m", "Female" = "w"),
-                   inp_GroupingPosition = position_fill(),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_3,
-                   inp_AxisType_y = "proportional",
-                   inp_FillPalette = color_CancerOnly,
-                   inp_LegendShowFillGuide = FALSE)
-
-plot_Output_SexDistribution_OverTime_B <- df_Patients %>%
-  filter(PatientSubgroup == "Cancer with HIV") %>%
-  group_by(FirstMainAdmissionYear, Sex) %>%
-  summarize(N = n()) %>%
-  f_MakeColumnPlot(inp_X = FirstMainAdmissionYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = Sex,
-                   inp_GroupingSpecs = c("Male" = "m", "Female" = "w"),
-                   inp_GroupingPosition = position_fill(),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_2,
-                   inp_AxisType_y = "proportional",
-                   inp_FillPalette = color_HIVCancer,
-                   inp_LegendShowFillGuide = FALSE)
-
-plot_Output_SexDistribution_OverTime_C <- df_Patients %>%
-  filter(PatientSubgroup == "HIV without Cancer") %>%
-  group_by(FirstMainAdmissionYear, Sex) %>%
-  summarize(N = n()) %>%
-  f_MakeColumnPlot(inp_X = FirstMainAdmissionYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = Sex,
-                   inp_GroupingSpecs = c("Male" = "m", "Female" = "w"),
-                   inp_GroupingPosition = position_fill(),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_2,
-                   inp_AxisType_y = "proportional",
-                   inp_FillPalette = color_HIVOnly,
-                   inp_LegendShowFillGuide = FALSE)
-
-
-
-#--------- All subgroups: Age distribution -------------------------------------
-
-# Age distribution summary output
-df_Output_Age_Summary <- df_Patients %>%
-  group_by(PatientSubgroup) %>%
-  f_GetSampleStatistics(inp_MetricFeature = FirstMainAdmissionAge,
-                        inp_na.rm = TRUE)
-
-# Box and Violin plots of subgroups
-plot_Output_AgeDistribution <- df_Patients %>%
-  f_MakeBoxViolinPlot(inp_X = PatientSubgroup,
-                      inp_Y = FirstMainAdmissionAge,
-                      inp_AxisTitle_y = "Age at Diagnosis",
-                      inp_AxisLimits_y = c(0, NA_integer_),
-                      inp_FillPalette = vc_FillPalette_Subgroup)
-
-# Age distribution over time
-# Age is the age at first diagnosis of either HIV or cancer
-df_Output_AgeDistribution_OverTime <- df_Patients %>%
-  mutate(AgeGroup = case_when(between(FirstMainAdmissionAge, 18, 39) == TRUE ~ "18 - 39 years old",
-                              between(FirstMainAdmissionAge, 40, 59) == TRUE ~ "40 - 59 years old",
-                              between(FirstMainAdmissionAge, 60, 79) == TRUE ~ "60 - 79 years old",
-                              FirstMainAdmissionAge >= 80 ~ "> 80 years old")) %>%
-  group_by(PatientSubgroup, FirstMainAdmissionYear, AgeGroup) %>%
-  summarize(N = n())
-
-# Facet plot of subgroup-specific age distribution over time
-plot_Output_AgeDistribution_OverTime <- df_Output_AgeDistribution_OverTime %>%
-  f_MakeColumnPlot(inp_X = FirstMainAdmissionYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = AgeGroup,
-                   inp_GroupingPosition = position_fill(),
-                   inp_AxisType_y = "proportional",
-                   inp_GroupingSpecs = c("> 80 years old",
-                                         "60 - 79 years old",
-                                         "40 - 59 years old",
-                                         "18 - 39 years old"),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_4,
-                   inp_FacetFeature = PatientSubgroup,
-                   inp_ls_FacetArguments = list(dir = "v",
-                                                scales = "free_y"),
-                   inp_FacetMapping = "fill",
-                   inp_FillPalette = vc_FillPalette_Subgroup)
-
-
-plot_Output_AgeDistribution_OverTime_A <- df_Output_AgeDistribution_OverTime %>%
-  filter(PatientSubgroup == "Cancer without HIV") %>%
-  f_MakeColumnPlot(inp_X = FirstMainAdmissionYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = AgeGroup,
-                   inp_GroupingPosition = position_fill(),
-                   inp_AxisType_y = "proportional",
-                   inp_GroupingSpecs = c("> 80 years old",
-                                         "60 - 79 years old",
-                                         "40 - 59 years old",
-                                         "18 - 39 years old"),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_4,
-                   inp_FillPalette = color_CancerOnly,
-                   inp_LegendShowFillGuide = FALSE)
-
-plot_Output_AgeDistribution_OverTime_B <- df_Output_AgeDistribution_OverTime %>%
-  filter(PatientSubgroup == "Cancer with HIV") %>%
-  f_MakeColumnPlot(inp_X = FirstMainAdmissionYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = AgeGroup,
-                   inp_GroupingPosition = position_fill(),
-                   inp_AxisType_y = "proportional",
-                   inp_GroupingSpecs = c("> 80 years old",
-                                         "60 - 79 years old",
-                                         "40 - 59 years old",
-                                         "18 - 39 years old"),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_4,
-                   inp_FillPalette = color_HIVCancer,
-                   inp_LegendShowFillGuide = FALSE)
-
-plot_Output_AgeDistribution_OverTime_C <- df_Output_AgeDistribution_OverTime %>%
-  filter(PatientSubgroup == "HIV without Cancer") %>%
-  f_MakeColumnPlot(inp_X = FirstMainAdmissionYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = AgeGroup,
-                   inp_GroupingPosition = position_fill(),
-                   inp_AxisType_y = "proportional",
-                   inp_GroupingSpecs = c("> 80 years old",
-                                         "60 - 79 years old",
-                                         "40 - 59 years old",
-                                         "18 - 39 years old"),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_4,
-                   inp_FillPalette = color_HIVOnly,
-                   inp_LegendShowFillGuide = FALSE)
-
-
-#--------- All subgroups: Case count per patient -------------------------------
-
-# Case count summary output
-df_Output_CaseCount_Summary <- df_Patients %>%
-  group_by(PatientSubgroup) %>%
-  f_GetSampleStatistics(inp_MetricFeature = CaseCount)
-
-# Case count detailed output
-df_Output_CaseCount <- df_Patients %>%
-  group_by(PatientSubgroup, FirstMainAdmissionYear) %>%
-  summarize(N = n())
-
-# Box and Violin plots of subgroups
-plot_Output_CaseCount <- df_Patients %>%
-  f_MakeBoxViolinPlot(inp_X = PatientSubgroup,
-                      inp_Y = CaseCount,
-                      inp_OutlierAcrossAll = TRUE,
-                      inp_OutlierQuantile = 0.95,
-                      inp_LogTransform = FALSE,
-                      inp_ShowViolinPlot = FALSE,
-                      inp_AxisTitle_y = "Number of cases per patient",
-                      inp_AxisLimits_y = c(0, NA_integer_),
-                      inp_FillPalette = vc_FillPalette_Subgroup)      # Fixed lower and auto upper y-Axis limit
-
-
-#--------- All subgroups: Mean length of stay ----------------------------------
-
-# Mean length of stay summary output
-df_Output_MeanLengthOfStay <- df_Patients %>%
-  group_by(PatientSubgroup) %>%
-  f_GetSampleStatistics(inp_MetricFeature = MeanLengthOfStay)
-
-# Box and Violin plots of subgroups
-plot_Output_MeanLengthOfStay <- df_Patients %>%
-  f_MakeBoxViolinPlot(inp_X = PatientSubgroup,
-                      inp_Y = MeanLengthOfStay,
-                      inp_OutlierAcrossAll = TRUE,
-                      inp_OutlierQuantile = 0.95,
-                      inp_LogTransform = FALSE,
-                      inp_AxisTitle_y = "Mean length of stay per patient (days)",
-                      inp_AxisLimits_y = c(0, NA_integer_),
-                      inp_FillPalette = vc_FillPalette_Subgroup)      # Fixed lower and auto upper y-Axis limit
-
-
-#--------- All subgroups: Recorded time span of main diagnosis -----------------
-
-df_Output_MainRecordedTimeSpan <- df_Patients %>%
-  group_by(PatientSubgroup) %>%
-  f_GetSampleStatistics(inp_MetricFeature = MainRecordedTimeSpan)
-
-plot_Output_MainRecordedTimeSpan <- df_Patients %>%
-  f_MakeBoxViolinPlot(inp_X = PatientSubgroup,
-                      inp_Y = MainRecordedTimeSpan,
-                      inp_OutlierAcrossAll = TRUE,
-                      inp_OutlierQuantile = 0.95,
-                      inp_LogTransform = FALSE,
-                      inp_AxisTitle_y = "Recorded time span of main diagnosis (days)",
-                      inp_AxisLimits_y = c(0, NA_integer_),
-                      inp_FillPalette = vc_FillPalette_Subgroup)
-
-
-########## HIVandCancer vs. CancerOnly #########################################
-
-
-#!!!-!!!-!!! Plot describing completeness of data (Sankey diagram with nodes main diagnosis - treatment - follow up?)
-
-
-
-#--------- Age at presumed cancer diagnosis ----------------------------------------
-
-df_Output_AgeAtCancerDiagnosis <- df_PatientsCancer %>%
-  group_by(PatientSubgroup) %>%
-  f_GetSampleStatistics(inp_MetricFeature = PresumedMainCancerDiagnosisAge,
-                        inp_na.rm = TRUE)
-
-plot_Output_AgeAtCancerDiagnosis <- df_PatientsCancer %>%
-  f_MakeBoxViolinPlot(inp_X = PatientSubgroup,
-                      inp_Y = PresumedMainCancerDiagnosisAge,
-                      inp_AxisTitle_y = "Age at cancer diagnosis",
-                      inp_AxisLimits_y = c(0, NA_integer_),
-                      inp_FillPalette = vc_FillPalette_Subgroup)      # Fixed lower and auto upper y-Axis limit
-
-
-#---------- Cancer grouping: AD and NAD and Non-HIV-associated cancer ----------
-
-df_Output_HIVCancerCategories <- df_PatientsCancer %>%
-  group_by(PatientSubgroup, PatientSubgroupHIVCancerCategory) %>%
-  summarize(N = n())
-
-plot_Output_HIVCancerCategories <- df_Output_HIVCancerCategories %>%
-  f_MakeColumnPlot(inp_X = PatientSubgroup,
-                   inp_XAdditionalMapping = "fill",
-                   inp_Y = N,
-                   inp_GroupingFeature = PatientSubgroupHIVCancerCategory,
-                   inp_GroupingSpecs = c("Non-HIV-associated cancer",
-                                         "HIV-associated non-AD cancer",
-                                         "HIV-associated AD cancer"),
-                   inp_GroupingPosition = position_fill(),
-                   inp_GroupingMapping = "alpha",
-                   inp_AxisType_y = "proportional",
-                   inp_ls_ThemeArguments = list(inp_Theme_SizeFactorTickLabels_x = 1.3,
-                                                inp_Theme_SizeFactorLegendLabels = 1.3),
-                   inp_FillPalette = vc_FillPalette_Subgroup)
-
-df_Output_HIVCancerCategories_OverTime <- df_PatientsCancer %>%
-  group_by(PatientSubgroup, PatientSubgroupHIVCancerCategory, PresumedMainCancerDiagnosisYear) %>%
-  summarize(N = n())
-
-plot_Output_HIVCancerCategories_OverTime <- df_Output_HIVCancerCategories_OverTime %>%
-  f_MakeColumnPlot(inp_X = PresumedMainCancerDiagnosisYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = PatientSubgroupHIVCancerCategory,
-                   inp_GroupingSpecs = c("Non-HIV-associated cancer",
-                                         "HIV-associated non-AD cancer",
-                                         "HIV-associated AD cancer"),
-                   inp_GroupingPosition = position_fill(),
-                   inp_GroupingMapping = "alpha",
-                   inp_AxisType_y = "proportional",
-                   inp_FacetFeature = PatientSubgroup,
-                   inp_ls_FacetArguments = list(dir = "v"),
-                   inp_FacetMapping = "fill",
-                   inp_FillPalette = vc_FillPalette_Subgroup)
-
-
-#---------- Cancer grouping: CIS -----------------------------------------------
-
-
-df_Output_CIS <- df_PatientsCancer %>%
-  group_by(PatientSubgroup, CancerIsCarcinomaInSitu) %>%
-  summarize(N = n())
-
-plot_Output_CIS <- df_PatientsCancer %>%
-  group_by(PatientSubgroup, CancerIsCarcinomaInSitu) %>%
-  summarize(N = n()) %>%
-  f_MakeColumnPlot(inp_X = PatientSubgroup,
-                   inp_XAdditionalMapping = "fill",
-                   inp_FillPalette = vc_FillPalette_Subgroup,
-                   inp_Y = N,
-                   inp_GroupingFeature = CancerIsCarcinomaInSitu,
-                   inp_GroupingSpecs = c("Other" = FALSE, "Carcinoma in situ" = TRUE),
-                   inp_GroupingPosition = position_fill(),
-                   inp_AxisType_y = "proportional",
-                   inp_GroupingMapping = "alpha",
-                   inp_ls_ThemeArguments = list(inp_Theme_SizeFactorTickLabels_x = 1.3,
-                                                inp_Theme_SizeFactorLegendLabels = 1.3))
-
-
-
-#---------- Cancer Grouping: Topography detail ---------------------------------
-
-df_Output_CancerTopographyDetail <- df_PatientsCancer %>%
-  group_by(PatientSubgroup, CancerTopographyDetail) %>%
-  summarize(N = n()) %>%
-  group_by(PatientSubgroup) %>%
-  mutate(Proportion = N / sum(N))
-
-vc_TopographyDetailSorted <- df_Output_CancerTopographyDetail %>%
-  filter(PatientSubgroup == "Cancer with HIV") %>%
-  slice_max(n = 15,
-            order_by = Proportion) %>%
-  pull(CancerTopographyDetail)
-
-# Make "pyramid plot"
-plot_Output_CancerTopographyDetail <- df_Output_CancerTopographyDetail %>%
-  mutate(Proportion = case_when(PatientSubgroup == "Cancer without HIV" ~ -Proportion,
-                                TRUE ~ Proportion)) %>%
-  f_MakeColumnPlot(inp_X = CancerTopographyDetail,
-                   inp_XSpecs = rev(vc_TopographyDetailSorted),
-                   inp_Y = Proportion,
-                   inp_GroupingFeature = PatientSubgroup,
-                   inp_GroupingSpecs = c("Cancer with HIV", "Cancer without HIV"),
-                   inp_ColumnWidth = 0.8,
-                   inp_FillPalette = vc_FillPalette_Subgroup,
-                   inp_AxisType_y = "proportional",
-                   inp_CoordFlip = TRUE,
-                   inp_TickLabelWidth_x = 40,
-                   inp_LegendPosition = "top")
-
-# Manual modifications to comply pyramid plot needs
-plot_Output_CancerTopographyDetail <- plot_Output_CancerTopographyDetail +
-  theme(axis.text.y = element_text(margin = margin(r = 10, unit = "pt"))) +
-  scale_y_continuous(limits = c(-0.3, 0.3),
-                     breaks = seq(from = -0.3, to = 0.3, by = 0.1),
-                     labels = function(x) paste(abs(round(x * 100, 0)), "%")) +
-  scale_fill_manual(values = vc_FillPalette_Subgroup,
-                    breaks = c("Cancer without HIV", "Cancer with HIV"),
-                    name = NULL) +
-  guides(fill = guide_legend(override.aes = list(alpha = 0.8)))
-
-
-
-#---------- Cancer Grouping: Topography groups ---------------------------------
-
-df_Output_CancerTopographyGroup <- df_PatientsCancer %>%
-  group_by(PatientSubgroup, CancerTopographyGroup) %>%
-  summarize(N = n()) %>%
-  group_by(PatientSubgroup) %>%
-  mutate(Proportion = N / sum(N))
-
-vc_TopographyGroupsSorted <- df_Output_CancerTopographyGroup %>%
-  filter(PatientSubgroup == "Cancer without HIV") %>%
-  arrange(desc(Proportion)) %>%
-  pull(CancerTopographyGroup)
-
-# Make "pyramid plot"
-plot_Output_CancerTopographyGroup <- df_Output_CancerTopographyGroup %>%
-  mutate(Proportion = case_when(PatientSubgroup == "Cancer without HIV" ~ -Proportion,
-                                TRUE ~ Proportion)) %>%
-  f_MakeColumnPlot(inp_X = CancerTopographyGroup,
-                   inp_XSpecs = rev(vc_TopographyGroupsSorted),
-                   inp_Y = Proportion,
-                   inp_GroupingFeature = PatientSubgroup,
-                   inp_GroupingSpecs = c("Cancer with HIV", "Cancer without HIV"),
-                   inp_ColumnWidth = 0.8,
-                   inp_FillPalette = vc_FillPalette_Subgroup,
-                   inp_AxisType_y = "proportional",
-                   inp_CoordFlip = TRUE,
-                   inp_TickLabelWidth_x = 40,
-                   inp_LegendPosition = "top")
-
-# Manual modifications to comply pyramid plot needs
-plot_Output_CancerTopographyGroup <- plot_Output_CancerTopographyGroup +
-  theme(axis.text.y = element_text(margin = margin(r = 10, unit = "pt"))) +
-  scale_y_continuous(limits = c(-0.3, 0.3),
-                     breaks = seq(from = -0.3, to = 0.3, by = 0.1),
-                     labels = function(x) paste(abs(round(x * 100, 0)), "%")) +
-  scale_fill_manual(values = vc_FillPalette_Subgroup,
-                    breaks = c("Cancer without HIV", "Cancer with HIV"),
-                    name = NULL) +
-  guides(fill = guide_legend(override.aes = list(alpha = 0.8)))
-
-
-
-#--------- Metastasis occurrence -----------------------------------------------
-
-df_Output_MetastasisOccurrence <- df_PatientsCancer %>%
-  group_by(PatientSubgroup) %>%
-  summarize(N = n(),
-            CountMetastasis = sum(PatIsMetastasisCoded == TRUE, na.rm = TRUE),
-            ProportionMetastasis = CountMetastasis / N,
-            CountNoMetastasis = N - CountMetastasis,
-            ProportionNoMetastasis = CountNoMetastasis / N,
-            CountMetastasisWithCancerDiagnosis = sum(TimeCancerToMetastasis == 0, na.rm = TRUE),
-            ProportionMetastasisWithCancerDiagnosis = CountMetastasisWithCancerDiagnosis / CountMetastasis,
-            CountMetastasisAfterCancerDiagnosis = CountMetastasis - CountMetastasisWithCancerDiagnosis,
-            ProportionMetastasisAfterCancerDiagnosis = CountMetastasisAfterCancerDiagnosis / CountMetastasis)
-
-
-plot_Output_MetastasisOccurrence <- df_Output_MetastasisOccurrence %>%
-  select(PatientSubgroup,
-         CountNoMetastasis,
-         CountMetastasisWithCancerDiagnosis,
-         CountMetastasisAfterCancerDiagnosis) %>%
-  pivot_longer(cols = starts_with("Count"),
-               names_to = "Group",
-               values_to = "Count") %>% 
-  f_MakeColumnPlot(inp_X = PatientSubgroup,
-                   inp_XAdditionalMapping = "fill",
-                   inp_FillPalette = vc_FillPalette_Subgroup,
-                   inp_Y = Count,
-                   inp_GroupingFeature = Group,
-                   inp_GroupingSpecs = c("No Metastasis" = "CountNoMetastasis",
-                                         "Metastasis after cancer diagnosis" = "CountMetastasisAfterCancerDiagnosis",
-                                         "Metastasis with cancer diagnosis" = "CountMetastasisWithCancerDiagnosis"),
-                   inp_GroupingPosition = position_fill(),
-                   inp_GroupingMapping = "alpha",
-                   inp_AxisType_y = "proportional",
-                   inp_ls_ThemeArguments = list(inp_Theme_SizeFactorTickLabels_x = 1.3,
-                                                inp_Theme_SizeFactorLegendLabels = 1.3))
-
-
-
-#--------- HIVandCancer vs. CancerOnly: Time to Metastasis ---------------------
-
-# Include only patients that presumably had no metastasis at time of cancer diagnosis
-df_TimeCancerToMetastasis <- df_PatientsCancer %>%
-  filter(!is.na(TimeCancerToMetastasis) & TimeCancerToMetastasis > 0)
-
-df_Output_TimeCancerToMetastasis <- df_TimeCancerToMetastasis %>%
-  group_by(PatientSubgroup) %>%
-  f_GetSampleStatistics(inp_MetricFeature = TimeCancerToMetastasis,
-                        inp_na.rm = FALSE)
-
-
-model_TimeCancerToMetastasis <- survfit(Surv(TimeCancerToMetastasis, PatIsMetastasisCoded) ~ PatientSubgroup,
-                                        data = df_PatientsCancer)
-
-
-plot_Output_TimeCancerToMetastasis <- ggsurvplot(fit = model_TimeCancerToMetastasis,
-                                                 data = df_PatientsCancer,
-                                                 fun = "cumhaz",
-                                                 conf.int = TRUE,
-                                                 palette = c(color_CancerOnly, color_HIVCancer),
-                                                 legend.title = "",
-                                                 legend.labs = c("Cancer without HIV", "Cancer with HIV"))$plot +
-  theme_CCP(inp_Theme_LegendPosition = "top") +
-  scale_x_continuous(labels = function(value) round(value / 365, 0)) +
-  coord_cartesian(xlim = c(0, 2000),
-                  ylim = c(0, 5)) +
-  labs(x = "Years after cancer diagnosis",
-       y = "Cum. hazard of metastasis")
-
-
-
-#--------- HIVandCancer vs. CancerOnly: Count of main cancer entities ----------
-
-df_Output_HIVCancerEntityCount <- df_PatientsCancer %>%
-  group_by(PatientSubgroup) %>%
-  f_GetSampleStatistics(inp_MetricFeature = DistinctCodeCountMainCancer)
-
-plot_Output_HIVCancerEntityCount <- df_PatientsCancer %>%
-  f_MakeBoxViolinPlot(inp_X = PatientSubgroup,
-                      inp_Y = DistinctCodeCountMainCancer,
-                      inp_AxisTitle_y = "Number of different cancer entities",
-                      inp_AxisLimits_y = c(0, NA_integer_),
-                      inp_FillPalette = vc_FillPalette_Subgroup)
-
-
-
-#--------- HIVandCancer vs. CancerOnly: Therapy modalities ---------------------
-
-df_Output_TherapyModalities <- df_PatientsCancer %>%
-  group_by(PatientSubgroup) %>%
-  summarize(N = n(),
-            CountNoMajorTherapyCoded = sum(PatHadAnyPresumedCancerTherapy == FALSE, na.rm = TRUE),
-            CountAnyMajorTherapy = sum(PatHadAnyPresumedCancerTherapy == TRUE, na.rm = TRUE),
-            CountSurgery = sum(PatHadSurgery, na.rm = TRUE),
-            ProportionSurgery = CountSurgery / CountAnyMajorTherapy,
-            CountChemotherapy = sum(PatHadChemotherapy == TRUE, na.rm = TRUE),
-            ProportionChemotherapy = CountChemotherapy / CountAnyMajorTherapy,
-            CountOtherImmunotherapy = sum(PatHadImmunotherapy == TRUE, na.rm = TRUE),
-            ProportionOtherImmunotherapy = CountOtherImmunotherapy / CountAnyMajorTherapy,
-            CountRadiotherapy = sum(PatHadRadiotherapy == TRUE, na.rm = TRUE),
-            ProportionRadiotherapy = CountRadiotherapy / CountAnyMajorTherapy,
-            CountNuclearMedicineTherapy = sum(PatHadNuclearmedTherapy == TRUE, na.rm = TRUE),
-            ProportionNuclearMedicineTherapy = CountNuclearMedicineTherapy / CountAnyMajorTherapy)
-
-plot_Output_AnyMajorTherapy <- df_Output_TherapyModalities %>%
-  select(PatientSubgroup,
-         CountNoMajorTherapyCoded,
-         CountAnyMajorTherapy) %>%
-  pivot_longer(cols = starts_with("Count"),
-               names_to = "Group",
-               values_to = "Count") %>%
-  f_MakeColumnPlot(inp_X = PatientSubgroup,
-                   inp_XAdditionalMapping = "fill",
-                   inp_FillPalette = vc_FillPalette_Subgroup,
-                   inp_Y = Count,
-                   inp_GroupingFeature = Group,
-                   inp_GroupingPosition = position_fill(),
-                   inp_GroupingSpecs = c("No Major Therapy coded" = "CountNoMajorTherapyCoded",
-                                         "Any Major Therapy" = "CountAnyMajorTherapy"),
-                   inp_GroupingMapping = "alpha",
-                   inp_AxisType_y = "proportional",
-                   inp_ls_ThemeArguments = list(inp_Theme_SizeFactorTickLabels_x = 1.3,
-                                                inp_Theme_SizeFactorLegendLabels = 1.3))
-
-
-plot_Output_TherapyModalities <- df_Output_TherapyModalities %>%
-  pivot_longer(cols = starts_with("Proportion"),
-               names_to = "Group",
-               values_to = "Proportion") %>%
-  f_MakeColumnPlot(inp_X = Group,
-                   inp_XSpecs = c("Surgery" = "ProportionSurgery",
-                                  "Chemo- therapy" = "ProportionChemotherapy",
-                                  "Radio- therapy" = "ProportionRadiotherapy",
-                                  "Immuno- therapy" = "ProportionOtherImmunotherapy",
-                                  "Nuclear Medicine Therapy" = "ProportionNuclearMedicineTherapy"),
-                   inp_Y = Proportion,
-                   inp_GroupingFeature = PatientSubgroup,
-                   inp_GroupingPosition = position_dodge(),
-                   inp_FillPalette = vc_FillPalette_Subgroup,
-                   inp_AxisType_y = "proportional",
-                   inp_AxisTitle_y = "Prop. of pat. who received major therapy",
-                   inp_ls_ThemeArguments = list(inp_Theme_SizeFactorTickLabels_x = 1.3,
-                                                inp_Theme_SizeFactorLegendLabels = 1.3))
-
-
-
-#--------- HIVandCancer vs. CancerOnly: Therapy complications ------------------
-
-df_Output_TherapyComplications <- df_PatientsCancer %>%
-  group_by(PatientSubgroup) %>%
-  summarize(N = n(),
-            AnyMajorTherapy = sum(PatHadAnyPresumedCancerTherapy == TRUE, na.rm = TRUE),
-            Chemotherapy = sum(PatHadChemotherapy == TRUE, na.rm = TRUE),
-            ComplicationAfterChemotherapy = sum(PatHadComplicationAfterChemo == TRUE, na.rm = TRUE))
-
-
-model_TimeChemoToComplication <- survfit(Surv(TimeChemoToFirstComplication, PatHadComplicationAfterChemo) ~ PatientSubgroup,
-                                         data = df_PatientsCancer)
-
-
-plot_Output_TimeChemoToComplication <- ggsurvplot(fit = model_TimeChemoToComplication,
-                                                  data = df_PatientsCancer,
-                                                  fun = "cumhaz",
-                                                  conf.int = TRUE,
-                                                  palette = c(color_CancerOnly, color_HIVCancer),
-                                                  legend.title = "",
-                                                  legend.labs = c("Cancer without HIV", "Cancer with HIV"))$plot +
-  theme_CCP(inp_Theme_LegendPosition = "top") +
-  scale_x_continuous(labels = function(x) x) +
-  coord_cartesian(xlim = c(0, 100),
-                  ylim = c(0, 1)) +
-  labs(x = "Days after first chemotherapy administration",
-       y = "Cum. hazard of complication")
-
-
-
-#--------- Last recorded discharge reason --------------------------------------
-
-df_Output_LastRecordedDischargeReason <- df_PatientsCancer %>%
-  group_by(PatientSubgroup, LastRecordedDischargeReason) %>%
-  summarize(N = n()) %>%
-  group_by(PatientSubgroup) %>%
-  mutate(Proportion = N / sum(N))
-
-plot_Output_LastRecordedDischargeReason <- df_Output_LastRecordedDischargeReason %>%
-  f_MakeColumnPlot(inp_X = PatientSubgroup,
-                   inp_XAdditionalMapping = "fill",
-                   inp_FillPalette = vc_FillPalette_Subgroup,
-                   inp_Y = N,
-                   inp_GroupingFeature = LastRecordedDischargeReason,
-                   inp_GroupingSpecs = c("Other",
-                                         "Rehabilitation or Residential Care",
-                                         "Home",
-                                         "Other Hospital",
-                                         "Hospice Care",
-                                         "Deceased"),
-                   inp_GroupingPosition = "fill",
-                   inp_GroupingMapping = "alpha",
-                   inp_AxisType_y = "proportional")
-
-
-
-
-########## HIVandCancer ########################################################
-
-#--------- HIV and cancer diagnosis order ------------------------------------------
-df_Output_HIVCancerDiagnosisOrder <- df_PatientsHIVCancer %>%
-  group_by(HIVCancerDiagnosisOrder, PresumedMainCancerDiagnosisYear) %>%
-  summarize(N = n()) %>% 
-  ungroup() %>%
-  complete(HIVCancerDiagnosisOrder, PresumedMainCancerDiagnosisYear, fill = list(N = 0))
-
-plot_Output_HIVCancerDiagnosisOrder <- df_Output_HIVCancerDiagnosisOrder %>%
-  f_MakeColumnPlot(inp_X = PresumedMainCancerDiagnosisYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = HIVCancerDiagnosisOrder,
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_3,
-                   inp_FillPalette = color_HIVCancer,
-                   inp_GroupingPosition = position_fill(),
-                   inp_AxisType_y = "proportional")
-
-
-#--------- Primary HIV cancer category -----------------------------------------
-df_Output_HIVCancerCategory <- df_PatientsHIVCancer %>%
-  group_by(HIVCancerCategory, PresumedMainCancerDiagnosisYear) %>%
-  summarize(N = n())
-# pivot_wider(names_from = HIVCancerCategory,
-#             values_from = N)
-
-# Plot with absolute counts
-plot_Output_HIVCancerCategory_A <- df_Output_HIVCancerCategory %>%
-  f_MakeColumnPlot(inp_X = PresumedMainCancerDiagnosisYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = HIVCancerCategory,
-                   inp_GroupingSpecs = c("Non-HIV-associated cancer",
-                                         "HIV-associated non-AD cancer",
-                                         "HIV-associated AD cancer"),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_3,
-                   inp_FillPalette = color_HIVCancer)
-
-# Plot with proportions
-plot_Output_HIVCancerCategory_B <- df_Output_HIVCancerCategory %>%
-  f_MakeColumnPlot(inp_X = PresumedMainCancerDiagnosisYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = HIVCancerCategory,
-                   inp_GroupingSpecs = c("Non-HIV-associated cancer",
-                                         "HIV-associated non-AD cancer",
-                                         "HIV-associated AD cancer"),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_3,
-                   inp_FillPalette = color_HIVCancer,
-                   inp_GroupingPosition = position_fill(),
-                   inp_AxisType_y = "proportional")
-
-
-#--------- Age at presumed cancer diagnosis ------------------------------------
-
-plot_Output_HIVCancerAgeAtDiagnosis <- df_PatientsHIVCancer %>%
-  filter(HIVCancerDiagnosisOrder != "Cancer before HIV") %>%
-  f_MakeBoxViolinPlot(inp_X = HIVCancerCategory,
-                      inp_Y = PresumedMainCancerDiagnosisAge,
-                      inp_AxisTitle_y = "",
-                      inp_AxisLimits_y = c(0, NA_integer_),
-                      inp_FillPalette = vc_FillPalette_Subgroup)      # Fixed lower and auto upper y-Axis limit
-
-
-#--------- HIVandCancer: AIDS occurrence ---------------------------------------
-df_Output_HIVCancerAIDS <- df_PatientsHIVCancer %>%
-  group_by(AIDSOccurrence, PresumedMainCancerDiagnosisYear) %>%
-  summarize(N = n()) %>% 
-  ungroup() %>%
-  complete(AIDSOccurrence, PresumedMainCancerDiagnosisYear, fill = list(N = 0))
-
-plot_Output_HIVCancerAIDS <- df_Output_HIVCancerAIDS %>%
-  f_MakeColumnPlot(inp_X = PresumedMainCancerDiagnosisYear,
-                   inp_Y = N,
-                   inp_GroupingFeature = AIDSOccurrence,
-                   inp_GroupingSpecs = c("Cancer and HIV without AIDS",
-                                         "AIDS after cancer diagnosis",
-                                         "AIDS at or before cancer diagnosis"),
-                   inp_GroupingMapping = "alpha",
-                   inp_AlphaPalette = vc_AlphaPalette_3,
-                   inp_FillPalette = color_HIVCancer,
-                   inp_GroupingPosition = position_fill(),
-                   inp_AxisType_y = "proportional")
-
-
-#--------- Overview plot of HIV cancer  ----------------------------------------
-plot_Output_HIVCancerOverview <- ggarrange(plot_Output_HIVCancerDiagnosisOrder,
-                                           plot_Output_HIVCancerCategory_B,
-                                           plot_Output_HIVCancerAIDS,
-                                           nrow = 3,
-                                           align = "hv",
-                                           labels = LETTERS[1:4])
-
-
-
-########## HIVandCancer vs. HIVOnly ############################################
-
-
-#---------- HIV Status ---------------------------------------------------------
-
-#!!! Add variable in df_Patients HIV Status...
-
-
-
-#--------- HIVandCancer vs. HIVOnly: AIDS occurrence ---------------------------
-
-# df_Output_AIDSOccurrence <- df_Patients %>%
-#                                 filter(PatIsHIVCoded == TRUE) %>%
-#                                 distinct(PatientPseudonym, .keep_all = TRUE) %>%
-#                                 group_by(PatientSubgroup) %>%
-#                                 summarize(N = n(),
-#                                           CountAIDS = sum(PatIsAIDSCoded == TRUE, na.rm = TRUE),
-#                                           ProportionAIDS = CountAIDS / N,
-#                                           CountNoAIDS = N - CountAIDS,
-#                                           ProportionNoAIDS = CountNoAIDS / N,
-#                                           CountAIDSWithHIVDiagnosis = sum(TimeHIVToAIDS == 0, na.rm = TRUE),
-#                                           ProportionAIDSWithHIVDiagnosis = CountAIDSWithHIVDiagnosis / CountAIDS,
-#                                           CountAIDSAfterHIVDiagnosis = CountAIDS - CountAIDSWithHIVDiagnosis,
-#                                           ProportionAIDSAfterHIVDiagnosis = CountAIDSAfterHIVDiagnosis / CountAIDS)
+#PlotOutputPath <- "./Reporting/Publication"
+PlotOutputPath <- "C:/Users/Basti/OneDrive/ARBEIT/IDMKD/Projekte/HIVCAre/Publikation/Paper/JMIR Public Health and Surveillance/Review/Images"
+
+
+tp_begin <- 2005
+tp_end <- 2022
+
+
+GetCI <- function(x, ...)
+{
+  DescTools::MultinomCI(x, ...) %>%
+      as_tibble() %>%
+      rename(PropCheck = 1, CI.lower = 2, CI.upper = 3)
+}
+
+
+FormatNumbers <- function(x)
+{
+  format(x, big.mark = ",",
+            decimal.mark = ".",
+            width = NULL)
+}
+
+
+FormatPValue <- function(p)
+{
+  case_when(p < 0.001 ~ "P < .001",
+            p < 0.01 ~ paste0("P = ", sub("^0\\.", ".", formatC(p, digits = 3, format = "f"))),
+            between(p, 0.045, 0.05499999) ~ paste0("P = ", sub("^0\\.", ".", formatC(p, digits = 3, format = "f"))),
+            p > 0.99 ~ "P > 0.99",
+            .default = paste0("P = ", sub("^0\\.", ".", formatC(p, digits = 2, format = "f"))))
+}
+
+
+
+#===============================================================================
+# Characteristics of ALL GROUPS (temporally stratified)
+#===============================================================================
+
+#-------------------------------------------------------------------------------
+Full.SampleSize.TimeGroups <- CumulatedData_Full$df_Output_SampleSize %>%
+                                  filter(FirstRelevantAdmissionYear >= tp_begin & FirstRelevantAdmissionYear <= tp_end) %>%
+                                  mutate(Strata = case_when(FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear <= 2008 ~ "2005 - 2008",
+                                                            FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009 - 2014",
+                                                            FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2022 ~ "2015 - 2022")) %>%
+                                  group_by(PatientSubgroup, Strata) %>%
+                                      summarize(N = sum(N)) %>%
+                                  ungroup()
+
+Full.SampleSize.TotalTime <- Full.SampleSize.TimeGroups %>%
+                                group_by(PatientSubgroup) %>%
+                                    summarize(Strata = "Total",
+                                              N = sum(N))
+
+Full.SampleSize <- Full.SampleSize.TimeGroups %>%
+                        bind_rows(Full.SampleSize.TotalTime) %>%
+                        pivot_wider(names_from = PatientSubgroup,
+                                    values_from = N) %>%
+                        mutate(across(-Strata, ~ FormatNumbers(.x)))
+
+
+#-------------------------------------------------------------------------------
+
+Full.FemaleSex.TimeGroups <- CumulatedData_Full$df_Output_Sex %>%
+                                filter(FirstRelevantAdmissionYear >= tp_begin & FirstRelevantAdmissionYear <= tp_end) %>%
+                                mutate(Strata = case_when(FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear <= 2008 ~ "2005 - 2008",
+                                                          FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009 - 2014",
+                                                          FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2022 ~ "2015 - 2022")) %>%
+                                pivot_wider(names_from = Site,
+                                            values_from = N) %>%
+                                mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                group_by(PatientSubgroup, Strata, Sex) %>%
+                                    summarize(N = sum(N)) %>%
+                                group_by(PatientSubgroup, Strata) %>%
+                                    reframe(Sex = Sex,
+                                            N = N,
+                                            Proportion = N / sum(N)) %>%
+                                ungroup() %>%
+                                filter(Sex == "F") %>%
+                                select(-Sex)
+
+Full.FemaleSex.TotalTime <- Full.FemaleSex.TimeGroups %>%
+                                group_by(PatientSubgroup) %>%
+                                    summarize(Strata = "Total",
+                                              Proportion = sum(N) / sum(N / Proportion),
+                                              N = sum(N)) %>%
+                                ungroup()
+
+Full.FemaleSex <- Full.FemaleSex.TimeGroups %>%
+                      bind_rows(Full.FemaleSex.TotalTime) %>%
+                      mutate(Output = paste0(FormatNumbers(N), " (", FormatNumbers(round(Proportion * 100, digits = 1)), "%)")) %>%
+                      select(-N, -Proportion) %>%
+                      pivot_wider(names_from = PatientSubgroup,
+                                  values_from = Output)
+
+
+#-------------------------------------------------------------------------------
+Full.Age.TimeGroups <- CumulatedData_Full$df_Output_Age %>%
+                           filter(FirstRelevantAdmissionYear >= tp_begin & FirstRelevantAdmissionYear <= tp_end) %>%
+                           mutate(Strata = case_when(FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear <= 2008 ~ "2005 - 2008",
+                                                     FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009 - 2014",
+                                                     FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2022 ~ "2015 - 2022")) %>%
+                           pivot_wider(names_from = Site,
+                                       values_from = N) %>%
+                           mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                           group_by(PatientSubgroup, Strata, AgeGroup) %>%
+                               summarize(N = sum(N)) %>%
+                           group_by(PatientSubgroup, Strata) %>%
+                               reframe(AgeGroup = AgeGroup,
+                                       N = N,
+                                       Proportion = N / sum(N)) %>%
+                           ungroup()
+
+Full.Age.TotalTime <- expand(Full.Age.TimeGroups,
+                             PatientSubgroup,
+                             Strata,
+                             AgeGroup) %>%
+                        left_join(Full.Age.TimeGroups) %>%
+                        group_by(PatientSubgroup, AgeGroup) %>%
+                            summarize(Strata = "Total",
+                                      Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                      N = sum(N, na.rm = TRUE)) %>%
+                        ungroup()
+
+Full.Age <- Full.Age.TimeGroups %>%
+                bind_rows(Full.Age.TotalTime) %>%
+                mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                select(-N, -Proportion) %>%
+                pivot_wider(names_from = PatientSubgroup,
+                            values_from = Output)
+
+
+#-------------------------------------------------------------------------------
+Full.Admissions.TimeGroups <- CumulatedData_Full$df_Output_CaseCount %>%
+                                   filter(FirstRelevantAdmissionYear >= tp_begin & FirstRelevantAdmissionYear <= tp_end) %>%
+                                   mutate(Strata = case_when(FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear <= 2008 ~ "2005 - 2008",
+                                                             FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009 - 2014",
+                                                             FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2022 ~ "2015 - 2022")) %>%
+                                   pivot_wider(names_from = Site,
+                                               values_from = N) %>%
+                                   mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                   group_by(PatientSubgroup, Strata, CaseCountGroup) %>%
+                                       summarize(N = sum(N)) %>%
+                                   group_by(PatientSubgroup, Strata) %>%
+                                       reframe(CaseCountGroup = CaseCountGroup,
+                                               N = N,
+                                               Proportion = N / sum(N)) %>%
+                                   ungroup()
+
+Full.Admissions.TotalTime <- expand(Full.Admissions.TimeGroups,
+                                    PatientSubgroup,
+                                    Strata,
+                                    CaseCountGroup) %>%
+                               left_join(Full.Admissions.TimeGroups) %>%
+                               group_by(PatientSubgroup, CaseCountGroup) %>%
+                                   summarize(Strata = "Total",
+                                             Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                             N = sum(N, na.rm = TRUE)) %>%
+                               ungroup()
+
+Full.Admissions <- Full.Admissions.TimeGroups %>%
+                        bind_rows(Full.Admissions.TotalTime) %>%
+                        mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                        select(-N, -Proportion) %>%
+                        pivot_wider(names_from = PatientSubgroup,
+                                    values_from = Output) %>%
+                        mutate(CaseCountGroup = str_replace(CaseCountGroup, "Case", "admission"))
+
+
+#-------------------------------------------------------------------------------
+Full.MeanLengthOfStay.TimeGroups <- CumulatedData_Full$df_Output_MeanLengthOfStay %>%
+                                         filter(FirstRelevantAdmissionYear >= tp_begin & FirstRelevantAdmissionYear <= tp_end) %>%
+                                         mutate(Strata = case_when(FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear <= 2008 ~ "2005 - 2008",
+                                                                   FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009 - 2014",
+                                                                   FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2022 ~ "2015 - 2022")) %>%
+                                         pivot_wider(names_from = Site,
+                                                     values_from = N) %>%
+                                         mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                         group_by(PatientSubgroup, Strata, MeanLengthOfStayGroup) %>%
+                                             summarize(N = sum(N)) %>%
+                                         group_by(PatientSubgroup, Strata) %>%
+                                             reframe(MeanLengthOfStayGroup = MeanLengthOfStayGroup,
+                                                     N = N,
+                                                     Proportion = N / sum(N)) %>%
+                                         ungroup()
+
+Full.MeanLengthOfStay.TotalTime <- expand(Full.MeanLengthOfStay.TimeGroups,
+                                          PatientSubgroup,
+                                          Strata,
+                                          MeanLengthOfStayGroup) %>%
+                                     left_join(Full.MeanLengthOfStay.TimeGroups) %>%
+                                     group_by(PatientSubgroup, MeanLengthOfStayGroup) %>%
+                                         summarize(Strata = "Total",
+                                                   Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                                   N = sum(N, na.rm = TRUE)) %>%
+                                     ungroup()
+
+Full.MeanLengthOfStay <- Full.MeanLengthOfStay.TimeGroups %>%
+                              bind_rows(Full.MeanLengthOfStay.TotalTime) %>%
+                              mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                              select(-N, -Proportion) %>%
+                              pivot_wider(names_from = PatientSubgroup,
+                                          values_from = Output) %>%
+                              mutate(MeanLengthOfStayGroup = str_replace(MeanLengthOfStayGroup, "average", "avg."),
+                                     MeanLengthOfStayGroup = str_replace(MeanLengthOfStayGroup, "More than", ">")) %>%
+                              group_by(Strata) %>%
+                              arrange(factor(MeanLengthOfStayGroup, levels = c("Up to 7 days on avg.",
+                                                                               "7 - 14 days on avg.",
+                                                                               "14 - 30 days on avg.",
+                                                                               "> 30 days on avg.")),
+                                      .by_group = TRUE)
+                              
+
+
+#-------------------------------------------------------------------------------
+Full.DistinctCancers.TimeGroups <- CumulatedData_Full$df_Output_DistinctCodeCountCancer %>%
+                                       filter(FirstRelevantAdmissionYear >= tp_begin & FirstRelevantAdmissionYear <= tp_end) %>%
+                                       mutate(Strata = case_when(FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear <= 2008 ~ "2005 - 2008",
+                                                                 FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009 - 2014",
+                                                                 FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2022 ~ "2015 - 2022")) %>%
+                                       pivot_wider(names_from = Site,
+                                                   values_from = N) %>%
+                                       mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                       group_by(PatientSubgroup, Strata, CancerCountGroup) %>%
+                                           summarize(N = sum(N)) %>%
+                                       group_by(PatientSubgroup, Strata) %>%
+                                           reframe(CancerCountGroup = CancerCountGroup,
+                                                   N = N,
+                                                   Proportion = N / sum(N)) %>%
+                                       ungroup()
+
+Full.DistinctCancers.TotalTime <- expand(Full.DistinctCancers.TimeGroups,
+                                         PatientSubgroup,
+                                         Strata,
+                                         CancerCountGroup) %>%
+                                    left_join(Full.DistinctCancers.TimeGroups) %>%
+                                    group_by(PatientSubgroup, CancerCountGroup) %>%
+                                        summarize(Strata = "Total",
+                                                  Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                                  N = sum(N, na.rm = TRUE)) %>%
+                                    ungroup()
+
+Full.DistinctCancers <- Full.DistinctCancers.TimeGroups %>%
+                                bind_rows(Full.DistinctCancers.TotalTime) %>%
+                                mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                                select(-N, -Proportion) %>%
+                                pivot_wider(names_from = PatientSubgroup,
+                                            values_from = Output)
+
+
+#-------------------------------------------------------------------------------
+Full.CIS.TimeGroups <- CumulatedData_Full$df_Output_CIS %>%
+                            filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                            mutate(PatientSubgroup = droplevels(PatientSubgroup),      # Drop empty level 'Cancer-/HIV+'
+                                   Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                      MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                      MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                            pivot_wider(names_from = Site,
+                                        values_from = N) %>%
+                            mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                            group_by(PatientSubgroup, Strata, MainCancerIsCarcinomaInSitu) %>%
+                                summarize(N = sum(N)) %>%
+                            group_by(PatientSubgroup, Strata) %>%
+                                reframe(MainCancerIsCarcinomaInSitu = MainCancerIsCarcinomaInSitu,
+                                        N = N,
+                                        Proportion = N / sum(N)) %>%
+                            ungroup() %>%
+                            filter(MainCancerIsCarcinomaInSitu == TRUE) %>%
+                            select(-MainCancerIsCarcinomaInSitu)
+
+Full.CIS.TotalTime <- expand(Full.CIS.TimeGroups,
+                             PatientSubgroup,
+                             Strata) %>%
+                          left_join(Full.CIS.TimeGroups) %>%
+                          group_by(PatientSubgroup) %>%
+                              summarize(Strata = "Total",
+                                        Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                        N = sum(N, na.rm = TRUE)) %>%
+                          ungroup()
+
+Full.CIS <- Full.CIS.TimeGroups %>%
+                bind_rows(Full.CIS.TotalTime) %>%
+                mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                select(-N, -Proportion) %>%
+                pivot_wider(names_from = PatientSubgroup,
+                            values_from = Output)
+
+
+#-------------------------------------------------------------------------------
+Full.CancerTopography.TimeGroups <- CumulatedData_Full$df_Output_MainCancerTopographyGroup_OverTime %>%
+                                         filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                                         mutate(PatientSubgroup = droplevels(PatientSubgroup),
+                                                Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                                   MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                                   MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                                         pivot_wider(names_from = Site,
+                                                     values_from = N) %>%
+                                         mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                         group_by(PatientSubgroup, Strata, MainCancerTopographyGroup) %>%
+                                             summarize(N = sum(N)) %>%
+                                         group_by(PatientSubgroup, Strata) %>%
+                                             reframe(MainCancerTopographyGroup = MainCancerTopographyGroup,
+                                                     N = N,
+                                                     Proportion = N / sum(N)) %>%
+                                         ungroup()
+
+Full.CancerTopography.TotalTime <- expand(Full.CancerTopography.TimeGroups,
+                                         PatientSubgroup,
+                                         Strata,
+                                         MainCancerTopographyGroup) %>%
+                                      left_join(Full.CancerTopography.TimeGroups) %>%
+                                      group_by(PatientSubgroup, MainCancerTopographyGroup) %>%
+                                          summarize(Strata = "Total",
+                                                    Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                                    N = sum(N, na.rm = TRUE)) %>%
+                                      ungroup()
+
+Full.CancerTopography <- Full.CancerTopography.TimeGroups %>%
+                                bind_rows(Full.CancerTopography.TotalTime) %>%
+                                mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                                select(-N, -Proportion) %>%
+                                pivot_wider(names_from = PatientSubgroup,
+                                            values_from = Output)
+
+
+
+#===============================================================================
+# Characteristics of MATCHED CANCER GROUPS (temporally stratified)
+#===============================================================================
+
+# Note: Time stratification by Cancer DIAGNOSIS YEAR, not first admission year (like above)
+#-------------------------------------------------------------------------------
+Matched.SampleSize.TimeGroups <- CumulatedData_Matched$df_Output_AgeAtCancerDiagnosis %>%
+                                    filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                                    mutate(Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                              MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                              MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                                    group_by(PatientSubgroup, Strata) %>%
+                                        summarize(N = sum(N)) %>%
+                                    ungroup()
+
+Matched.SampleSize.TotalTime <- Matched.SampleSize.TimeGroups %>%
+                                    group_by(PatientSubgroup) %>%
+                                        summarize(Strata = "Total",
+                                                  N = sum(N))
+
+Matched.SampleSize <- Matched.SampleSize.TimeGroups %>%
+                          bind_rows(Matched.SampleSize.TotalTime) %>%
+                          pivot_wider(names_from = PatientSubgroup,
+                                      values_from = N) %>%
+                          mutate(across(-Strata, ~ FormatNumbers(.x)))
+
+Matched.SampleSize.Summary <- Matched.SampleSize %>%
+                                  filter(Strata == "Total")
+
+
+#-------------------------------------------------------------------------------
+Matched.AgeCancer.TimeGroups <- CumulatedData_Matched$df_Output_AgeAtCancerDiagnosis %>%
+                                   filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                                   mutate(PatientSubgroup = droplevels(PatientSubgroup),      # This removes empty factor level 'Cancer-/HIV+'. 'PatientSubgroup' still contains the factor level 'Cancer-/HIV+' although there is no data for that group, so the following expand would create combinations with that factor level as well.
+                                          Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                             MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                             MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                                   pivot_wider(names_from = Site,
+                                               values_from = N) %>%
+                                   mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                   group_by(PatientSubgroup, Strata, AgeGroup) %>%
+                                       summarize(N = sum(N)) %>%
+                                   group_by(PatientSubgroup, Strata) %>%
+                                       reframe(AgeGroup = AgeGroup,
+                                               N = N,
+                                               Proportion = N / sum(N)) %>%
+                                   ungroup()
+
+Matched.AgeCancer.TotalTime <- expand(Matched.AgeCancer.TimeGroups,
+                                      PatientSubgroup,
+                                      Strata,
+                                      AgeGroup) %>%
+                                  left_join(Matched.AgeCancer.TimeGroups) %>%
+                                  group_by(PatientSubgroup, AgeGroup) %>%
+                                      summarize(Strata = "Total",
+                                                Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                                N = sum(N, na.rm = TRUE)) %>%
+                                  ungroup()
+
+Matched.AgeCancer <- Matched.AgeCancer.TimeGroups %>%
+                          bind_rows(Matched.AgeCancer.TotalTime) %>%
+                          mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                          select(-N, -Proportion) %>%
+                          pivot_wider(names_from = PatientSubgroup,
+                                      values_from = Output)
+
+
+#-------------------------------------------------------------------------------
+Matched.CIS.TimeGroups <- CumulatedData_Matched$df_Output_CIS %>%
+                              filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                              mutate(PatientSubgroup = droplevels(PatientSubgroup),      # Drop empty level 'Cancer-/HIV+'
+                                     Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                        MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                        MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                              pivot_wider(names_from = Site,
+                                          values_from = N) %>%
+                              mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                              group_by(PatientSubgroup, Strata, MainCancerIsCarcinomaInSitu) %>%
+                                  summarize(N = sum(N)) %>%
+                              group_by(PatientSubgroup, Strata) %>%
+                                  reframe(MainCancerIsCarcinomaInSitu = MainCancerIsCarcinomaInSitu,
+                                          N = N,
+                                          Proportion = N / sum(N)) %>%
+                              ungroup() %>%
+                              filter(MainCancerIsCarcinomaInSitu == TRUE) %>%
+                              select(-MainCancerIsCarcinomaInSitu)
+
+Matched.CIS.TotalTime <- expand(Matched.CIS.TimeGroups,
+                                PatientSubgroup,
+                                Strata) %>%
+                            left_join(Matched.CIS.TimeGroups) %>%
+                            group_by(PatientSubgroup) %>%
+                                summarize(Strata = "Total",
+                                          Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                          N = sum(N, na.rm = TRUE)) %>%
+                            ungroup()
+
+Matched.CIS <- Matched.CIS.TimeGroups %>%
+                    bind_rows(Matched.CIS.TotalTime) %>%
+                    mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                    select(-N, -Proportion) %>%
+                    pivot_wider(names_from = PatientSubgroup,
+                                values_from = Output)
+
+Matched.CIS.pValues <- Matched.CIS.TimeGroups %>%
+                            bind_rows(Matched.CIS.TotalTime) %>%
+                            group_by(Strata) %>%
+                            mutate(Count = N,
+                                   N = sum(Count)) %>%
+                            summarize(ChiSqTest = list(stats::prop.test(x = Count,
+                                                                        n = N)),
+                                      FisherTest = list(stats::fisher.test(x = matrix(data = c(Count, N - Count),
+                                                                                      nrow = 2, ncol = 2, byrow = FALSE)))) %>%
+                            ungroup() %>%
+                            rowwise() %>%
+                                mutate(PValue.ChiSq = FormatPValue(ChiSqTest$p.value),
+                                       PValue.Fisher = FormatPValue(FisherTest$p.value)) %>%
+                            ungroup() %>%
+                            select(-ChiSqTest,
+                                   -FisherTest)
+
+Matched.CIS <- Matched.CIS %>%
+                    left_join(Matched.CIS.pValues, by = join_by(Strata))
+
+
+#-------------------------------------------------------------------------------
+Matched.Metastasis.TimeGroups <- CumulatedData_Matched$df_Output_MetastasisOccurrence %>%
+                                      filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                                      mutate(PatientSubgroup = droplevels(PatientSubgroup),      # Drop empty level 'Cancer-/HIV+',
+                                             Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                                MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                                MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                                      select(-CountNoMetastasis,
+                                             -starts_with("Proportion")) %>%
+                                      pivot_wider(names_from = Site,
+                                                  values_from = c(N, starts_with("Count"), starts_with("Proportion"))) %>%
+                                      mutate(N = rowSums(across(all_of(paste0("N_", SiteNames))), na.rm = TRUE),
+                                             CountMetastasis = rowSums(across(all_of(paste0("CountMetastasis_", SiteNames))), na.rm = TRUE),
+                                             CountMetastasisWithCancerDiagnosis = rowSums(across(all_of(paste0("CountMetastasisWithCancerDiagnosis_", SiteNames))), na.rm = TRUE),
+                                             CountMetastasisAfterCancerDiagnosis = rowSums(across(all_of(paste0("CountMetastasisAfterCancerDiagnosis_", SiteNames))), na.rm = TRUE)) %>%
+                                      select(-(ends_with(SiteNames))) %>%
+                                      group_by(PatientSubgroup, Strata) %>%
+                                          summarize(across(c(starts_with("N"), starts_with("Count")),
+                                                           ~ sum(.x))) %>%
+                                          mutate(ProportionMetastasis = CountMetastasis / N,
+                                                 ProportionMetastasisWithCancerDiagnosis = CountMetastasisWithCancerDiagnosis / CountMetastasis,
+                                                 ProportionMetastasisAfterCancerDiagnosis = CountMetastasisAfterCancerDiagnosis / CountMetastasis) %>%
+                                      ungroup()
+
+Matched.Metastasis.TotalTime <- expand(Matched.Metastasis.TimeGroups,
+                                       PatientSubgroup,
+                                       Strata) %>%
+                                    left_join(Matched.Metastasis.TimeGroups) %>%
+                                    group_by(PatientSubgroup) %>%
+                                        summarize(Strata = "Total",
+                                                  ProportionMetastasis = sum(CountMetastasis) / sum(N),
+                                                  ProportionMetastasisWithCancerDiagnosis = sum(CountMetastasisWithCancerDiagnosis) / sum(CountMetastasis),
+                                                  ProportionMetastasisAfterCancerDiagnosis = sum(CountMetastasisAfterCancerDiagnosis) / sum(CountMetastasis),
+                                                  across(starts_with("Count"), ~ sum(.x)),
+                                                  N = sum(N)) %>%
+                                    ungroup()
+
+Matched.Metastasis <- Matched.Metastasis.TimeGroups %>%
+                          bind_rows(Matched.Metastasis.TotalTime) %>%
+                          mutate(across(.cols = starts_with("Count"),
+                                        .fns  = ~ paste0(FormatNumbers(.x), " (", FormatNumbers(round(get(sub("^Count", "Proportion", cur_column())) * 100, 1)), "%)"),
+                                        .names = "Output_{sub('^Count', '', .col)}")) %>%
+                          select(-c(starts_with("Count"),
+                                    starts_with("Proportion"))) %>%
+                          mutate(N = as.character(N)) %>%
+                          pivot_longer(cols = c(N, starts_with("Output")),
+                                       names_to = "OutputType",
+                                       values_to = "Output") %>%
+                          mutate(OutputType = str_remove(OutputType, "Output_"),
+                                 OutputType = case_match(OutputType, "Metastasis" ~ "Metastasis documented",
+                                                                     "MetastasisWithCancerDiagnosis" ~ "Metastasis at time of cancer diagnosis",
+                                                                     "MetastasisAfterCancerDiagnosis" ~ "Metastasis after cancer diagnosis",
+                                                         .default = OutputType)) %>%
+                          pivot_wider(names_from = PatientSubgroup,
+                                      values_from = Output)
+
+
+Matched.Metastasis.pValues <- Matched.Metastasis.TimeGroups %>%
+                                  bind_rows(Matched.Metastasis.TotalTime) %>%
+                                  select(-c(starts_with("Proportion"))) %>%
+                                  pivot_longer(cols = starts_with("Count"),
+                                               names_to = "OutputType",
+                                               values_to = "Count") %>%
+                                  group_by(PatientSubgroup, Strata) %>%
+                                      mutate(N = case_when(OutputType != "CountMetastasis" ~ Count[OutputType == "CountMetastasis"],
+                                                           .default = N)) %>%
+                                  ungroup() %>%
+                                  group_by(Strata, OutputType) %>%
+                                  summarize(ChiSqTest = list(stats::prop.test(x = Count,
+                                                                              n = N)),
+                                            FisherTest = list(stats::fisher.test(x = matrix(data = c(Count, N - Count),
+                                                                                            nrow = 2, ncol = 2, byrow = FALSE)))) %>%
+                                  ungroup() %>%
+                                  rowwise() %>%
+                                  mutate(PValue.ChiSq = FormatPValue(ChiSqTest$p.value),
+                                         PValue.Fisher = FormatPValue(FisherTest$p.value)) %>%
+                                  ungroup() %>%
+                                  mutate(OutputType = case_match(OutputType, "CountMetastasis" ~ "Metastasis documented",
+                                                                             "CountMetastasisWithCancerDiagnosis" ~ "Metastasis at time of cancer diagnosis",
+                                                                             "CountMetastasisAfterCancerDiagnosis" ~ "Metastasis after cancer diagnosis",
+                                                                 .default = OutputType)) %>%
+                                  select(-ChiSqTest,
+                                         -FisherTest)
+
+Matched.Metastasis <- Matched.Metastasis %>%
+                          left_join(Matched.Metastasis.pValues, by = join_by(Strata, OutputType))
+
+
+Matched.Metastasis.Summary <- Matched.Metastasis %>%
+                                  filter(Strata == "Total")
+
+
+#-------------------------------------------------------------------------------
+Matched.Therapy.TimeGroups <- CumulatedData_Matched$df_Output_TherapyModalities %>%
+                                      filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                                      mutate(PatientSubgroup = droplevels(PatientSubgroup),      # Drop level 'Cancer-/HIV+'
+                                             Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                                MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                                MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                                      select(-CountNoMajorTherapyCoded,
+                                             -starts_with("Proportion")) %>%
+                                      pivot_wider(names_from = Site,
+                                                  values_from = c(N, starts_with("Count"), starts_with("Proportion"))) %>%
+                                      mutate(N = rowSums(across(all_of(paste0("N_", SiteNames))), na.rm = TRUE),
+                                             CountAnyMajorTherapy = rowSums(across(all_of(paste0("CountAnyMajorTherapy_", SiteNames))), na.rm = TRUE),
+                                             CountSurgery = rowSums(across(all_of(paste0("CountSurgery_", SiteNames))), na.rm = TRUE),
+                                             CountChemotherapy = rowSums(across(all_of(paste0("CountChemotherapy_", SiteNames))), na.rm = TRUE),
+                                             CountImmunotherapy = rowSums(across(all_of(paste0("CountImmunotherapy_", SiteNames))), na.rm = TRUE),
+                                             CountRadiotherapy = rowSums(across(all_of(paste0("CountRadiotherapy_", SiteNames))), na.rm = TRUE),
+                                             CountStemCellTherapy = rowSums(across(all_of(paste0("CountStemCellTherapy_", SiteNames))), na.rm = TRUE),
+                                             CountBoneMarrowTransplant = rowSums(across(all_of(paste0("CountBoneMarrowTransplant_", SiteNames))), na.rm = TRUE),
+                                             CountCARTCellTherapy = rowSums(across(all_of(paste0("CountCARTCellTherapy_", SiteNames))), na.rm = TRUE)) %>%
+                                      select(-(ends_with(SiteNames))) %>%
+                                      group_by(PatientSubgroup, Strata) %>%
+                                          summarize(across(c(starts_with("N"), starts_with("Count")),
+                                                           ~ sum(.x))) %>%
+                                          mutate(across(.cols = starts_with("Count"),
+                                                        .fns = ~ .x / N,
+                                                        .names = "{sub('^Count', 'Proportion', .col)}")) %>%
+                                      ungroup()
+
+Matched.Therapy.TotalTime <- expand(Matched.Therapy.TimeGroups,
+                                    PatientSubgroup,
+                                    Strata) %>%
+                                left_join(Matched.Therapy.TimeGroups) %>%
+                                group_by(PatientSubgroup) %>%
+                                    summarize(Strata = "Total",
+                                              across(.cols = starts_with("Proportion"),
+                                                     .fns = ~ sum(get(sub("^Proportion", "Count", cur_column()))) / sum(N)),
+                                              across(starts_with("Count"), ~ sum(.x)),
+                                              N = sum(N)) %>%
+                                ungroup()
+
+
+# Matched.Therapy.Temp <- Matched.Therapy.TimeGroups %>%
+#                             bind_rows(Matched.Therapy.TotalTime) %>%
+#                             select(-starts_with("Proportion")) %>%
+#                             pivot_longer(cols = starts_with("Count"),
+#                                          names_to = "TherapyGroup",
+#                                          values_to = "Count") %>%
+#                             mutate(TherapyGroup = str_remove(TherapyGroup, "Count"),
+#                                    Proportion = Count / N) %>%
+#                             select(-N) %>%
+#                             arrange(PatientSubgroup, Strata)
+
+# Matched.Therapy <- Matched.Therapy.Temp %>%
+#                         group_by(PatientSubgroup, Strata) %>%
+#                             group_modify(~ bind_cols(.x, GetCI(.x$Count))) %>%
+#                         ungroup()
+#                         right_join(Matched.Therapy.Temp) %>%
+#                         mutate(OutputLean = paste0(FormatNumbers(Count), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%"),
+#                                OutputWithCI = paste0(OutputLean, ", ", round(CI.lower * 100, 1), "-", round(CI.upper * 100, 1), ")"),
+#                                OutputLean = paste0(OutputLean, ")")) %>%
+#                         arrange(desc(PatientSubgroup))
 # 
 # 
-# plot_Output_AIDSOccurrence <- df_Output_AIDSOccurrence %>%
-#                                   f_MakeColumnPlot(inp_Features = c("No AIDS" = "CountNoAIDS",
-#                                                                     "AIDS after HIV diagnosis" = "CountAIDSAfterHIVDiagnosis",
-#                                                                     "AIDS with HIV diagnosis" = "CountAIDSWithHIVDiagnosis"),
-#                                                    inp_GroupingFeature = PatientSubgroup,
-#                                                    inp_ColumnPlotType = "proportional",
-#                                                    inp_ls_ThemeArguments = list(inp_Theme_SizeFactorTickLabels_x = 1.3,
-#                                                                                 inp_Theme_SizeFactorLegendLabels = 1.3),
-#                                                    inp_Palette = c(color_LightGrey, color_Secondary, color_Primary))
+# Matched.Therapy.Table <- Matched.Therapy %>%
+#                                           select(-c(N, Proportion, PropCheck, CI.lower, CI.upper, OutputWithCI)) %>%
+#                                           pivot_wider(names_from = PatientSubgroup,
+#                                                       values_from = OutputLean) %>%
+#                                           group_by(Strata) %>%
+#                                           arrange(factor(LastRecordedDischargeCategory, levels = c("N",
+#                                                                                                    "Home",
+#                                                                                                    "Deceased",
+#                                                                                                    "Other Hospital",
+#                                                                                                    "Rehabilitation or Residential Care",
+#                                                                                                    "Hospice Care",
+#                                                                                                    "Unclear")),
+#                                                   .by_group = TRUE)
+# 
+# Matched.Therapy.Summary <- Matched.Therapy %>%
+#                                           select(-c(N, Proportion, PropCheck, CI.lower, CI.upper, OutputLean)) %>%
+#                                           filter(Strata == "Total") %>%
+#                                           pivot_wider(names_from = PatientSubgroup,
+#                                                       values_from = OutputWithCI) %>%
+#                                           group_by(Strata) %>%
+#                                           arrange(factor(LastRecordedDischargeCategory, levels = c("N",
+#                                                                                                    "Home",
+#                                                                                                    "Deceased",
+#                                                                                                    "Other Hospital",
+#                                                                                                    "Rehabilitation or Residential Care",
+#                                                                                                    "Hospice Care",
+#                                                                                                    "Unclear")),
+#                                                   .by_group = TRUE)
+
+
+
+Matched.Therapy <- Matched.Therapy.TimeGroups %>%
+                        bind_rows(Matched.Therapy.TotalTime) %>%
+                        mutate(across(.cols = starts_with("Count"),
+                                      .fns  = ~ paste0(FormatNumbers(.x), " (", FormatNumbers(round(get(sub("^Count", "Proportion", cur_column())) * 100, 1)), "%)"),
+                                      .names = "Output_{sub('^Count', '', .col)}")) %>%
+                        select(-c(starts_with("Count"),
+                                  starts_with("Proportion"))) %>%
+                        mutate(N = as.character(N)) %>%
+                        pivot_longer(cols = c(N, starts_with("Output")),
+                                     names_to = "OutputType",
+                                     values_to = "Output") %>%
+                        mutate(OutputType = str_remove(OutputType, "Output_"),
+                               OutputType = case_match(OutputType, "AnyMajorTherapy" ~ "Any major therapy documented",
+                                                                   "StemCellTherapy" ~ "Stem cell therapy",
+                                                                   "BoneMarrowTransplant" ~ "Bone marrow transplant",
+                                                                   "CARTCellTherapy" ~ "CAR T-cell therapy",
+                                                       .default = OutputType)) %>%
+                        pivot_wider(names_from = PatientSubgroup,
+                                    values_from = Output)
+
+
+Matched.Therapy.pValues <- Matched.Therapy.TimeGroups %>%
+                                bind_rows(Matched.Therapy.TotalTime) %>%
+                                select(-c(starts_with("Proportion"))) %>%
+                                pivot_longer(cols = starts_with("Count"),
+                                             names_to = "OutputType",
+                                             values_to = "Count") %>%
+                                group_by(Strata, OutputType) %>%
+                                    summarize(ChiSqTest = list(stats::prop.test(x = Count,
+                                                                                n = N)),
+                                              FisherTest = list(stats::fisher.test(x = matrix(data = c(Count, N - Count),
+                                                                                              nrow = 2, ncol = 2, byrow = FALSE)))) %>%
+                                ungroup() %>%
+                                rowwise() %>%
+                                    mutate(PValue.ChiSq = FormatPValue(ChiSqTest$p.value),
+                                           PValue.Fisher = FormatPValue(FisherTest$p.value)) %>%
+                                ungroup() %>%
+                                mutate(OutputType = str_remove(OutputType, "Count"),
+                                       OutputType = case_match(OutputType, "AnyMajorTherapy" ~ "Any major therapy documented",
+                                                                           "StemCellTherapy" ~ "Stem cell therapy",
+                                                                           "BoneMarrowTransplant" ~ "Bone marrow transplant",
+                                                                           "CARTCellTherapy" ~ "CAR T-cell therapy",
+                                                               .default = OutputType)) %>%
+                                select(-ChiSqTest,
+                                       -FisherTest)
+
+Matched.Therapy <- Matched.Therapy %>%
+                          left_join(Matched.Therapy.pValues, by = join_by(Strata, OutputType))
+
+Matched.Therapy.Summary <- Matched.Therapy %>%
+                                filter(Strata == "Total")
+
+
+#-------------------------------------------------------------------------------
+Matched.ChemoComplications.TimeGroups <- CumulatedData_Matched$df_Output_TherapyComplications %>%
+                                              filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                                              mutate(PatientSubgroup = droplevels(PatientSubgroup),      # Drop empty level 'Cancer-/HIV+',
+                                                     Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                                        MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                                        MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                                              select(-CountNoChemotherapy,
+                                                     -CountNoComplicationAfterChemotherapy,
+                                                     -starts_with("Proportion")) %>%
+                                              pivot_wider(names_from = Site,
+                                                          values_from = c(N, starts_with("Count"), starts_with("Proportion"))) %>%
+                                              mutate(N = rowSums(across(all_of(paste0("N_", SiteNames))), na.rm = TRUE),
+                                                     CountChemotherapy = rowSums(across(all_of(paste0("CountChemotherapy_", SiteNames))), na.rm = TRUE),
+                                                     CountComplicationAfterChemotherapy = rowSums(across(all_of(paste0("CountComplicationAfterChemotherapy_", SiteNames))), na.rm = TRUE)) %>%
+                                                     #CountNoComplicationAfterChemotherapy = rowSums(across(all_of(paste0("CountNoComplicationAfterChemotherapy_", SiteNames))), na.rm = TRUE)) %>%
+                                              select(-(ends_with(SiteNames))) %>%
+                                              group_by(PatientSubgroup, Strata) %>%
+                                                  summarize(across(c(starts_with("N"),
+                                                                     starts_with("Count")),
+                                                                   ~ sum(.x))) %>%
+                                                  mutate(ProportionChemotherapy = CountChemotherapy / N,
+                                                         ProportionComplicationAfterChemotherapy = CountComplicationAfterChemotherapy / CountChemotherapy) %>%
+                                              ungroup()
+
+Matched.ChemoComplications.TotalTime <- expand(Matched.ChemoComplications.TimeGroups,
+                                               PatientSubgroup,
+                                               Strata) %>%
+                                            left_join(Matched.ChemoComplications.TimeGroups) %>%
+                                            group_by(PatientSubgroup) %>%
+                                                summarize(Strata = "Total",
+                                                          ProportionChemotherapy = sum(CountChemotherapy) / sum(N),
+                                                          ProportionComplicationAfterChemotherapy = sum(CountComplicationAfterChemotherapy) / sum(CountChemotherapy),
+                                                          across(starts_with("Count"), ~ sum(.x)),
+                                                          N = sum(N)) %>%
+                                            ungroup()
+
+Matched.ChemoComplications <- Matched.ChemoComplications.TimeGroups %>%
+                                  bind_rows(Matched.ChemoComplications.TotalTime) %>%
+                                  mutate(across(.cols = starts_with("Count"),
+                                                .fns  = ~ paste0(FormatNumbers(.x), " (", FormatNumbers(round(get(sub("^Count", "Proportion", cur_column())) * 100, 1)), "%)"),
+                                                .names = "Output_{sub('^Count', '', .col)}")) %>%
+                                  select(-c(starts_with("Count"),
+                                            starts_with("Proportion"))) %>%
+                                  mutate(N = as.character(N)) %>%
+                                  pivot_longer(cols = c(N, starts_with("Output")),
+                                               names_to = "OutputType",
+                                               values_to = "Output") %>%
+                                  mutate(OutputType = str_remove(OutputType, "Output_"),
+                                         OutputType = case_match(OutputType, "Chemotherapy" ~ "Chemotherapy documented",
+                                                                             "ComplicationAfterChemotherapy" ~ "Complication after chemotherapy",
+                                                                 .default = OutputType)) %>%
+                                  pivot_wider(names_from = PatientSubgroup,
+                                              values_from = Output)
+
+Matched.ChemoComplications.pValues <- Matched.ChemoComplications.TimeGroups %>%
+                                          bind_rows(Matched.ChemoComplications.TotalTime) %>%
+                                          select(-c(starts_with("Proportion"))) %>%
+                                          pivot_longer(cols = starts_with("Count"),
+                                                       names_to = "OutputType",
+                                                       values_to = "Count") %>%
+                                          group_by(PatientSubgroup, Strata) %>%
+                                              mutate(N = case_when(OutputType != "CountChemotherapy" ~ Count[OutputType == "CountChemotherapy"],
+                                                                   .default = N)) %>%
+                                          ungroup() %>%
+                                          group_by(Strata, OutputType) %>%
+                                              summarize(ChiSqTest = list(stats::prop.test(x = Count,
+                                                                                          n = N)),
+                                                        FisherTest = list(stats::fisher.test(x = matrix(data = c(Count, N - Count),
+                                                                                                        nrow = 2, ncol = 2, byrow = FALSE)))) %>%
+                                          ungroup() %>%
+                                          rowwise() %>%
+                                              mutate(PValue.ChiSq = FormatPValue(ChiSqTest$p.value),
+                                                     PValue.Fisher = FormatPValue(FisherTest$p.value)) %>%
+                                          ungroup() %>%
+                                          mutate(OutputType = str_remove(OutputType, "Count"),
+                                                 OutputType = case_match(OutputType, "Chemotherapy" ~ "Chemotherapy documented",
+                                                                                     "ComplicationAfterChemotherapy" ~ "Complication after chemotherapy",
+                                                                         .default = OutputType)) %>%
+                                          select(-ChiSqTest,
+                                                 -FisherTest)
+
+Matched.ChemoComplications <- Matched.ChemoComplications %>%
+                                  left_join(Matched.ChemoComplications.pValues, by = join_by(Strata, OutputType))
+
+Matched.ChemoComplications.Summary <- Matched.ChemoComplications %>%
+                                          filter(Strata == "Total")
+
+
+
+#===============================================================================
+# Matched analysis with reduced number of sites (Frankfurt, Freiburg)
+#===============================================================================
+
+# Calculate modified sample sizes for
+# a) Reduced selection of sites and stratified by 'FirstRelevantAdmissionYear'
+# b) Reduced selection of sites and stratified by 'LastRecordedDischargeYear' instead of 'MainCancerDiagnosisYear'
+#-------------------------------------------------------------------------------
+#SiteNames.Temp <- SiteNames
+SiteNames.Temp <- c("Frankfurt", "Freiburg")
+
+
+# a) Sample size for reduced selection of sites and stratified by 'FirstRelevantAdmissionYear'
+Matched.ModSampleSize.FirstAdmissionYear.TimeGroups <- CumulatedData_Matched$df_Output_MeanLengthOfStay %>%
+                                                            filter(Site %in% SiteNames.Temp,
+                                                                   FirstRelevantAdmissionYear >= tp_begin & FirstRelevantAdmissionYear <= tp_end) %>%
+                                                            mutate(Strata = case_when(FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear <= 2008 ~ "2005 - 2008",
+                                                                                      FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009 - 2014",
+                                                                                      FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2022 ~ "2015 - 2022")) %>%
+                                                            group_by(PatientSubgroup, Strata) %>%
+                                                                summarize(N = sum(N)) %>%
+                                                            ungroup()
+
+Matched.ModSampleSize.FirstAdmissionYear.TotalTime <- Matched.ModSampleSize.FirstAdmissionYear.TimeGroups %>%
+                                                          group_by(PatientSubgroup) %>%
+                                                              summarize(Strata = "Total",
+                                                                        N = sum(N))
+
+Matched.ModSampleSize.FirstAdmissionYear <- Matched.ModSampleSize.FirstAdmissionYear.TimeGroups %>%
+                                                bind_rows(Matched.ModSampleSize.FirstAdmissionYear.TotalTime) %>%
+                                                pivot_wider(names_from = PatientSubgroup,
+                                                            values_from = N) %>%
+                                                mutate(across(-Strata, ~ FormatNumbers(.x)))
+
+#-------------------------------------------------------------------------------
+
+# b) Sample size for reduced selection of sites and stratified by 'LastRecordedDischargeYear' instead of 'MainCancerDiagnosisYear'
+Matched.ModSampleSize.DischargeYear.TimeGroups <- CumulatedData_Matched$df_Output_LastRecordedDischargeCategory %>%
+                                                      select(-MainCancerDiagnosisYear,
+                                                                  -Proportion) %>%
+                                                      filter(LastRecordedDischargeYear >= tp_begin & LastRecordedDischargeYear <= tp_end,
+                                                             Site %in% SiteNames.Temp) %>%
+                                                      mutate(PatientSubgroup = droplevels(PatientSubgroup),
+                                                             Strata = case_when(LastRecordedDischargeYear >= 2005 & LastRecordedDischargeYear <= 2008 ~ "2005 - 2008",
+                                                                                LastRecordedDischargeYear >= 2009 & LastRecordedDischargeYear <= 2014 ~ "2009 - 2014",
+                                                                                LastRecordedDischargeYear >= 2015 & LastRecordedDischargeYear <= 2022 ~ "2015 - 2022")) %>%
+                                                      group_by(PatientSubgroup, Strata) %>%
+                                                          summarize(N = sum(N)) %>%
+                                                      ungroup()
+
+Matched.ModSampleSize.DischargeYear.TotalTime <- Matched.ModSampleSize.DischargeYear.TimeGroups %>%
+                                                    group_by(PatientSubgroup) %>%
+                                                        summarize(Strata = "Total",
+                                                                  N = sum(N))
+
+Matched.ModSampleSize.DischargeYear <- Matched.ModSampleSize.DischargeYear.TimeGroups %>%
+                                            bind_rows(Matched.ModSampleSize.DischargeYear.TotalTime) %>%
+                                            pivot_wider(names_from = PatientSubgroup,
+                                                        values_from = N) %>%
+                                            mutate(across(-Strata, ~ FormatNumbers(.x)))
+
+
+#-------------------------------------------------------------------------------
+
+AddModSampleSize.MeanLengthOfStay <- Matched.ModSampleSize.FirstAdmissionYear %>%
+                                          pivot_longer(cols = -Strata,
+                                                       names_to = "PatientSubgroup",
+                                                       values_to = "SampleSize") %>%
+                                          mutate(SampleSize = as.integer(SampleSize))
+
+Matched.MeanLengthOfStay.TimeGroups <- CumulatedData_Matched$df_Output_MeanLengthOfStay %>%
+                                            filter(Site %in% SiteNames.Temp,
+                                                   FirstRelevantAdmissionYear >= tp_begin & FirstRelevantAdmissionYear <= tp_end) %>%
+                                            mutate(PatientSubgroup = droplevels(PatientSubgroup),
+                                                   Strata = case_when(FirstRelevantAdmissionYear >= 2005 & FirstRelevantAdmissionYear <= 2008 ~ "2005 - 2008",
+                                                                      FirstRelevantAdmissionYear >= 2009 & FirstRelevantAdmissionYear <= 2014 ~ "2009 - 2014",
+                                                                      FirstRelevantAdmissionYear >= 2015 & FirstRelevantAdmissionYear <= 2022 ~ "2015 - 2022")) %>%
+                                            pivot_wider(names_from = Site,
+                                                       values_from = N) %>%
+                                            mutate(N = rowSums(across(all_of(SiteNames.Temp)), na.rm = TRUE)) %>%
+                                            group_by(PatientSubgroup, Strata, MeanLengthOfStayGroup) %>%
+                                                summarize(N = sum(N)) %>%
+                                            ungroup() %>%
+                                            left_join(AddModSampleSize.MeanLengthOfStay) %>%
+                                            mutate(Proportion = N / SampleSize) %>%
+                                            select(-SampleSize)
+
+Matched.MeanLengthOfStay.TotalTime <- expand(Matched.MeanLengthOfStay.TimeGroups,
+                                             PatientSubgroup,
+                                             Strata,
+                                             MeanLengthOfStayGroup) %>%
+                                         left_join(Matched.MeanLengthOfStay.TimeGroups) %>%
+                                         group_by(PatientSubgroup, MeanLengthOfStayGroup) %>%
+                                             summarize(Strata = "Total",
+                                                       Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                                       N = sum(N, na.rm = TRUE)) %>%
+                                         ungroup()
+
+AddSampleSizeRow.MeanLengthOfStay <- AddModSampleSize.MeanLengthOfStay %>%
+                                          mutate(MeanLengthOfStayGroup = "N",
+                                                 N = SampleSize) %>%
+                                          select(-SampleSize)
+
+Matched.MeanLengthOfStay <- Matched.MeanLengthOfStay.TimeGroups %>%
+                                bind_rows(Matched.MeanLengthOfStay.TotalTime) %>%
+                                bind_rows(AddSampleSizeRow.MeanLengthOfStay) %>%
+                                mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                                select(-N, -Proportion) %>%
+                                pivot_wider(names_from = PatientSubgroup,
+                                            values_from = Output)
+
+
+Matched.MeanLengthOfStay.pValues <- Matched.MeanLengthOfStay.TimeGroups %>%
+                                        bind_rows(Matched.MeanLengthOfStay.TotalTime) %>%
+                                        select(-Proportion) %>%
+                                        group_by(PatientSubgroup, Strata) %>%
+                                            mutate(Count = N,
+                                                   N = sum(Count)) %>%
+                                        ungroup() %>%
+                                        group_by(Strata, MeanLengthOfStayGroup) %>%
+                                            summarize(ChiSqTest = list(stats::prop.test(x = Count,
+                                                                                        n = N)),
+                                                      FisherTest = list(stats::fisher.test(x = matrix(data = c(Count, N - Count),
+                                                                                                      nrow = 2, ncol = 2, byrow = FALSE)))) %>%
+                                        ungroup() %>%
+                                        rowwise() %>%
+                                            mutate(PValue.ChiSq = FormatPValue(ChiSqTest$p.value),
+                                                   PValue.Fisher = FormatPValue(FisherTest$p.value)) %>%
+                                        ungroup() %>%
+                                        select(-ChiSqTest,
+                                               -FisherTest)
+
+Matched.MeanLengthOfStay <- Matched.MeanLengthOfStay %>%
+                                left_join(Matched.MeanLengthOfStay.pValues, by = join_by(Strata, MeanLengthOfStayGroup)) %>%
+                                mutate(MeanLengthOfStayGroup = str_replace(MeanLengthOfStayGroup, "average", "avg."),
+                                       MeanLengthOfStayGroup = str_replace(MeanLengthOfStayGroup, "More than", ">")) %>%
+                                group_by(Strata) %>%
+                                    arrange(factor(MeanLengthOfStayGroup, levels = c("N",
+                                                                                     "Up to 7 days on avg.",
+                                                                                     "7 - 14 days on avg.",
+                                                                                     "14 - 30 days on avg.",
+                                                                                     "> 30 days on avg.")),
+                                            .by_group = TRUE) %>%
+                                ungroup()
+
+Matched.MeanLengthOfStay.Summary <- Matched.MeanLengthOfStay %>%
+                                        filter(Strata == "Total")
+
+
+
+# OLD - Solution with Confidence Intervals
+#-------------------------------------------------------------------------------
+                                            
+# Matched.MeanLengthOfStay.Temp <- Matched.MeanLengthOfStay.TimeGroups %>%
+#                                       bind_rows(Matched.MeanLengthOfStay.TotalTime)
+# 
+# Matched.MeanLengthOfStay <- Matched.MeanLengthOfStay.Temp %>%
+#                                 group_by(PatientSubgroup, Strata) %>%
+#                                     group_modify(~ bind_cols(.x, GetCI(.x$N))) %>%
+#                                 ungroup() %>%
+#                                 right_join(Matched.MeanLengthOfStay.Temp) %>%
+#                                 bind_rows(AddSampleSizeRow.MeanLengthOfStay) %>%
+#                                 mutate(OutputLean = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%"),
+#                                        OutputWithCI = paste0(OutputLean, ", ", round(CI.lower * 100, 1), "-", round(CI.upper * 100, 1), ")"),
+#                                        OutputLean = paste0(OutputLean, ")")) %>%
+#                                 arrange(desc(PatientSubgroup))
 # 
 # 
+# Matched.MeanLengthOfStay.Table <- Matched.MeanLengthOfStay %>%
+#                                       select(-c(N, Proportion, PropCheck, CI.lower, CI.upper, OutputWithCI)) %>%
+#                                       pivot_wider(names_from = PatientSubgroup,
+#                                                   values_from = OutputLean) %>%
+#                                       mutate(MeanLengthOfStayGroup = str_replace(MeanLengthOfStayGroup, "average", "avg."),
+#                                              MeanLengthOfStayGroup = str_replace(MeanLengthOfStayGroup, "More than", ">")) %>%
+#                                       group_by(Strata) %>%
+#                                       arrange(factor(MeanLengthOfStayGroup, levels = c("N",
+#                                                                                        "Up to 7 days on avg.",
+#                                                                                        "7 - 14 days on avg.",
+#                                                                                        "14 - 30 days on avg.",
+#                                                                                        "> 30 days on avg.")),
+#                                               .by_group = TRUE)
 # 
-
-
-#--------- HIVandCancer vs. HIVOnly: Time to AIDS ------------------------------
-
-# Include only patients that presumably had no AIDS at time of HIV diagnosis
-# df_TimeHIVToAIDS <- df_Patients %>%
-#                         filter(!is.na(TimeHIVToAIDS) & TimeHIVToAIDS > 0) %>%
-#                         distinct(PatientPseudonym, .keep_all = TRUE)
 # 
-# df_Output_TimeHIVToAIDS <- df_TimeHIVToAIDS %>%
-#                                 group_by(PatientSubgroup) %>%
-#                                 f_GetSampleStatistics(inp_Feature = TimeHIVToAIDS,
-#                                                       inp_na.rm = FALSE)
+# Matched.MeanLengthOfStay.Summary <- Matched.MeanLengthOfStay %>%
+#                                         select(-c(N, Proportion, PropCheck, CI.lower, CI.upper, OutputLean)) %>%
+#                                         filter(Strata == "Total") %>%
+#                                         pivot_wider(names_from = PatientSubgroup,
+#                                                     values_from = OutputWithCI) %>%
+#                                         mutate(MeanLengthOfStayGroup = str_replace(MeanLengthOfStayGroup, "average", "avg."),
+#                                                MeanLengthOfStayGroup = str_replace(MeanLengthOfStayGroup, "More than", ">")) %>%
+#                                         group_by(Strata) %>%
+#                                         arrange(factor(MeanLengthOfStayGroup, levels = c("N",
+#                                                                                          "Up to 7 days on avg.",
+#                                                                                          "7 - 14 days on avg.",
+#                                                                                          "14 - 30 days on avg.",
+#                                                                                          "> 30 days on avg.")),
+#                                                 .by_group = TRUE)
+
+
+#-------------------------------------------------------------------------------
+
+AddModSampleSize.DischargeCategories <- Matched.ModSampleSize.DischargeYear %>%
+                                            pivot_longer(cols = -Strata,
+                                                         names_to = "PatientSubgroup",
+                                                         values_to = "SampleSize") %>%
+                                            mutate(SampleSize = as.integer(SampleSize))
+
+Matched.DischargeCategories.TimeGroups <- CumulatedData_Matched$df_Output_LastRecordedDischargeCategory %>%
+                                              select(-MainCancerDiagnosisYear,
+                                                     -Proportion) %>%
+                                              filter(LastRecordedDischargeYear >= tp_begin & LastRecordedDischargeYear <= tp_end,
+                                                     Site %in% SiteNames.Temp) %>%
+                                              mutate(PatientSubgroup = droplevels(PatientSubgroup),
+                                                     Strata = case_when(LastRecordedDischargeYear >= 2005 & LastRecordedDischargeYear <= 2008 ~ "2005 - 2008",
+                                                                        LastRecordedDischargeYear >= 2009 & LastRecordedDischargeYear <= 2014 ~ "2009 - 2014",
+                                                                        LastRecordedDischargeYear >= 2015 & LastRecordedDischargeYear <= 2022 ~ "2015 - 2022")) %>%
+                                              pivot_wider(names_from = Site,
+                                                          values_from = N) %>%
+                                              mutate(N = rowSums(across(all_of(SiteNames.Temp)), na.rm = TRUE)) %>%
+                                              group_by(PatientSubgroup, Strata, LastRecordedDischargeCategory) %>%
+                                                  summarize(N = sum(N)) %>%
+                                              ungroup() %>%
+                                              left_join(AddModSampleSize.DischargeCategories) %>%
+                                              mutate(Proportion = N / SampleSize) %>%
+                                              select(-SampleSize)
+                                            
+
+# AddUnknownCategory <- Matched.DischargeCategories.TimeGroups %>%
+#                           group_by(PatientSubgroup, Strata) %>%
+#                               summarize(LastRecordedDischargeCategory = "AllKnown",
+#                                         N = sum(N)) %>%
+#                           ungroup() %>%
+#                           left_join(AddModSampleSize) %>%
+#                           mutate(LastRecordedDischargeCategory = "Unclear",
+#                                  N = SampleSize - N) %>%
+#                           select(-SampleSize)
+
+Matched.DischargeCategories.TotalTime <- expand(Matched.DischargeCategories.TimeGroups,
+                                                PatientSubgroup,
+                                                Strata,
+                                                LastRecordedDischargeCategory) %>%
+                                            left_join(Matched.DischargeCategories.TimeGroups) %>%
+                                            group_by(PatientSubgroup, LastRecordedDischargeCategory) %>%
+                                                summarize(Strata = "Total",
+                                                          Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                                          N = sum(N, na.rm = TRUE)) %>%
+                                            ungroup()
+
+AddSampleSizeRow.DischargeCategories <- AddModSampleSize.DischargeCategories %>%
+                                            mutate(LastRecordedDischargeCategory = "N",
+                                                   N = SampleSize) %>%
+                                            select(-SampleSize)
+
+
+Matched.DischargeCategories <- Matched.DischargeCategories.TimeGroups %>%
+                                    bind_rows(Matched.DischargeCategories.TotalTime) %>%
+                                    bind_rows(AddSampleSizeRow.DischargeCategories) %>%
+                                    mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                                    select(-N, -Proportion) %>%
+                                    pivot_wider(names_from = PatientSubgroup,
+                                                values_from = Output)
+
+
+Matched.DischargeCategories.pValues <- Matched.DischargeCategories.TimeGroups %>%
+                                            bind_rows(Matched.DischargeCategories.TotalTime) %>%
+                                            select(-Proportion) %>%
+                                            group_by(PatientSubgroup, Strata) %>%
+                                                mutate(Count = N,
+                                                       N = sum(Count)) %>%
+                                            ungroup() %>%
+                                            group_by(Strata, LastRecordedDischargeCategory) %>%
+                                                summarize(ChiSqTest = list(stats::prop.test(x = Count,
+                                                                                            n = N)),
+                                                          FisherTest = list(stats::fisher.test(x = matrix(data = c(Count, N - Count),
+                                                                                                          nrow = 2, ncol = 2, byrow = FALSE)))) %>%
+                                            ungroup() %>%
+                                            rowwise() %>%
+                                                mutate(PValue.ChiSq = FormatPValue(ChiSqTest$p.value),
+                                                       PValue.Fisher = FormatPValue(FisherTest$p.value)) %>%
+                                            ungroup() %>%
+                                            select(-ChiSqTest,
+                                                   -FisherTest)
+
+Matched.DischargeCategories <- Matched.DischargeCategories %>%
+                                    left_join(Matched.DischargeCategories.pValues, by = join_by(Strata, LastRecordedDischargeCategory)) %>%
+                                    group_by(Strata) %>%
+                                        arrange(factor(LastRecordedDischargeCategory, levels = c("N",
+                                                                                                 "Home",
+                                                                                                 "Deceased",
+                                                                                                 "Other Hospital",
+                                                                                                 "Rehabilitation or Residential Care",
+                                                                                                 "Hospice Care",
+                                                                                                 "Unclear")),
+                                                .by_group = TRUE) %>%
+                                    ungroup()
+
+Matched.DischargeCategories.Summary <- Matched.DischargeCategories %>%
+                                            filter(Strata == "Total")
+
+
+
+
+
+
+
+
+
+
+
+
+# OLD - Solution with Confidence Intervals
+#-------------------------------------------------------------------------------
+
+# Matched.DischargeCategories.Temp <- Matched.DischargeCategories.TimeGroups %>%
+#                                         bind_rows(Matched.DischargeCategories.TotalTime)
 # 
-# plot_Output_TimeHIVToAIDS <- df_TimeHIVToAIDS %>%
-#                                   f_MakeComparisonPlot(inp_Feature = TimeHIVToAIDS,
-#                                                        inp_GroupingFeature = PatientSubgroup,
-#                                                        inp_OutlierQuantile = 0.98,
-#                                                        inp_OutlierAcrossAll = TRUE,
-#                                                        inp_LogTransform = FALSE)
+# Matched.DischargeCategories <- Matched.DischargeCategories.Temp %>%
+#                                     group_by(PatientSubgroup, Strata) %>%
+#                                         group_modify(~ bind_cols(.x, GetCI(.x$N))) %>%
+#                                     ungroup() %>%
+#                                     right_join(Matched.DischargeCategories.Temp) %>%
+#                                     bind_rows(AddSampleSizeRow.DischargeCategories) %>%
+#                                     mutate(OutputLean = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%"),
+#                                            OutputWithCI = paste0(OutputLean, ", ", round(CI.lower * 100, 1), "-", round(CI.upper * 100, 1), ")"),
+#                                            OutputLean = paste0(OutputLean, ")")) %>%
+#                                     arrange(desc(PatientSubgroup))
+# 
+# 
+# Matched.DischargeCategories.Table <- Matched.DischargeCategories %>%
+#                                           select(-c(N, Proportion, PropCheck, CI.lower, CI.upper, OutputWithCI)) %>%
+#                                           pivot_wider(names_from = PatientSubgroup,
+#                                                       values_from = OutputLean) %>%
+#                                           group_by(Strata) %>%
+#                                           arrange(factor(LastRecordedDischargeCategory, levels = c("N",
+#                                                                                                    "Home",
+#                                                                                                    "Deceased",
+#                                                                                                    "Other Hospital",
+#                                                                                                    "Rehabilitation or Residential Care",
+#                                                                                                    "Hospice Care",
+#                                                                                                    "Unclear")),
+#                                                   .by_group = TRUE)
+# 
+# Matched.DischargeCategories.Summary <- Matched.DischargeCategories %>%
+#                                           select(-c(N, Proportion, PropCheck, CI.lower, CI.upper, OutputLean)) %>%
+#                                           filter(Strata == "Total") %>%
+#                                           pivot_wider(names_from = PatientSubgroup,
+#                                                       values_from = OutputWithCI) %>%
+#                                           group_by(Strata) %>%
+#                                           arrange(factor(LastRecordedDischargeCategory, levels = c("N",
+#                                                                                                    "Home",
+#                                                                                                    "Deceased",
+#                                                                                                    "Other Hospital",
+#                                                                                                    "Rehabilitation or Residential Care",
+#                                                                                                    "Hospice Care",
+#                                                                                                    "Unclear")),
+#                                                   .by_group = TRUE)
+                        
+#-------------------------------------------------------------------------------
 
-#!!!---!!!---!!! Add Time-to-event plot (Kaplan-Meier?)
+#SiteNames.Temp <- SiteNames
+SiteNames.Temp <- c("Frankfurt", "Freiburg")
 
-#!!!---!!!---!!! Stratify HIVandCancer into "AIDS after HIV only" and "AIDS after cancer diagnosis"
-
-
-#!!!---!!!---!!! Age related subgroups in HIVCancer? (Children, Adults, Elderly)
+#Matched.ICU.TimeGroups
 
 
 
-########## Sankey diagram: Presumed disease diagnosis and progress #################
 
-# Make use of make_long() to get compatible data frame for Sankey diagram
-# x: Stage
-# node: Node
-df_Plotdata_Sankey <- df_HIVCancerSequence %>%
-  ggsankey::make_long(Diagnosis_1, Diagnosis_2, Diagnosis_3, Diagnosis_4) %>%
-  filter(!is.na(node))
+#===============================================================================
+  
+HIVCancer.Categories.TimeGroups <- CumulatedData_Full$df_Output_HIVCancerCategories %>%
+                                       filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                                       mutate(PatientSubgroup = droplevels(PatientSubgroup),
+                                              Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                                 MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                                 MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                                       pivot_wider(names_from = Site,
+                                                   values_from = N) %>%
+                                       mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                       group_by(PatientSubgroup, Strata, PatientSubgroupHIVCancerCategory) %>%
+                                           summarize(N = sum(N)) %>%
+                                       group_by(PatientSubgroup, Strata) %>%
+                                           reframe(PatientSubgroupHIVCancerCategory = PatientSubgroupHIVCancerCategory,
+                                                   N = N,
+                                                   Proportion = N / sum(N)) %>%
+                                       ungroup()
 
-# df_Nodeweights <- df_Plotdata_Sankey %>%
-#                       count(x, node) %>%
-#                       arrange(x, desc(n)) %>%
-#                       nest(Nodes = c(node, n))
+HIVCancer.Categories.TotalTime <- expand(HIVCancer.Categories.TimeGroups,
+                                         PatientSubgroup,
+                                         Strata,
+                                         PatientSubgroupHIVCancerCategory) %>%
+                                    left_join(HIVCancer.Categories.TimeGroups) %>%
+                                    group_by(PatientSubgroup, PatientSubgroupHIVCancerCategory) %>%
+                                        summarize(Strata = "Total",
+                                                  Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                                  N = sum(N, na.rm = TRUE)) %>%
+                                    ungroup()
 
-vc_NodeOrder <- c("Cancer & HIV",
-                  "Cancer & HIV & AIDS",
-                  "Cancer & Metastasis & HIV",
-                  "Cancer & Metastasis & HIV & AIDS",
-                  "HIV",
-                  "HIV & AIDS",
-                  "AIDS",
-                  "Cancer",
-                  "Cancer & AIDS",
-                  "Cancer & Metastasis",
-                  "Metastasis",
-                  "Metastasis & HIV",
-                  "Metastasis & AIDS",
-                  "Metastasis & HIV & AIDS")
+HIVCancer.Categories <- HIVCancer.Categories.TimeGroups %>%
+                                bind_rows(HIVCancer.Categories.TotalTime) %>%
+                                mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                                select(-N, -Proportion) %>%
+                                pivot_wider(names_from = PatientSubgroup,
+                                            values_from = Output)
 
-df_Plotdata_Sankey$node <- factor(df_Plotdata_Sankey$node, levels = vc_NodeOrder)
-df_Plotdata_Sankey$next_node <- factor(df_Plotdata_Sankey$next_node, levels = vc_NodeOrder)
+#-------------------------------------------------------------------------------
+
+HIVCancer.DiagnosisOrder.TimeGroups <- CumulatedData_Matched$df_Output_HIVCancerDiagnosisOrder %>%
+                                            filter(MainCancerDiagnosisYear >= tp_begin & MainCancerDiagnosisYear <= tp_end) %>%
+                                            mutate(Strata = case_when(MainCancerDiagnosisYear >= 2005 & MainCancerDiagnosisYear <= 2008 ~ "2005 - 2008",
+                                                                     MainCancerDiagnosisYear >= 2009 & MainCancerDiagnosisYear <= 2014 ~ "2009 - 2014",
+                                                                     MainCancerDiagnosisYear >= 2015 & MainCancerDiagnosisYear <= 2022 ~ "2015 - 2022")) %>%
+                                            pivot_wider(names_from = Site,
+                                                       values_from = N) %>%
+                                            mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                            group_by(Strata, HIVCancerDiagnosisOrder) %>%
+                                               summarize(N = sum(N)) %>%
+                                            group_by(Strata) %>%
+                                               reframe(HIVCancerDiagnosisOrder = HIVCancerDiagnosisOrder,
+                                                       N = N,
+                                                       Proportion = N / sum(N)) %>%
+                                            ungroup()
+
+HIVCancer.DiagnosisOrder.TotalTime <- expand(HIVCancer.DiagnosisOrder.TimeGroups,
+                                             Strata,
+                                             HIVCancerDiagnosisOrder) %>%
+                                          left_join(HIVCancer.DiagnosisOrder.TimeGroups) %>%
+                                          group_by(HIVCancerDiagnosisOrder) %>%
+                                              summarize(Strata = "Total",
+                                                        Proportion = ifelse(any(is.na(N)), NA, sum(N) / sum(N / Proportion)),
+                                                        N = sum(N, na.rm = TRUE)) %>%
+                                          ungroup()
+
+HIVCancer.DiagnosisOrder <- HIVCancer.DiagnosisOrder.TimeGroups %>%
+                                bind_rows(HIVCancer.DiagnosisOrder.TotalTime) %>%
+                                mutate(Output = paste0(FormatNumbers(N), " (", ifelse(!is.na(Proportion), FormatNumbers(round(Proportion * 100, digits = 1)), "CALCMAN"), "%)")) %>%
+                                select(-N, -Proportion)
 
 
-plot_Output_SankeyDiagnosisProgress <- ggplot(df_Plotdata_Sankey,
-                                              aes(x = x,
-                                                  next_x = next_x,
-                                                  node = node,
-                                                  next_node = next_node,
-                                                  fill = factor(node),
-                                                  label = node)) +
-  geom_sankey(type = "sankey",
-              flow.alpha = 0.5,
-              width = 0.3,
-              node.color = "white",
-              show.legend = FALSE) +
-  geom_sankey_label(size = 2.5,
-                    color = "black",
-                    fill= "white",
-                    hjust = 0.5) +
-  theme_sankey(base_size = 16) +
-  theme(legend.position = "none",
-        axis.title = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank(), 
-        panel.grid = element_blank()) +
-  scale_fill_viridis_d(option = "inferno", alpha = 0.95) +
-  scale_fill_manual(values = c("HIV" = color_Primary,
-                               "Cancer & HIV" = color_Primary,
-                               "Cancer & Metastasis & HIV" = color_Primary,
-                               "Metastasis & HIV" = color_Primary,
-                               "HIV & AIDS" = color_Secondary,
-                               "AIDS" = color_Secondary,
-                               "Cancer & HIV & AIDS" = color_Secondary,
-                               "Cancer & Metastasis & HIV & AIDS" = color_Secondary,
-                               "Metastasis & HIV & AIDS" = color_Secondary,
-                               "Metastasis & AIDS" = color_Secondary))
+#===============================================================================
 
-#plot_Output_Sankey
+TableOutputPath <- "C:/Users/Basti/OneDrive/ARBEIT/IDMKD/Projekte/HIVCAre/Publikation/Paper/JMIR Public Health and Surveillance/Review/Tables"
 
-# Output Plot as pdf
-# pdf(file = "./output/HIVCancerSequences_Detail.pdf",
-#     width = 10,
-#     height = 7)
-# plot_Output_Sankey
-# dev.off()
+
+TableList <- list(Full.SampleSize = Full.SampleSize,
+                  Full.FemaleSex = Full.FemaleSex,
+                  Full.Age = Full.Age,
+                  Full.Admissions = Full.Admissions,
+                  Full.MeanLengthOfStay = Full.MeanLengthOfStay,
+                  Full.DistinctCancers = Full.DistinctCancers,
+                  Full.CIS = Full.CIS,
+                  Full.CancerTopography = Full.CancerTopography,
+                  Matched.SampleSize = Matched.SampleSize,
+                  Matched.AgeCancer = Matched.AgeCancer,
+                  Matched.CIS = Matched.CIS,
+                  Matched.Metastasis = Matched.Metastasis,
+                  Matched.Therapy = Matched.Therapy,
+                  Matched.ChemoComplications = Matched.ChemoComplications,
+                  #--- Matched Analysis with reduced sites ---
+                  Matched.MeanLengthOfStay = Matched.MeanLengthOfStay,
+                  Matched.DischargeCategories = Matched.DischargeCategories,
+                  #--- Matched Analysis Summary tables ---
+                  Matched.SampleSize.Summary = Matched.SampleSize.Summary,
+                  Matched.Metastasis.Summary = Matched.Metastasis.Summary,
+                  Matched.Therapy.Summary = Matched.Therapy.Summary,
+                  Matched.ChemoComplications.Summary = Matched.ChemoComplications.Summary,
+                  Matched.MeanLengthOfStay.Summary = Matched.MeanLengthOfStay.Summary,
+                  Matched.DischargeCategories.Summary = Matched.DischargeCategories.Summary,
+                  #--- Only HIVCancer ---
+                  HIVCancer.Categories = HIVCancer.Categories,
+                  HIVCancer.DiagnosisOrder = HIVCancer.DiagnosisOrder)
+
+TableList <- TableList %>%
+                purrr::iwalk(function(Table, tablename)
+                             {
+                                  write.csv2(Table, file = paste0(TableOutputPath, "/", tablename, ".csv"))
+                })
+
+
+#===============================================================================
+
+Plot_SampleSize <- CumulatedData_Full$df_Output_SampleSize %>%
+                        filter(FirstRelevantAdmissionYear < 2023) %>%
+                        dsFredaClient::MakeColumnPlot(XFeature = FirstRelevantAdmissionYear,
+                                                      YFeature = N,
+                                                      GroupingFeature = Site,
+                                                      GroupingPosition = position_stack(),
+                                                      GroupingMapping = "alpha",
+                                                      AlphaPalette = c(0.2, 0.5, 0.9),
+                                                      GroupingSpecs = c("Site A" = "MunichLMU",
+                                                                        "Site B" = "Freiburg",
+                                                                        "Site C" = "Frankfurt"),
+                                                      FacetFeature = PatientSubgroup,
+                                                      FacetMapping = "fill",
+                                                      FillPalette = vc_FillPalette_Subgroup,
+                                                      FacetArguments = list(scales = "free_y"))
+              
+f_ExportPlot(inp_Plot = Plot_SampleSize,
+             inp_Directory = PlotOutputPath,
+             inp_Width = 30,
+             inp_Height = 10)
+
+
+#-------------------------------------------------------------------------------
+
+# Age at cancer diagnosis over time for PNLWH; using unmatched data (because age was a matching variable), excluding Freiburg
+plot_AgeOverTime_PNLWH <- CumulatedData_Full$df_Output_AgeAtCancerDiagnosis %>%
+                              filter(PatientSubgroup == "Cancer+/HIV-") %>%
+                              pivot_wider(names_from = Site,
+                                          values_from = N) %>%
+                              mutate(All = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                              filter(between(MainCancerDiagnosisYear, 2005, 2022)) %>%
+                              dsFredaClient::MakeColumnPlot(XFeature = MainCancerDiagnosisYear,
+                                                            YFeature = All,
+                                                            GroupingFeature = AgeGroup,
+                                                            GroupingPosition = position_fill(),
+                                                            AxisType_y = "proportional",
+                                                            GroupingSpecs = c("> 80 years old",
+                                                                              "60 - 79 years old",
+                                                                              "40 - 59 years old",
+                                                                              "18 - 39 years old"),
+                                                            GroupingMapping = "alpha",
+                                                            AlphaPalette = c(0.3, 0.5, 0.7, 0.9),
+                                                            FacetFeature = PatientSubgroup,
+                                                            FacetMapping = "fill",
+                                                            FillPalette = vc_FillPalette_Subgroup)
+
+
+# Age at cancer diagnosis over time for PLWH
+plot_AgeOverTime_PLWH <- CumulatedData_Full$df_Output_AgeAtCancerDiagnosis %>%
+                              filter(PatientSubgroup == "Cancer+/HIV+") %>%
+                              pivot_wider(names_from = Site,
+                                          values_from = N) %>%
+                              mutate(All = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                              filter(between(MainCancerDiagnosisYear, 2005, 2022)) %>%
+                              dsFredaClient::MakeColumnPlot(XFeature = MainCancerDiagnosisYear,
+                                                            YFeature = All,
+                                                            GroupingFeature = AgeGroup,
+                                                            GroupingPosition = position_fill(),
+                                                            AxisType_y = "proportional",
+                                                            GroupingSpecs = c("> 80 years old",
+                                                                              "60 - 79 years old",
+                                                                              "40 - 59 years old",
+                                                                              "18 - 39 years old"),
+                                                            GroupingMapping = "alpha",
+                                                            AlphaPalette = c(0.3, 0.5, 0.7, 0.9),
+                                                            FacetFeature = PatientSubgroup,
+                                                            FacetMapping = "fill",
+                                                            FillPalette = vc_FillPalette_Subgroup)
+
+f_ExportPlot(inp_Plot = plot_AgeOverTime_PNLWH,
+             inp_Directory = PlotOutputPath,
+             inp_Width = 30,
+             inp_Height = 10)
+
+f_ExportPlot(inp_Plot = plot_AgeOverTime_PLWH,
+             inp_Directory = PlotOutputPath,
+             inp_Width = 30,
+             inp_Height = 10)
+
+
+#-------------------------------------------------------------------------------
+
+Plot_CancerTopography <- CumulatedData_Full$df_Output_MainCancerTopographyGroup_OverTime %>%
+                              filter(PatientSubgroup == "Cancer+/HIV+") %>%
+                              pivot_wider(names_from = Site,
+                                          values_from = c(N, Proportion)) %>%
+                              group_by(MainCancerDiagnosisYear, PatientSubgroup) %>%
+                                  mutate(N_All = rowSums(across(all_of(paste0("N_", SiteNames))), na.rm = TRUE),
+                                         Proportion_All = N_All / sum(N_All)) %>%
+                              ungroup() %>%
+                              filter(between(MainCancerDiagnosisYear, 2005, 2022)) %>%
+                              dsFredaClient::MakeColumnPlot(XFeature = MainCancerDiagnosisYear,
+                                                            YFeature = Proportion_All,
+                                                            AxisType_y = "proportional",
+                                                            GroupingFeature = MainCancerTopographyGroup,
+                                                            GroupingPosition = position_fill(),
+                                                            GroupingMapping = "fill")
+  
+
+#-------------------------------------------------------------------------------
+
+SiteNames.Temp <- SiteNames
+#SiteNames.Temp <- "Freiburg"
+
+Plot_ChemoComplications_Matched <- CumulatedData_Matched$df_Output_TherapyComplications %>%
+                                # select(-CountNoChemotherapy,
+                                #        -CountNoComplicationAfterChemotherapy,
+                                #        -ProportionNoChemotherapy,
+                                #        -ProportionNoComplicationAfterChemotherapy) %>%
+                                #filter(PatientSubgroup == "Cancer+/HIV+") %>%
+                                filter(Site %in% SiteNames.Temp) %>%
+                                pivot_wider(names_from = Site,
+                                            values_from = c(N, starts_with("Count"), starts_with("Proportion"))) %>%
+                                mutate(N_All = rowSums(across(all_of(paste0("N_", SiteNames.Temp))), na.rm = TRUE),
+                                       CountAnyMajorTherapy_All = rowSums(across(all_of(paste0("CountAnyMajorTherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                       CountNoMajorTherapy_All = N_All - CountAnyMajorTherapy_All,
+                                       CountChemotherapy_All = rowSums(across(all_of(paste0("CountChemotherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                       CountNoChemotherapy_All = rowSums(across(all_of(paste0("CountNoChemotherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                       CountComplicationAfterChemotherapy_All = rowSums(across(all_of(paste0("CountComplicationAfterChemotherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                       CountNoComplicationAfterChemotherapy_All = rowSums(across(all_of(paste0("CountNoComplicationAfterChemotherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                       ProportionAnyMajorTherapy_All = CountAnyMajorTherapy_All / N_All,
+                                       ProportionNoMajorTherapy_All = CountNoMajorTherapy_All / N_All,
+                                       ProportionChemotherapy_All = CountChemotherapy_All / N_All,
+                                       ProportionNoChemotherapy_All = CountNoChemotherapy_All / N_All,
+                                       ProportionComplicationAfterChemotherapy_All = CountComplicationAfterChemotherapy_All / N_All,
+                                       ProportionNoComplicationAfterChemotherapy_All = CountNoComplicationAfterChemotherapy_All / N_All) %>%
+                                       # ProportionComplicationAfterChemotherapy_All = CountComplicationAfterChemotherapy_All / CountChemotherapy_All,
+                                       # ProportionNoComplicationAfterChemotherapy_All = CountNoComplicationAfterChemotherapy_All / CountChemotherapy_All) %>%
+                                select(PatientSubgroup,
+                                       MainCancerDiagnosisYear,
+                                       #ProportionNoMajorTherapy_All,
+                                       ProportionNoChemotherapy_All,
+                                       ProportionNoComplicationAfterChemotherapy_All,
+                                       ProportionComplicationAfterChemotherapy_All) %>%
+                                pivot_longer(cols = starts_with("Proportion"),
+                                             names_to = "Group",
+                                             values_to = "Value") %>%
+                                mutate(Group = str_remove(str_remove(Group, "Proportion"), "_All")) %>%
+                                filter(between(MainCancerDiagnosisYear, 2005, 2022)) %>%
+                                dsFredaClient::MakeColumnPlot(XFeature = MainCancerDiagnosisYear,
+                                                              YFeature = Value,
+                                                              GroupingFeature = Group,
+                                                              GroupingPosition = position_fill(),
+                                                              GroupingMapping = "alpha",
+                                                              AlphaPalette = c(0.9, 0.5, 0.2),
+                                                              GroupingSpecs = c("Complication after Chemotherapy" = "ComplicationAfterChemotherapy",
+                                                                                "No complication after Chemotherapy" = "NoComplicationAfterChemotherapy",
+                                                                                "No Chemotherapy" = "NoChemotherapy"),
+                                                              AxisType_y = "proportional",
+                                                              FacetFeature = PatientSubgroup,
+                                                              FacetMapping = "fill",
+                                                              FillPalette = vc_FillPalette_Subgroup)
+
+f_ExportPlot(inp_Plot = Plot_ChemoComplications_Full,
+             inp_Directory = PlotOutputPath,
+             inp_Width = 24,
+             inp_Height = 10)
+
+f_ExportPlot(inp_Plot = Plot_ChemoComplications_Matched,
+             inp_Directory = PlotOutputPath,
+             inp_Width = 24,
+             inp_Height = 10)
+            
+
+
+#-------------------------------------------------------------------------------
+
+#SiteNames.Temp <- SiteNames
+SiteNames.Temp <- c("Frankfurt", "Freiburg")
+
+Plot_Discharge_Matched <- CumulatedData_Matched$df_Output_LastRecordedDischargeCategory %>%
+                      #filter(PatientSubgroup == "Cancer+/HIV+") %>%
+                      select(-MainCancerDiagnosisYear) %>%
+                      filter(Site %in% SiteNames.Temp) %>%
+                      pivot_wider(names_from = Site,
+                                  values_from = c(N, Proportion)) %>%
+                      group_by(LastRecordedDischargeYear, PatientSubgroup) %>%
+                          mutate(N_All = rowSums(across(all_of(paste0("N_", SiteNames.Temp))), na.rm = TRUE),
+                                 Proportion_All = N_All / sum(N_All)) %>%
+                      ungroup() %>%
+                      filter(between(LastRecordedDischargeYear, 2005, 2022)) %>%
+                      dsFredaClient::MakeColumnPlot(XFeature = LastRecordedDischargeYear,
+                                                    YFeature = Proportion_All,
+                                                    AxisType_y = "proportional",
+                                                    GroupingFeature = LastRecordedDischargeCategory,
+                                                    GroupingPosition = position_fill(),
+                                                    GroupingMapping = "alpha",
+                                                    GroupingSpecs = c("Deceased",
+                                                                      "Hospice Care",
+                                                                      "Same Hospital",
+                                                                      "Other Hospital",
+                                                                      "Rehabilitation or Residential Care",
+                                                                      "Home"),
+                                                    #AlphaPalette = c(0.2, 0.35, 0.5, 0.6, 0.75, 0.9),
+                                                    AlphaPalette = c(0.9, 0.75, 0.6, 0.5, 0.35, 0.2),
+                                                    FacetFeature = PatientSubgroup,
+                                                    FacetMapping = "fill",
+                                                    FillPalette = vc_FillPalette_Subgroup)
+
+
+f_ExportPlot(inp_Plot = Plot_Discharge_Full,
+             inp_Directory = PlotOutputPath,
+             inp_Width = 24,
+             inp_Height = 10)
+
+f_ExportPlot(inp_Plot = Plot_Discharge_Matched,
+             inp_Directory = PlotOutputPath,
+             inp_Width = 24,
+             inp_Height = 10)
+
+#-------------------------------------------------------------------------------
+
+SiteNames.Temp <- SiteNames
+#SiteNames.Temp <- "Freiburg"
+
+Plot_Metastasis <- CumulatedData_Matched$df_Output_MetastasisOccurrence %>%
+                      select(-CountNoMetastasis,
+                             -ProportionNoMetastasis,) %>%
+                      #filter(PatientSubgroup == "Cancer+/HIV+") %>%
+                      filter(Site %in% SiteNames.Temp) %>%
+                      pivot_wider(names_from = Site,
+                                  values_from = c(N, starts_with("Count"), starts_with("Proportion"))) %>%
+                      mutate(N_All = rowSums(across(all_of(paste0("N_", SiteNames.Temp))), na.rm = TRUE),
+                             CountMetastasis_All = rowSums(across(all_of(paste0("CountMetastasis_", SiteNames.Temp))), na.rm = TRUE),
+                             CountMetastasisWithCancerDiagnosis_All = rowSums(across(all_of(paste0("CountMetastasisWithCancerDiagnosis_", SiteNames.Temp))), na.rm = TRUE),
+                             CountMetastasisAfterCancerDiagnosis_All = rowSums(across(all_of(paste0("CountMetastasisAfterCancerDiagnosis_", SiteNames.Temp))), na.rm = TRUE),
+                             ProportionMetastasis_All = CountMetastasis_All / N_All,
+                             ProportionMetastasisWithCancerDiagnosis_All = CountMetastasisWithCancerDiagnosis_All / N_All,
+                             ProportionMetastasisAfterCancerDiagnosis_All = CountMetastasisAfterCancerDiagnosis_All / N_All) %>%
+                      filter(between(MainCancerDiagnosisYear, 2005, 2022)) %>%
+                      dsFredaClient::MakeColumnPlot(XFeature = MainCancerDiagnosisYear,
+                                                    YFeature = ProportionMetastasisWithCancerDiagnosis_All,
+                                                    #GroupingFeature = AgeGroup,
+                                                    #GroupingPosition = position_fill(),
+                                                    AxisType_y = "proportional",
+                                                    FacetFeature = PatientSubgroup,
+                                                    FacetMapping = "fill",
+                                                    FillPalette = vc_FillPalette_Subgroup)
+
+
+#-------------------------------------------------------------------------------
+
+Plot_HIVCancer.Absolute <- CumulatedData_Full$df_Output_HIVCancerCategories %>%
+                                filter(PatientSubgroup == "Cancer+/HIV+",
+                                       between(MainCancerDiagnosisYear, 2009, 2022)) %>%
+                                pivot_wider(names_from = Site,
+                                            values_from = N) %>%
+                                mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                group_by(PatientSubgroup, MainCancerDiagnosisYear, PatientSubgroupHIVCancerCategory) %>%
+                                   summarize(N = sum(N)) %>%
+                                group_by(PatientSubgroup, MainCancerDiagnosisYear) %>%
+                                   reframe(PatientSubgroupHIVCancerCategory = PatientSubgroupHIVCancerCategory,
+                                           N = N,
+                                           Proportion = N / sum(N)) %>%
+                                ungroup() %>%
+                                dsFredaClient::MakeColumnPlot(XFeature = MainCancerDiagnosisYear,
+                                                              YFeature = N,
+                                                              GroupingFeature = PatientSubgroupHIVCancerCategory,
+                                                              GroupingPosition = position_stack(),
+                                                              GroupingMapping = "alpha",
+                                                              GroupingSpecs = c("AIDS-defining cancer" = "HIV-associated AD cancer",
+                                                                                "Virus-associated non-AD cancer" = "HIV-associated non-AD cancer",
+                                                                                "Non-virus-associated non-AD cancer" = "Non-HIV-associated cancer"),
+                                                              AlphaPalette = c(0.9, 0.5, 0.2),
+                                                              FacetFeature = PatientSubgroup,
+                                                              FacetMapping = "fill",
+                                                              FillPalette = vc_FillPalette_Subgroup)
+
+Plot_HIVCancer.Relative <- CumulatedData_Full$df_Output_HIVCancerCategories %>%
+                                filter(PatientSubgroup == "Cancer+/HIV+",
+                                       between(MainCancerDiagnosisYear, 2009, 2022)) %>%
+                                pivot_wider(names_from = Site,
+                                           values_from = N) %>%
+                                mutate(N = rowSums(across(all_of(SiteNames)), na.rm = TRUE)) %>%
+                                group_by(PatientSubgroup, MainCancerDiagnosisYear, PatientSubgroupHIVCancerCategory) %>%
+                                   summarize(N = sum(N)) %>%
+                                group_by(PatientSubgroup, MainCancerDiagnosisYear) %>%
+                                   reframe(PatientSubgroupHIVCancerCategory = PatientSubgroupHIVCancerCategory,
+                                           N = N,
+                                           Proportion = N / sum(N)) %>%
+                                ungroup() %>%
+                                dsFredaClient::MakeColumnPlot(XFeature = MainCancerDiagnosisYear,
+                                                              YFeature = Proportion,
+                                                              AxisType_y = "proportional",
+                                                              GroupingFeature = PatientSubgroupHIVCancerCategory,
+                                                              GroupingPosition = position_fill(),
+                                                              GroupingMapping = "alpha",
+                                                              GroupingSpecs = c("AIDS-defining cancer" = "HIV-associated AD cancer",
+                                                                                "Virus-associated non-AD cancer" = "HIV-associated non-AD cancer",
+                                                                                "Non-virus-associated non-AD cancer" = "Non-HIV-associated cancer"),
+                                                              AlphaPalette = c(0.9, 0.5, 0.2),
+                                                              FacetFeature = PatientSubgroup,
+                                                              FacetMapping = "fill",
+                                                              FillPalette = vc_FillPalette_Subgroup)
+                    
+f_ExportPlot(inp_Plot = Plot_HIVCancer.Absolute,
+             inp_Directory = PlotOutputPath,
+             inp_Width = 20,
+             inp_Height = 10)
+
+f_ExportPlot(inp_Plot = Plot_HIVCancer.Relative,
+             inp_Directory = PlotOutputPath,
+             inp_Width = 20,
+             inp_Height = 10)
+
+
+#-------------------------------------------------------------------------------
+
+SiteNames.Temp <- SiteNames
+#SiteNames.Temp <- "Freiburg"
+
+Plot_AIDS <- CumulatedData_Matched$df_Output_HIVCancerAIDS %>%
+                  group_by(Site, MainCancerDiagnosisYear) %>%
+                      mutate(AIDSOccurrence = case_when(is.na(AIDSOccurrence) ~ "Unclear",
+                                                        .default = AIDSOccurrence),
+                             Proportion = N / sum(N)) %>%
+                  ungroup() %>%
+                  filter(Site %in% SiteNames.Temp) %>%
+                  pivot_wider(names_from = Site,
+                              values_from = c(N, Proportion)) %>%
+                  group_by(MainCancerDiagnosisYear) %>%
+                      mutate(N_All = rowSums(across(all_of(paste0("N_", SiteNames.Temp))), na.rm = TRUE),
+                             Proportion_All = N_All / sum(N_All)) %>%
+                  ungroup() %>%
+                  filter(between(MainCancerDiagnosisYear, 2005, 2022)) %>%
+                  dsFredaClient::MakeColumnPlot(XFeature = MainCancerDiagnosisYear,
+                                                YFeature = Proportion_All,
+                                                AxisType_y = "proportional",
+                                                GroupingFeature = AIDSOccurrence,
+                                                GroupingPosition = position_fill(),
+                                                GroupingMapping = "alpha",
+                                                GroupingSpecs = c("AIDS after cancer diagnosis",
+                                                                  "AIDS at or before cancer diagnosis",
+                                                                  "Cancer and HIV without AIDS",
+                                                                  "Unclear"),
+                                                AlphaPalette = c(0.9, 0.6, 0.3, 0.1),
+                                                FillPalette = color_Secondary)
+
+#-------------------------------------------------------------------------------
+
+Test <- CumulatedData_Matched$df_Output_AIDSOccurrence
 
 #-------------------------------------------------------------------------------
 
 
+Test <- CumulatedData_Matched$df_Output_DistinctCodeCountCancer
 
-########## Sankey diagram: Cancer therapy sequence #############################
+#-------------------------------------------------------------------------------
 
-# Make use of make_long() to get compatible data frame for Sankey diagram
-# x: Stage
-# node: Node
-df_Plotdata_Sankey <- df_CancerTherapySequence %>%
-  ggsankey::make_long(TherapyDiagnosis_1,
-                      TherapyDiagnosis_2,
-                      TherapyDiagnosis_3,
-                      TherapyDiagnosis_4,
-                      TherapyDiagnosis_5,
-                      TherapyDiagnosis_6) %>%
-  filter(!is.na(node))
+Test <- CumulatedData_Matched$df_Output_HIVCancerDiagnosisOrder
 
-plot_Output_SankeyTherapySequence <- ggplot(df_Plotdata_Sankey,
-                                            aes(x = x,
-                                                next_x = next_x,
-                                                node = node,
-                                                next_node = next_node,
-                                                fill = factor(node),
-                                                label = node)) +
-  geom_sankey(type = "sankey",
-              flow.alpha = 0.5,
-              width = 0.3,
-              node.color = "white",
-              show.legend = FALSE) +
-  geom_sankey_label(size = 2.5,
-                    color = "black",
-                    fill= "white",
-                    hjust = 0.5) +
-  theme_sankey(base_size = 16) +
-  theme(legend.position = "none",
-        axis.title = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks = element_blank(), 
-        panel.grid = element_blank()) +
-  scale_fill_viridis_d(option = "inferno", alpha = 0.95)
+#-------------------------------------------------------------------------------
 
-#plot_Output_Sankey
+Test <- CumulatedData_Matched$df_Output_HIVCancerCategories
 
-# Output Plot as pdf
-# pdf(file = "./output/CancerTherapySequence.pdf",
-#     width = 15,
-#     height = 20)
-# plot_Output_Sankey
-# dev.off()
+#-------------------------------------------------------------------------------
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SiteNames.Temp <- SiteNames
+#SiteNames.Temp <- "Freiburg"
 
+Plot_AnyMajorTherapy <- CumulatedData_Matched$df_Output_TherapyModalities
+                              select(-CountNoMajorTherapyCoded,
+                                     -CountAnyMajorTherapy) %>%
+  
+#-------------------------------------------------------------------------------
 
+SiteNames.Temp <- SiteNames
+#SiteNames.Temp <- "Freiburg"
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Attrition Diagram
-# -----------------
-# Using Graphviz Syntax based on DOT language
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-plot_Output_Attrition <- DiagrammeR::grViz("
-                                           digraph attrition {
-                                           
-                                           graph [overlap = true,
-                                                  fontsize = 10,
-                                                  fontname = Helvetica]
-                                           
-                                           rankdir = TD                         # Flow from top down
-                                                 
-                                           node [shape = box,
-                                                 style = 'rounded, filled',
-                                                 fillcolor = AliceBlue,
-                                                 fontname = Helvetica]
-                                                 
-                                              N_1   [label = 'Primary SQL selection \n (N = 104.477)']
-                                              Ex_1  [label = 'Patients with no documented cancer or HIV ICD codes \n (N = 49.601)']
-                                              N_2   [label = 'Patients with ICD codes for cancer or HIV \n (N = 54.876)']
-                                              Ex_2  [label = 'Patients with uncertain primary cancer diagnosis \n (N = 8.676)']
-                                              N_3   [label = 'Patients with plausibly documented primary cancer diagnosis or HIV \n (N = 46.190)']
-                                           
-                                           # Invisible Joint nodes
-                                           node [shape = point,
-                                                 height = 0]
-                                           
-                                              Joint_1
-                                              Joint_2
-                                          
-                                           { rank = same Joint_1 Ex_1 }
-                                           { rank = same Joint_2 Ex_2 }
-                                              
-                                           N_1 -> Joint_1   [arrowhead = none]
-                                           Joint_1 -> Ex_1  [minlen = 3]
-                                           Joint_1 -> N_2
-                                           N_2 -> Joint_2   [arrowhead = none]
-                                           Joint_2 -> Ex_2  [minlen = 3]
-                                           Joint_2 -> N_3
-                                           
-                                           }
-                                           ")
+Plot_TherapyModalities <- CumulatedData_Matched$df_Output_TherapyModalities %>%
+                              select(-CountNoMajorTherapyCoded,
+                                     -CountAnyMajorTherapy) %>%
+                              #filter(PatientSubgroup == "Cancer+/HIV+") %>%
+                              filter(Site %in% SiteNames.Temp) %>%
+                              pivot_wider(names_from = Site,
+                                          values_from = c(N, starts_with("Count"), starts_with("Proportion"))) %>%
+                              mutate(N_All = rowSums(across(all_of(paste0("N_", SiteNames.Temp))), na.rm = TRUE),
+                                     CountSurgery_All = rowSums(across(all_of(paste0("CountSurgery_", SiteNames.Temp))), na.rm = TRUE),
+                                     CountChemotherapy_All = rowSums(across(all_of(paste0("CountChemotherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                     CountImmunotherapy_All = rowSums(across(all_of(paste0("CountImmunotherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                     CountRadiotherapy_All = rowSums(across(all_of(paste0("CountRadiotherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                     CountStemCellTherapy_All = rowSums(across(all_of(paste0("CountStemCellTherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                     CountBoneMarrowTransplant_All = rowSums(across(all_of(paste0("CountBoneMarrowTransplant_", SiteNames.Temp))), na.rm = TRUE),
+                                     CountCARTCellTherapy_All = rowSums(across(all_of(paste0("CountCARTCellTherapy_", SiteNames.Temp))), na.rm = TRUE),
+                                     ProportionSurgery_All = CountSurgery_All / N_All,
+                                     ProportionChemotherapy_All = CountChemotherapy_All / N_All,
+                                     ProportionImmunotherapy_All = CountImmunotherapy_All / N_All,
+                                     ProportionRadiotherapy_All = CountRadiotherapy_All / N_All,
+                                     ProportionStemCellTherapy_All = CountStemCellTherapy_All / N_All,
+                                     ProportionBoneMarrowTransplant_All = CountBoneMarrowTransplant_All / N_All,
+                                     ProportionCARTCellTherapy_All = CountCARTCellTherapy_All / N_All) %>%
+                              select(PatientSubgroup,
+                                     MainCancerDiagnosisYear,
+                                     ends_with("_All")) %>%
+                              select(PatientSubgroup,
+                                     MainCancerDiagnosisYear,
+                                     starts_with("Proportion")) %>%
+                              pivot_longer(cols = starts_with("Proportion"),
+                                           names_to = "TherapyModality",
+                                           values_to = "Value") %>% 
+                              mutate(TherapyModality = str_remove(str_remove(TherapyModality, "Proportion"), "_All")) %>%
+                              filter(between(MainCancerDiagnosisYear, 2009, 2022)) %>%
+                              dsFredaClient::MakeColumnPlot(XFeature = MainCancerDiagnosisYear,
+                                                            YFeature = Value,
+                                                            GroupingFeature = TherapyModality,
+                                                            GroupingPosition = position_stack(),
+                                                            GroupingMapping = "alpha",
+                                                            # GroupingSpecs = c("AIDS after cancer diagnosis",
+                                                            #                   "AIDS at or before cancer diagnosis",
+                                                            #                   "Cancer and HIV without AIDS",
+                                                            #                   "Unclear"),
+                                                            AxisType_y = "proportional",
+                                                            FacetFeature = PatientSubgroup,
+                                                            FacetMapping = "fill",
+                                                            FillPalette = vc_FillPalette_Subgroup)
+        
+          
 
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Stratification Plot
-# -------------------
-# Using Graphviz Syntax based on DOT language
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-plot_Output_Stratification <- DiagrammeR::grViz("
-                                                graph stratification {
-                                                
-                                                graph [overlap = true,
-                                                       fontsize = 10,
-                                                       fontname = Helvetica,
-                                                       splines = line]
-                                                       
-                                                rankdir = LR
-                                                compound = true
-                                                      
-                                                node [shape = box,
-                                                      style = rounded,
-                                                      fontname = Helvetica]
-                                                  
-                                                    Included   [label = 'Included\npatients']
-                                                    Cancer     [label = 'Cancer only']
-                                                    HIVCancer  [label = 'HIV and Cancer']
-                                                    HIV        [label = 'HIV only']
-                                                  
-                                                node [shape = record
-                                                      fontsize = 8
-                                                      style = filled]
-                                                  
-                                                    CancerCategory   [color = Lavender
-                                                                      label = 'AIDS-defining cancer |
-                                                                               HIV-associated cancer |
-                                                                               Non-HIV-associated cancer']
-                                                
-                                                # Invisible point node
-                                                node [shape = point, height = 0] CenterSubgraph
-                                                
-                                                node [shape = record]
-                                                
-                                                    AIDS        [color = Azure
-                                                                 label = 'AIDS before or at cancer diagnosis |
-                                                                          AIDS after cancer diagnosis |
-                                                                          No AIDS']
-
-                                                subgraph cluster_HIVCancer {
-                                                    rank = same
-                                                    ordering = 'out'
-                                                    CancerCategory; CenterSubgraph; AIDS
-                                                    bgcolor = 'WhiteSmoke'
-                                                }                  
-                                                
-                                                Included -- {Cancer HIVCancer HIV}
-                                                HIVCancer -- CenterSubgraph [lhead = cluster_HIVCancer]
-                                                }
-                                                ")
-#plot_Output_Stratification
-
-
-
-
-########## Postal code map #####################################################
-
-
-# Single Feature object of (aggregated) postal code areas in Hessen 
-sf_PostalCodeAreas_Hessen <- st_read(dsn = "./data/PostalCodeAreas_Germany.geojson") %>%
-  mutate(plz_short = factor(str_trunc(plz_code, 3, ellipsis = ""))) %>%      # Add attribute / variable of shortened postal codes to match with analysis data
-  filter(lan_name == "Hessen") %>%      # Filter for postal codes in Hessen
-  group_by(plz_short) %>%
-  summarize(geometry = st_union(geometry)) %>%      # Create polygons of aggregated postal code areas (based on shortened postal code)
-  ungroup()
-
-# Get all (aggregated) postal code areas as a single column for joining with postal code areas in analysis data
-# This is kind of a workaround for "select", because geometry is a "sticky column" that would stick to plz_short
-df_PostalCodeAreas_Hessen <- tibble(PLZ = factor(sf_PostalCodeAreas_Hessen$plz_short))
-
-# Report table: Counts and frequencies of patients in all postal code areas
-df_Output_PostalCodeCounts <- df_Patients %>%
-  group_by(PatientSubgroup, PrimaryPostalCode) %>%
-  summarize(Count = n()) %>%
-  mutate(Percentage = Count / sum(Count)) %>%
-  ungroup()
-
-# Join of all Hessen postal code areas and all represented. This is necessary to make non-represented areas be drawn on the map.
-df_PostalCodeCounts_Hessen <- df_Output_PostalCodeCounts %>%
-  right_join(df_PostalCodeAreas_Hessen, by = c("PrimaryPostalCode" = "PLZ")) %>%
-  mutate(PrimaryPostalCode = factor(PrimaryPostalCode)) %>%
-  complete(PatientSubgroup, PrimaryPostalCode)
-
-# Join of spatial data with analysis data
-sf_PostalCodeAreas_Hessen <- sf_PostalCodeAreas_Hessen %>%
-  left_join(df_PostalCodeCounts_Hessen, by = c("plz_short" = "PrimaryPostalCode"))
-
-
-# Draw (faceted) map
-map_PatientPostalCodes <- ggplot() +
-  geom_sf(data = sf_PostalCodeAreas_Hessen,
-          mapping = aes(fill = Percentage),
-          colour = NA) +
-  scale_fill_continuous(low = "#05499630",
-                        high =  color_Accent,
-                        na.value = color_LightGrey,
-                        labels = function(x) paste0(round(100 * x, 0), "%"),
-                        name = "Percentage of patients") +
-  theme_CCP() +
-  theme(axis.line.x = element_blank(),      # Get rid of axes
-        axis.text.x = element_blank(),
-        axis.line.y = element_blank(),
-        axis.text.y = element_blank()) +
-  facet_wrap(facets = vars(PatientSubgroup))
-
-
-########## EXPORT OF PLOTS #####################################################
-
-f_ExportPlot(inp_Plot = plot_Output_AgeAtCancerDiagnosis,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "AgeAtCancerDiagnosis.svg",
-             inp_Width = 10,
-             inp_Height = 10)
-
-f_ExportPlot(inp_Plot = plot_Output_AgeDistribution_OverTime,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "AgeDistributionOverTime.svg",
-             inp_Width = 20,
-             inp_Height = 10)
-
-f_ExportPlot(inp_Plot = plot_Output_CancerTopography,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "CancerTopography.svg",
-             inp_Width = 14,
-             inp_Height = 10)
-
-f_ExportPlot(inp_Plot = plot_Output_CaseCount,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "CaseCountPerPatient.svg",
-             inp_Width = 16,
-             inp_Height = 12)
-
-f_ExportPlot(inp_Plot = plot_Output_CIS,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "CarcinomaInSitu.svg",
-             inp_Width = 20,
-             inp_Height = 10)
-
-f_ExportPlot(inp_Plot = plot_Output_HIVCancerOverview,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "HIVCancerOverview.svg",
-             inp_Width = 20,
-             inp_Height = 15)
-
-f_ExportPlot(inp_Plot = plot_Output_MeanLengthOfStay,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "MeanLengthOfStay.svg",
-             inp_Width = 16,
-             inp_Height = 12)
-
-f_ExportPlot(inp_Plot = plot_Output_MetastasisOccurrence,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "MetastasisOccurrence.svg",
-             inp_Width = 20,
-             inp_Height = 10)
-
-f_ExportPlot(inp_Plot = plot_Output_SampleSize_OverTime,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SampleSizeOverTime.svg",
-             inp_Width = 16,
-             inp_Height = 10)
-
-f_ExportPlot(inp_Plot = plot_Output_SankeyDiagnosisProgress,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SankeyDiagnosisProgress.svg",
-             inp_Width = 20,
-             inp_Height = 16)
-
-f_ExportPlot(inp_Plot = plot_Output_SankeyTherapySequence,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SankeyTherapySequence.svg",
-             inp_Width = 80,
-             inp_Height = 50)
-
-f_ExportPlot(inp_Plot = plot_Output_SexDistribution_OverTime,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SexDistributionOverTime.svg",
-             inp_Width = 20,
-             inp_Height = 10)
-
-f_ExportPlot(inp_Plot = plot_Output_TherapyModalities,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "TherapyModalities.svg",
-             inp_Width = 20,
-             inp_Height = 14,
-             inp_LegendPosition = c(0.8, 0.68))
-
-f_ExportPlot(inp_Plot = plot_Output_TimeCancerToMetastasis,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "TimeCancerToMetastasis.svg",
-             inp_Width = 15,
-             inp_Height = 9,
-             inp_LegendPosition = c(0.3, 0.82))
-
-f_ExportPlot(inp_Plot = plot_Output_TimeChemoToComplication,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "TimeChemoToComplication.svg",
-             inp_Width = 15,
-             inp_Height = 9,
-             inp_LegendPosition = "none")
-
-f_ExportPlot(inp_Plot = map_PatientPostalCodes,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "MapPatientPostalCodes.svg",
-             inp_Width = 30,
-             inp_Height = 15)
-
-
-
-f_ExportPlot(inp_Plot = plot_Output_AgeDistribution_OverTime_A,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "AgeDistributionOverTime_A.svg",
-             inp_Width = 20,
-             inp_Height = 5,
-             inp_LegendPosition = "none")
-
-f_ExportPlot(inp_Plot = plot_Output_AgeDistribution_OverTime_B,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "AgeDistributionOverTime_B.svg",
-             inp_Width = 20,
-             inp_Height = 5,
-             inp_LegendPosition = "none")
-
-f_ExportPlot(inp_Plot = plot_Output_AgeDistribution_OverTime_C,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "AgeDistributionOverTime_C.svg",
-             inp_Width = 20,
-             inp_Height = 5,
-             inp_LegendPosition = "none")
-
-
-f_ExportPlot(inp_Plot = plot_Output_SampleSize_OverTime_A,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SampleSizeOverTime_A.svg",
-             inp_Width = 20,
-             inp_Height = 5,
-             inp_LegendPosition = "none")
-
-f_ExportPlot(inp_Plot = plot_Output_SampleSize_OverTime_B,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SampleSizeOverTime_B.svg",
-             inp_Width = 20,
-             inp_Height = 5,
-             inp_LegendPosition = "none")
-
-f_ExportPlot(inp_Plot = plot_Output_SampleSize_OverTime_C,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SampleSizeOverTime_C.svg",
-             inp_Width = 20,
-             inp_Height = 5,
-             inp_LegendPosition = "none")
-
-
-f_ExportPlot(inp_Plot = plot_Output_SexDistribution_OverTime_A,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SexDistributionOverTime_A.svg",
-             inp_Width = 20,
-             inp_Height = 5,
-             inp_LegendPosition = "none")
-
-f_ExportPlot(inp_Plot = plot_Output_SexDistribution_OverTime_B,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SexDistributionOverTime_B.svg",
-             inp_Width = 20,
-             inp_Height = 5,
-             inp_LegendPosition = "none")
-
-f_ExportPlot(inp_Plot = plot_Output_SexDistribution_OverTime_C,
-             inp_Directory = "./output/PosterPlots",
-             inp_Filename = "SexDistributionOverTime_C.svg",
-             inp_Width = 20,
-             inp_Height = 5,
-             inp_LegendPosition = "none")
 
